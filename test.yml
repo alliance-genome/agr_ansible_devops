@@ -4,14 +4,9 @@
   connection: local
   gather_facts: False
 
-  var_files:
-    - secrets/aws_keys
-
   tasks:
     - name: Launch instances
       ec2:
-        access_key: "{{ ec2_access_key }}"
-        secret_key: "{{ ec2_secret_key }}"
         key_name: AGR-ssl2
         keypair: AGR-ssl2
         group: default, ES Transport, HTTP, HTTPS SSL, SSH
