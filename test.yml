@@ -1,0 +1,27 @@
+- name: Create a sandbox instance
+  hosts: localhost
+  gather_facts: False
+  tasks:
+    - name: Launch instance
+      ec2:
+         key_name: AGR-SSL2
+         group: default, SSH
+         instance_type: m1.small
+         image: ami-40603AD1
+         wait: true
+         region: us-east-1
+         #vpc_subnet_id: subnet-29e63245
+         assign_public_ip: yes
+      register: ec2
+
+    - name: Wait for SSH to come up
+      delegate_to: "{{ item.public_dns_name }}"
+      wait_for_connection:
+        delay: 60
+        timeout: 320
+      loop: "{{ ec2.instances }}"
+
+    - name: Terminate instances that were previously launched
+      ec2:
+        state: 'absent'
+        instance_ids: '{{ ec2.instance_ids }}'
