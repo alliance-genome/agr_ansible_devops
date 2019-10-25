@@ -9,4 +9,4 @@ RUN pip install boto
 
 ADD . .
 
-CMD ["ansible-playbook", "-i", "hosts", "demo-aws-launch.yml"]
+CMD ["ansible-playbook", "--private-key=AGR-ssl2.pem", "-i", "hosts", "test.yml"]

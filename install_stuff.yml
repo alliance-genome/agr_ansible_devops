@@ -1,0 +1,10 @@
+---
+- name: Configure instance(s)
+  hosts: launched
+  user: core
+  gather_facts: False
+  ignore_errors: yes
+  tasks:
+   - name: Run command
+     raw: docker version
+     register: command_output

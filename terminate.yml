@@ -1,0 +1,11 @@
+---
+- name: Terminate
+  hosts: local
+  connection: local
+  gather_facts: False
+  tasks:
+    - name: Terminate instances
+      ec2:
+        state: 'absent'
+        region: us-east-1
+        instance_ids: '{{ ec2.instance_ids }}'
