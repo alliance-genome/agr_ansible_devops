@@ -10,7 +10,7 @@
         key_name: AGR-ssl2
         keypair: AGR-ssl2
         group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
-        instance_type: r5.2xlarge
+        instance_type: r5.4xlarge
         image: ami-047242a24cd6b4bc9
         region: us-east-1
         vpc_subnet_id: subnet-3ebf4477
