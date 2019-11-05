@@ -14,3 +14,12 @@
   docker_network:
     name: "{{ NET }}"
 
+- name: Update number of open files for ES to run
+  sysctl:
+    name: vm.max_map_count
+    value: '262144'
+    sysctl_set: yes
+    state: present
+    reload: yes
+  become: true
+  become_user: root
