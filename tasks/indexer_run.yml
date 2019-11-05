@@ -1,0 +1,24 @@
+- name: Pull Java Run Image
+  docker_image:
+    name: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
+
+- name: Run Indexer
+  docker_container:
+    name: "{{ INDEXER_RUN_NAME }}"
+    image: "{{ INDEXER_RUN_IMAGE_NAME }}"
+    detach: no
+    log_driver: "gelf"
+    log_options:
+      gelf-address: udp://logs.alliancegenome.org:12201
+    networks:
+      - name: "{{ NET }}"
+    env:
+      AWS_ACCESS_KEY: "{{ AWS_ACCESS_KEY }}"
+      AWS_SECRET_KEY: "{{ AWS_SECRET_KEY }}"
+      ES_INDEX_SUFFIX: "{{ NET }}"
+      BOLT_LOG_LEVEL: INFO
+      DEFAULT_LOG_LEVEL: INFO
+      ES_HOST: "{{ ES_SERVER_NAME }}"
+      NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
+    command: java -Xms32g -Xmx32g -jar agr_indexer/target/agr_indexer-jar-with-dependencies.jar
+

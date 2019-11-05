@@ -4,6 +4,10 @@
   connection: local
   gather_facts: False
 
+  vars_files:
+    - "environments/{{ env }}/main.yml" # ENV must always be loaded first
+    - "environments/shared_secrets.yml"
+
   tasks:
     - name: Launch instances
       ec2:
@@ -15,10 +19,13 @@
         region: us-east-1
         vpc_subnet_id: subnet-3ebf4477
         assign_public_ip: yes
+        aws_access_key: "{{ AWS_ACCESS_KEY }}"
+        aws_secret_key: "{{ AWS_SECRET_KEY }}"
         volumes:
           - device_name: /dev/xvda
-            volume_type: gp2
-            volume_size: 500
+            volume_type: io1
+            volume_size: 1000
+            iops: 3000
             delete_on_termination: yes
         wait: yes
         user_data: "" # Otherwise get weird error on start up
@@ -38,6 +45,8 @@
         instance: '{{ item }}'
         region: us-east-1
         state: list
+        aws_access_key: "{{ AWS_ACCESS_KEY }}"
+        aws_secret_key: "{{ AWS_SECRET_KEY }}"
       with_items: "{{ ec2.instance_ids }}"
       register: ec2_volumes
 
@@ -45,6 +54,8 @@
       ec2_tag:
         region: us-east-1
         resource: '{{ item.1.id }}'
+        aws_access_key: "{{ AWS_ACCESS_KEY }}"
+        aws_secret_key: "{{ AWS_SECRET_KEY }}"
         tags:
           Name: "Ansible Generated - Docker Volume"
       with_subelements:

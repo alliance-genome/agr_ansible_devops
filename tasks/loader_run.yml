@@ -1,0 +1,47 @@
+- name: Pull Loader Run Image
+  docker_image:
+    name: "{{ LOADER_RUN_IMAGE_NAME }}"
+
+- name: Run Loader
+  docker_container:
+    name: "{{ LOADER_RUN_NAME }}"
+    image: "{{ LOADER_RUN_IMAGE_NAME }}"
+    detach: no
+    log_driver: "gelf"
+    log_options:
+      gelf-address: udp://logs.alliancegenome.org:12201
+    volumes:
+      - "{{ NEO_VOLUME_NAME }}:/usr/src/app/tmp"
+    networks:
+      - name: "{{ NET }}"
+    env:
+      API_KEY: "{{ API_ACCESS_TOKEN }}"
+      DEBUG: "False"
+      DOWNLOAD_HOST: "{{ DOWNLOAD_HOST }}"
+      TEST_SET: "False"
+      ALLIANCE_RELEASE: "{{ ALLIANCE_RELEASE }}"
+      FMS_API_URL: "{{ FMS_API_URL }}"
+      AWS_ACCESS_KEY: "{{ AWS_ACCESS_KEY }}"
+      AWS_SECRET_KEY: "{{ AWS_SECRET_KEY }}"
+      GENERATE_REPORTS: "{{ GENERATE_REPORTS }}"
+      NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
+
+- name: Run Loader Tests against Neo
+  docker_container:
+    name: "{{ LOADER_RUN_NAME }}"
+    image: "{{ LOADER_RUN_IMAGE_NAME }}"
+    command: pytest --verbose
+    detach: no
+    log_driver: "gelf"
+    log_options:
+      gelf-address: udp://logs.alliancegenome.org:12201
+    volumes:
+      - "{{ NEO_VOLUME_NAME }}:/usr/src/app/tmp"
+    networks:
+      - name: "{{ NET }}"
+    env:
+      DOWNLOAD_HOST: "{{ DOWNLOAD_HOST }}"
+      TEST_SET: "False"
+      ALLIANCE_RELEASE: "{{ ALLIANCE_RELEASE }}"
+      FMS_API_URL: "{{ FMS_API_URL }}"
+      NEO4J_HOST: "{{ NEO_SERVER_NAME }}"

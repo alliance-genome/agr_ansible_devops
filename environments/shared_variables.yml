@@ -1,0 +1,34 @@
+---
+
+ansible_ssh_user: core
+ansible_python_interpreter: /home/core/pypy/bin/pypy
+
+ALLIANCE_RELEASE: "{{ lookup('env','ALLIANCE_RELEASE') }}"
+REGISTRY: agrdocker
+
+NEO_ENV_NAME: agr_neo4j_env
+NEO_VOLUME_NAME: agr_shared
+NEO_DATA_IMAGE_NAME: agr_neo4j_data_image
+NEO_PAGE_CACHE: "12g"
+NEO_MAX_HEAP: "24g"
+NEO_SERVER_NAME: "agr.{{ env }}.neo4j.server"
+
+NEO_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ NEO_ENV_NAME }}"
+NEO_RELEASE_IMAGE_NAME: "{{ REGISTRY }}/{{ NEO_DATA_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
+NEO_NETWORK_IMAGE_NAME: "{{ REGISTRY }}/{{ NEO_DATA_IMAGE_NAME }}:{{ NET }}"
+
+LOADER_IMAGE_NAME: agr_loader_run
+LOADER_RUN_NAME: "agr.{{ env }}.loader"
+LOADER_TEST_NAME: "agr.{{ env }}.loader.test"
+LOADER_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ LOADER_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
+
+ES_ENV_NAME: agr_elasticsearch_env
+ES_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ ES_ENV_NAME }}"
+ES_SERVER_NAME: "agr.{{ env }}.elasticsearch.server"
+
+JAVA_SOFTWARE_IMAGE_NAME: agr_java_software
+JAVA_SOFTWARE_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ JAVA_SOFTWARE_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
+
+INDEXER_RUN_NAME: "agr.{{ env }}.indexer"
+INDEXER_RUN_IMAGE_NAME: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
+

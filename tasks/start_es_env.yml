@@ -1,0 +1,17 @@
+- name: Pull ES Env Image
+  docker_image:
+    name: "{{ ES_ENV_IMAGE_NAME }}"
+
+- name: Run ES
+  docker_container:
+    name: "{{ ES_SERVER_NAME }}"
+    image: "{{ ES_ENV_IMAGE_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: udp://logs.alliancegenome.org:12201
+    networks:
+      - name: "{{ NET }}"
+    env:
+      http.host: "0.0.0.0"
+      transport.host: "0.0.0.0"
+      xpack.security.enabled: "false"

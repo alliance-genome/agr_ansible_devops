@@ -1,0 +1,4 @@
+- name: install docker-py for supporting Docker
+  pip:
+    name: docker-py
+    executable: /home/core/pypy/bin/pip

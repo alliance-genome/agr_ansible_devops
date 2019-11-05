@@ -1,0 +1,20 @@
+
+- name: Stop Neo4j
+  docker_container:
+    name: "{{ NEO_SERVER_NAME }}"
+    state: stopped
+
+- name: Commit container
+  command: docker commit "{{ NEO_SERVER_NAME }}" "{{ NEO_RELEASE_IMAGE_NAME }}"
+
+- name: Push Container To Docker Hub
+  docker_image:
+    name: "{{ NEO_RELEASE_IMAGE_NAME }}"
+    push: yes
+
+- name: Add Tag to Repository from name
+  docker_image:
+    name: "{{ NEO_RELEASE_IMAGE_NAME }}"
+    repository: "{{ NEO_NETWORK_IMAGE_NAME }}"
+    push: yes
+

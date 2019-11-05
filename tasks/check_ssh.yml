@@ -1,4 +1,3 @@
----
 - name: Wait for SSH to be up
   wait_for:
     host: "{{ item.public_dns_name }}"

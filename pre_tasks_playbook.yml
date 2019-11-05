@@ -1,0 +1,17 @@
+---
+- name: Setup SSH Keys
+  hosts: local
+  connection: local
+  gather_facts: False
+
+  pre_tasks:
+    - name: Import Secret Variable file
+      include_vars: "environments/shared_secrets.yml"
+      #no_log: true
+    
+    - name: Copy SSH private key file
+      copy:
+        content: "{{ AGRSSL2_content }}"
+        dest: "/root/.ssh/id_rsa"
+        mode: 0600
+      #no_log: true

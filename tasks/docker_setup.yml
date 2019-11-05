@@ -1,0 +1,16 @@
+- name: Make Docker config directory
+  file:
+    path: /home/core/.docker
+    state: directory
+    mode: 0755
+
+- name: Copy DockerHub config file
+  copy:
+    content: "{{ DockerHubCredsFile }}"
+    dest: "/home/core/.docker/config.json"
+    mode: 0600
+
+- name: Create a docker network
+  docker_network:
+    name: "{{ NET }}"
+
