@@ -1,6 +1,6 @@
-- name: Pull Java Run Image
+- name: Pull Indexer Run Image
   docker_image:
-    name: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
+    name: "{{ INDEXER_RUN_IMAGE_NAME }}"
 
 - name: Run Indexer
   docker_container:

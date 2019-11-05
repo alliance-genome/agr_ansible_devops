@@ -6,29 +6,56 @@ ansible_python_interpreter: /home/core/pypy/bin/pypy
 ALLIANCE_RELEASE: "{{ lookup('env','ALLIANCE_RELEASE') }}"
 REGISTRY: agrdocker
 
+# Env Images
 NEO_ENV_NAME: agr_neo4j_env
-NEO_VOLUME_NAME: agr_shared
+ES_ENV_NAME: agr_elasticsearch_env
+INFINISPAN_ENV_NAME: agr_infinispan_env
+
+# Data Images
 NEO_DATA_IMAGE_NAME: agr_neo4j_data_image
-NEO_PAGE_CACHE: "12g"
-NEO_MAX_HEAP: "24g"
-NEO_SERVER_NAME: "agr.{{ env }}.neo4j.server"
+INFINISPAN_DATA_IMAGE_NAME: agr_infinispan_data_image
 
-NEO_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ NEO_ENV_NAME }}"
-NEO_RELEASE_IMAGE_NAME: "{{ REGISTRY }}/{{ NEO_DATA_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
-NEO_NETWORK_IMAGE_NAME: "{{ REGISTRY }}/{{ NEO_DATA_IMAGE_NAME }}:{{ NET }}"
-
+# Runable images
 LOADER_IMAGE_NAME: agr_loader_run
+QC_IMAGE_NAME: agr_qc_run
+JAVA_SOFTWARE_IMAGE_NAME: agr_java_software
+FILEGENER_IMAGE_NAME: agr_file_generator_run
+
+# Server Names
+NEO_SERVER_NAME: "agr.{{ env }}.neo4j.server"
+ES_SERVER_NAME: "agr.{{ env }}.elasticsearch.server"
+INFINISPAN_SERVER_NAME: "agr.{{ env }}.infinispan.server"
+
+# Running Names
 LOADER_RUN_NAME: "agr.{{ env }}.loader"
 LOADER_TEST_NAME: "agr.{{ env }}.loader.test"
-LOADER_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ LOADER_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
-
-ES_ENV_NAME: agr_elasticsearch_env
-ES_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ ES_ENV_NAME }}"
-ES_SERVER_NAME: "agr.{{ env }}.elasticsearch.server"
-
-JAVA_SOFTWARE_IMAGE_NAME: agr_java_software
-JAVA_SOFTWARE_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ JAVA_SOFTWARE_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
-
 INDEXER_RUN_NAME: "agr.{{ env }}.indexer"
+CACHER_RUN_NAME: "agr.{{ env }}.cacher"
+FILE_GENER_RUN_NAME: "agr.{{ env }}.filegenerator"
+
+# Server Env DockerHub Paths
+NEO_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ NEO_ENV_NAME }}"
+ES_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ ES_ENV_NAME }}"
+INFINISPAN_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ INFINISPAN_ENV_NAME }}"
+
+# Release Image names
+NEO_RELEASE_IMAGE_NAME: "{{ REGISTRY }}/{{ NEO_DATA_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
+JAVA_SOFTWARE_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ JAVA_SOFTWARE_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
+CACHER_RELEASE_IMAGE_NAME: "{{ REGISTRY }}/{{ INFINISPAN_DATA_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}_test"
+LOADER_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ LOADER_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
+FILE_GENER_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ FILEGENER_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
+
+# Convinience names
 INDEXER_RUN_IMAGE_NAME: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
+CACHER_RUN_IMAGE_NAME: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
+
+# Network names for pulling by simple name
+NEO_NETWORK_IMAGE_NAME: "{{ REGISTRY }}/{{ NEO_DATA_IMAGE_NAME }}:{{ NET }}"
+CACHER_NETWORK_IMAGE_NAME: "{{ REGISTRY }}/{{ INFINISPAN_DATA_IMAGE_NAME }}:{{ NET }}_test"
+
+# Config Options
+NEO_VOLUME_NAME: agr_shared
+INFINISPAN_MEMORY: "10g"
+NEO_PAGE_CACHE: "12g"
+NEO_MAX_HEAP: "24g"
 

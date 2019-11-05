@@ -1,0 +1,19 @@
+- name: Pull Cacher Run Image
+  docker_image:
+    name: "{{ CACHER_RUN_IMAGE_NAME }}"
+
+- name: Run Cacher
+  docker_container:
+    name: "{{ CACHER_RUN_NAME }}"
+    image: "{{ CACHER_RUN_IMAGE_NAME }}"
+    detach: no
+    log_driver: "gelf"
+    log_options:
+      gelf-address: udp://logs.alliancegenome.org:12201
+    networks:
+      - name: "{{ NET }}"
+    env:
+      CACHE_HOST: "{{ INFINISPAN_SERVER_NAME }}"
+      NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
+    command: java -Xms32g -Xmx32g -jar agr_cacher/target/agr_cacher-jar-with-dependencies.jar
+

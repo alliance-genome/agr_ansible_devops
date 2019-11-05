@@ -17,13 +17,12 @@
     - "environments/shared_variables.yml"
 
   tasks: 
-    - name: Setup Docker, Start ES, Start Neo, Run Indexer
+    - name: Setup Docker, Start Neo, Run File Generator
       block:
         - include_tasks: tasks/install_docker_py.yml
         - include_tasks: tasks/docker_setup.yml
-        - include_tasks: tasks/start_es_env.yml
         - include_tasks: tasks/start_neo_data.yml
-        - include_tasks: tasks/indexer_run.yml
+        - include_tasks: tasks/file_gener_run.yml
 
       rescue:
         - debug:

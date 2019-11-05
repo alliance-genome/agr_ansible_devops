@@ -1,0 +1,20 @@
+
+- name: Stop Cacher
+  docker_container:
+    name: "{{ INFINISPAN_SERVER_NAME }}"
+    state: stopped
+
+- name: Commit container
+  command: docker commit "{{ INFINISPAN_SERVER_NAME }}" "{{ CACHER_RELEASE_IMAGE_NAME }}"
+
+- name: Push Container To Docker Hub
+  docker_image:
+    name: "{{ CACHER_RELEASE_IMAGE_NAME }}"
+    push: yes
+
+- name: Add Tag to Repository from name
+  docker_image:
+    name: "{{ CACHER_RELEASE_IMAGE_NAME }}"
+    repository: "{{ CACHER_NETWORK_IMAGE_NAME }}"
+    push: yes
+

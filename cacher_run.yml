@@ -17,13 +17,14 @@
     - "environments/shared_variables.yml"
 
   tasks: 
-    - name: Setup Docker, Start ES, Start Neo, Run Indexer
+    - name: Setup Docker, Start Neo, Start Infinispan, Run Cacher, Push Images
       block:
         - include_tasks: tasks/install_docker_py.yml
         - include_tasks: tasks/docker_setup.yml
-        - include_tasks: tasks/start_es_env.yml
         - include_tasks: tasks/start_neo_data.yml
-        - include_tasks: tasks/indexer_run.yml
+        - include_tasks: tasks/start_infinispan_env.yml
+        - include_tasks: tasks/cacher_run.yml
+        - include_tasks: tasks/push_cacher_image.yml
 
       rescue:
         - debug:

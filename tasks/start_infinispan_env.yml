@@ -1,0 +1,15 @@
+- name: Pull Infinispan Env Image
+  docker_image:
+    name: "{{ INFINISPAN_ENV_IMAGE_NAME }}"
+
+- name: Run Infinispan
+  docker_container:
+    name: "{{ INFINISPAN_SERVER_NAME }}"
+    image: "{{ INFINISPAN_ENV_IMAGE_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: udp://logs.alliancegenome.org:12201
+    networks:
+      - name: "{{ NET }}"
+    env:
+      MEM_OPTS: "-Xms{{ INFINISPAN_MEMORY }} -Xmx{{ INFINISPAN_MEMORY }}"
