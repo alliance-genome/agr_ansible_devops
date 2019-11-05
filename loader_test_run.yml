@@ -25,7 +25,7 @@
         - include_tasks: tasks/loader_test_run.yml
 
       rescue:
-        - debug:
+        - fail:
            msg: 'Tasked Failed Terminating instances'
 
 - import_playbook: terminate_instance_playbook.yml
