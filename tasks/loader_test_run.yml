@@ -1,11 +1,11 @@
 - name: Pull Loader Run Image
   docker_image:
-    name: "{{ LOADER_RUN_IMAGE_NAME }}"
+    name: "{{ LOADER_TEST_RUN_IMAGE_NAME }}"
 
 - name: Run Loader
   docker_container:
-    name: "{{ LOADER_RUN_NAME }}"
-    image: "{{ LOADER_RUN_IMAGE_NAME }}"
+    name: "{{ LOADER_TEST_NAME }}"
+    image: "{{ LOADER_TEST_RUN_IMAGE_NAME }}"
     detach: no
     log_driver: "gelf"
     log_options:
@@ -28,8 +28,8 @@
 
 - name: Run Loader Tests against Neo
   docker_container:
-    name: "{{ LOADER_RUN_NAME }}"
-    image: "{{ LOADER_RUN_IMAGE_NAME }}"
+    name: "{{ LOADER_TEST_NAME }}"
+    image: "{{ LOADER_TEST_RUN_IMAGE_NAME }}"
     command: pytest --verbose
     detach: no
     log_driver: "gelf"

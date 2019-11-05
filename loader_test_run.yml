@@ -17,13 +17,13 @@
     - "environments/shared_variables.yml"
 
   tasks: 
-    - name: Setup Neo, Run Loader, Push Images
+    - name: Setup Neo, Run Loader, Run Loader Tests
       block:
         - include_tasks: tasks/install_docker_py.yml
         - include_tasks: tasks/docker_setup.yml
         - include_tasks: tasks/start_neo_env.yml
-        - include_tasks: tasks/loader_run.yml
-        - include_tasks: tasks/push_neo_image.yml
+        - include_tasks: tasks/loader_test_run.yml
+
       rescue:
         - debug:
            msg: 'Tasked Failed Terminating instances'
