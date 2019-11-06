@@ -1,0 +1,21 @@
+- name: Pull Java Testing Run Image
+  docker_image:
+    name: "{{ INDEXER_TEST_IMAGE_NAME }}"
+
+- name: Run API Tests
+  docker_container:
+    name: "{{ API_TEST_NAME }}"
+    image: "{{ INDEXER_TEST_IMAGE_NAME }}"
+    detach: no
+    log_driver: "gelf"
+    log_options:
+      gelf-address: udp://logs.alliancegenome.org:12201
+    networks:
+      - name: "{{ NET }}"
+    command: mvn -B verify -pl agr_indexer -am
+    env:
+      API_HOST: "{{ API_TESTING_SERVER_NAME }}"
+      NEO4J_HOST: "{{ NEO_TESTING_SERVER_NAME }}"
+      CACHE_HOST: "{{ CACHE_TESTING_SERVER_NAME }}"
+      ES_HOST: "{{ ES_TESTING_SERVER_NAME }}"
+      API_SECURE: "true"
