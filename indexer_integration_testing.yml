@@ -21,7 +21,6 @@
       block:
         - include_tasks: tasks/install_docker_py.yml
         - include_tasks: tasks/docker_setup.yml
-        - include_tasks: tasks/api_integration_testing.yml
         - include_tasks: tasks/indexer_integration_testing.yml
       rescue:
         - debug:

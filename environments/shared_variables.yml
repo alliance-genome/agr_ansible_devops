@@ -29,10 +29,10 @@ NEO_SERVER_NAME: "agr.{{ env }}.neo4j.server"
 INFINISPAN_SERVER_NAME: "agr.{{ env }}.infinispan.server"
 
 # Testing Vars
-API_TESTING_SERVER_NAME: "build.alliancegenome.org"
-NEO_TESTING_SERVER_NAME: "build.alliancegenome.org"
-ES_TESTING_SERVER_NAME: "build.alliancegenome.org"
-CACHE_TESTING_SERVER_NAME: "build.alliancegenome.org"
+API_TESTING_SERVER_NAME: "build.alliancegenome.internal"
+NEO_TESTING_SERVER_NAME: "build.alliancegenome.internal"
+ES_TESTING_SERVER_NAME: "build.alliancegenome.internal"
+CACHE_TESTING_SERVER_NAME: "build.alliancegenome.internal"
 
 # Running Names
 QC_RUN_NAME: "agr.{{ env }}.qc"
@@ -51,12 +51,12 @@ INFINISPAN_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ INFINISPAN_ENV_NAME }}"
 # Release Image names
 QC_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ QC_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
 LOADER_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ LOADER_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
-LOADER_TEST_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ LOADER_IMAGE_NAME }}:master_pr"
 NEO_RELEASE_IMAGE_NAME: "{{ REGISTRY }}/{{ NEO_DATA_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
 CACHER_RELEASE_IMAGE_NAME: "{{ REGISTRY }}/{{ INFINISPAN_DATA_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
 FILE_GENER_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ FILEGENER_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
 JAVA_SOFTWARE_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ JAVA_SOFTWARE_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
 
+LOADER_TEST_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ LOADER_IMAGE_NAME }}:{{ env }}_loader"
 API_TEST_IMAGE_NAME: "{{ REGISTRY }}/{{ JAVA_SOFTWARE_IMAGE_NAME }}:{{ env }}_api"
 INDEXER_TEST_IMAGE_NAME: "{{ REGISTRY }}/{{ JAVA_SOFTWARE_IMAGE_NAME }}:{{ env }}_indexer"
 
