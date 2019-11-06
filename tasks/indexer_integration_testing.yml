@@ -2,9 +2,9 @@
   docker_image:
     name: "{{ INDEXER_TEST_IMAGE_NAME }}"
 
-- name: Run API Tests
+- name: Run Indexer Tests
   docker_container:
-    name: "{{ API_TEST_NAME }}"
+    name: "{{ INDEXER_TEST_NAME }}"
     image: "{{ INDEXER_TEST_IMAGE_NAME }}"
     detach: no
     log_driver: "gelf"

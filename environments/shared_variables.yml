@@ -41,6 +41,7 @@ LOADER_RUN_NAME: "agr.{{ env }}.loader"
 CACHER_RUN_NAME: "agr.{{ env }}.cacher"
 INDEXER_RUN_NAME: "agr.{{ env }}.indexer"
 LOADER_TEST_NAME: "agr.{{ env }}.loader.test"
+INDEXER_TEST_NAME: "agr.{{ env }}.indexer.test"
 FILE_GENER_RUN_NAME: "agr.{{ env }}.filegenerator"
 
 # Server Env DockerHub Paths
