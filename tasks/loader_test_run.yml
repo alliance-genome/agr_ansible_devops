@@ -2,7 +2,7 @@
   docker_image:
     name: "{{ LOADER_TEST_RUN_IMAGE_NAME }}"
 
-- name: Run Loader
+- name: Run Loader in Test Mode
   docker_container:
     name: "{{ LOADER_TEST_NAME }}"
     image: "{{ LOADER_TEST_RUN_IMAGE_NAME }}"
