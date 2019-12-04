@@ -2,6 +2,7 @@
 - name: Terminations
   hosts: local
   connection: local
+  gather_facts: False
 
   vars_files:
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first
