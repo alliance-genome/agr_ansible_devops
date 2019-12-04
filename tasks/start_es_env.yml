@@ -2,6 +2,10 @@
   docker_image:
     name: "{{ ES_ENV_IMAGE_NAME }}"
 
+- name: Pull Cerebro Image
+  docker_image:
+    name: "yannart/cerebro:latest"
+
 - name: Run ES
   docker_container:
     name: "{{ ES_SERVER_NAME }}"
@@ -11,7 +15,19 @@
       gelf-address: udp://logs.alliancegenome.internal:12201
     networks:
       - name: "{{ NET }}"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
     env:
       http.host: "0.0.0.0"
       transport.host: "0.0.0.0"
       xpack.security.enabled: "false"
+
+- name: Run Cerebro
+  docker_container:
+    name: "cerebro"
+    image: "yannart/cerebro:latest"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "9000:9000"
