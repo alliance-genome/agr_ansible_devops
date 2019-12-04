@@ -1,0 +1,20 @@
+---
+
+- name: Pull Java Testing Run Image
+  docker_image:
+    name: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
+
+- name: Run API
+  docker_container:
+    name: "{{ API_SERVER_NAME }}"
+    image: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: udp://logs.alliancegenome.internal:12201
+    networks:
+      - name: "{{ NET }}"
+    command: java -jar agr_api/target/agr_api-swarm.jar
+    env:
+      NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
+      CACHE_HOST: "{{ INFINISPAN_SERVER_NAME }}"
+      ES_HOST: "{{ ES_SERVER_NAME }}"

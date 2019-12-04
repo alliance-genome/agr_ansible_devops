@@ -1,0 +1,17 @@
+---
+
+- name: Pull UI Server Image
+  docker_image:
+    name: "{{ UI_SERVER_IMAGE_NAME }}"
+
+- name: Run UI
+  docker_container:
+    name: "{{ UI_SERVER_NAME }}"
+    image: "{{ UI_SERVER_IMAGE_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: udp://logs.alliancegenome.internal:12201
+    networks:
+      - name: "{{ NET }}"
+    env:
+      API_URL: "http://{{ API_SERVER_NAME }}:8080"
