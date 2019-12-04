@@ -22,8 +22,12 @@ LOADER_TEST_IMAGE_NAME: agr_loader_test_run
 JAVA_SOFTWARE_IMAGE_NAME: agr_java_software
 FILEGENER_IMAGE_NAME: agr_file_generator_run
 
+# Server Images
+UI_IMAGE_NAME: agr_ui_server
+
 # Server Names
 ES_SERVER_NAME: "agr.{{ env }}.elasticsearch.server"
+UI_SERVER_NAME: "agr.{{ env }}.ui.server"
 API_SERVER_NAME: "agr.{{ env }}.api.server"
 NEO_SERVER_NAME: "agr.{{ env }}.neo4j.server"
 INFINISPAN_SERVER_NAME: "agr.{{ env }}.infinispan.server"
@@ -60,6 +64,9 @@ JAVA_SOFTWARE_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ JAVA_SOFTWARE_IMAGE_NAME }}:{{ 
 LOADER_TEST_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ LOADER_IMAGE_NAME }}:{{ env }}_loader"
 API_TEST_IMAGE_NAME: "{{ REGISTRY }}/{{ JAVA_SOFTWARE_IMAGE_NAME }}:{{ env }}_api"
 INDEXER_TEST_IMAGE_NAME: "{{ REGISTRY }}/{{ JAVA_SOFTWARE_IMAGE_NAME }}:{{ env }}_indexer"
+
+#Server Images
+UI_SERVER_IMAGE_NAME: "{{ REGISTRY }}/{{ UI_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
 
 # Convinience names
 CACHER_RUN_IMAGE_NAME: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
