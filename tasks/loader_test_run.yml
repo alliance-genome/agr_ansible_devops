@@ -7,8 +7,6 @@
     name: "{{ LOADER_TEST_NAME }}"
     image: "{{ LOADER_TEST_RUN_IMAGE_NAME }}"
     detach: no
-    async: 7200
-    poll: 15
     log_driver: "gelf"
     log_options:
       gelf-address: udp://logs.alliancegenome.internal:12201
@@ -34,8 +32,6 @@
     image: "{{ LOADER_TEST_RUN_IMAGE_NAME }}"
     command: pytest --verbose
     detach: no
-    async: 7200
-    poll: 15
     log_driver: "gelf"
     log_options:
       gelf-address: udp://logs.alliancegenome.internal:12201
