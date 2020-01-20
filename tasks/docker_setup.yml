@@ -23,3 +23,10 @@
     reload: yes
   become: true
   become_user: root
+
+- name: Stop locksmithd so system does not reboot
+  service:
+    name: locksmithd
+    state: stopped
+  become: true
+  become_user: root

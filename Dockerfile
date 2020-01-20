@@ -10,6 +10,7 @@ RUN pip install boto
 RUN ansible-galaxy install akirak.coreos-python
 
 RUN echo "    StrictHostKeyChecking no" >> /etc/ssh/ssh_config
+RUN echo "    ServerAliveInterval 120" >> /etc/ssh/ssh_config
 RUN mkdir /root/.ssh
 RUN mkdir /root/.docker
 
