@@ -11,6 +11,9 @@
   roles:
     - akirak.coreos-python
 
+  vars:
+    failed_flag: "passed"
+
   vars_files:
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first
     - "environments/shared_secrets.yml"
@@ -23,7 +26,14 @@
         - include_tasks: tasks/docker_setup.yml
         - include_tasks: tasks/api_integration_testing.yml
       rescue:
-        - debug:
-           msg: 'Tasked Failed Terminating instances'
+        - set_fact:
+           failed_flag: "failed"
 
 - import_playbook: terminate_instance_playbook.yml
+
+- name: Check Failures
+  hosts: launched
+  gather_facts: False
+  tasks:  
+    - fail: msg="The execution has failed because of errors."
+      when: failed_flag == "failed"
