@@ -1,7 +1,7 @@
 ---
 
-- import_playbook: pre_tasks_playbook.yml
-- import_playbook: launch_instance_playbook.yml
+- import_playbook: playbook_pre_tasks.yml
+- import_playbook: playbook_launch_instance.yml
 
 - name: Configure Servers
   hosts: launched
@@ -20,12 +20,12 @@
     - name: Setup Docker, Start Neo, Run File Generator
       block:
         - include_tasks: tasks/install_docker_py.yml
-        - include_tasks: tasks/docker_setup.yml
+        - include_tasks: tasks/setup_docker.yml
         - include_tasks: tasks/start_neo_data.yml
-        - include_tasks: tasks/file_gener_run.yml
+        - include_tasks: tasks/run_file_gener.yml
 
       rescue:
         - debug:
            msg: 'Tasked Failed Terminating instances'
 
-- import_playbook: terminate_instance_playbook.yml
+- import_playbook: playbook_terminate_instance.yml

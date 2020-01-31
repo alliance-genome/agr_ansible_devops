@@ -1,0 +1,7 @@
+- name: Terminate instances
+  ec2:
+    state: 'absent'
+    region: us-east-1
+    aws_access_key: "{{ AWS_ACCESS_KEY }}"
+    aws_secret_key: "{{ AWS_SECRET_KEY }}"
+    instance_ids: '{{ ec2.instance_ids }}'

@@ -1,7 +1,7 @@
 ---
 
-- import_playbook: pre_tasks_playbook.yml
-- import_playbook: launch_instance_playbook.yml
+- import_playbook: playbook_pre_tasks.yml
+- import_playbook: playbook_launch_instance.yml
 
 - name: Configure Servers
   hosts: launched
@@ -10,9 +10,6 @@
 
   roles:
     - akirak.coreos-python
-
-  vars:
-    failed_flag: "passed"
 
   vars_files:
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first
@@ -23,13 +20,15 @@
     - name: Setup Docker, Run Integration Tests
       block:
         - include_tasks: tasks/install_docker_py.yml
-        - include_tasks: tasks/docker_setup.yml
-        - include_tasks: tasks/api_integration_testing.yml
+        - include_tasks: tasks/setup_docker.yml
+        - include_tasks: tasks/run_api_integration_testing.yml
+        - set_fact:
+           failed_flag: "passed"
       rescue:
         - set_fact:
            failed_flag: "failed"
 
-- import_playbook: terminate_instance_playbook.yml
+- import_playbook: playbook_terminate_instance.yml
 
 - name: Check Failures
   hosts: launched

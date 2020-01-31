@@ -1,7 +1,7 @@
 ---
 
-- import_playbook: pre_tasks_playbook.yml
-- import_playbook: launch_instance_playbook.yml
+- import_playbook: playbook_pre_tasks.yml
+- import_playbook: playbook_launch_instance.yml
 
 - name: Configure Servers
   hosts: launched
@@ -17,17 +17,15 @@
     - "environments/shared_variables.yml"
 
   tasks: 
-    - name: Setup Docker, Start Neo, Start Infinispan, Run Cacher, Push Images
+    - name: Setup Docker, Start Neo, Run File Generator
       block:
         - include_tasks: tasks/install_docker_py.yml
-        - include_tasks: tasks/docker_setup.yml
+        - include_tasks: tasks/setup_docker.yml
         - include_tasks: tasks/start_neo_data.yml
-        - include_tasks: tasks/start_infinispan_env.yml
-        - include_tasks: tasks/cacher_run.yml
-        - include_tasks: tasks/push_cacher_image.yml
+        - include_tasks: tasks/run_qc.yml
 
       rescue:
         - debug:
            msg: 'Tasked Failed Terminating instances'
 
-- import_playbook: terminate_instance_playbook.yml
+- import_playbook: playbook_terminate_instance.yml

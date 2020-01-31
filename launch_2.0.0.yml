@@ -97,7 +97,7 @@
     - name: Setup Neo, Run Loader, Run Loader Tests
       block:
         - include_tasks: tasks/install_docker_py.yml
-        - include_tasks: tasks/docker_setup.yml
+        - include_tasks: tasks/setup_docker.yml
         - include_tasks: tasks/start_neo_data.yml
         - include_tasks: tasks/start_es_env.yml
         - include_tasks: tasks/start_api_swarm.yml
