@@ -23,9 +23,18 @@
         - include_tasks: tasks/setup_docker.yml
         - include_tasks: tasks/start_neo_env.yml
         - include_tasks: tasks/run_loader_tests.yml
-
+        - set_fact:
+           failed_flag: "passed"
       rescue:
-        - debug:
-           msg: 'Tasked Failed Terminating instances'
+        - set_fact:
+           failed_flag: "failed"
 
 - import_playbook: playbook_terminate_instance.yml
+
+- name: Check Failures
+  hosts: launched
+  gather_facts: False
+  tasks:  
+    - fail: msg="The execution has failed because of errors."
+      when: failed_flag == "failed"
+

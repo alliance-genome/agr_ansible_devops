@@ -38,3 +38,4 @@
   tasks:  
     - fail: msg="The execution has failed because of errors."
       when: failed_flag == "failed"
+
