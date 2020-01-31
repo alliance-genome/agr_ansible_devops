@@ -1,5 +1,6 @@
 ---
 
+PLAYBOOK_NAME: "{{ lookup('env','PLAYBOOK_NAME') or 'No Name Specified' }}"
 NET: "testing"
 DOWNLOAD_HOST: "download.alliancegenome.org"
 FMS_API_URL: "https://fms.alliancegenome.org"

@@ -30,7 +30,7 @@
         wait: yes
         user_data: "" # Otherwise get weird error on start up
         instance_tags:
-          Name: "Ansible Generated - Docker"
+          Name: "Ansible Generated - {{ PLAYBOOK_NAME }}"
       register: ec2
 
     - name: Add all instance public IPs to host group
