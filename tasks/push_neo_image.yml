@@ -11,10 +11,11 @@
   docker_image:
     name: "{{ NEO_RELEASE_IMAGE_NAME }}"
     push: yes
+    timeout: 300
 
 - name: Add Tag to Repository from name
   docker_image:
     name: "{{ NEO_RELEASE_IMAGE_NAME }}"
     repository: "{{ NEO_NETWORK_IMAGE_NAME }}"
     push: yes
-
+    timeout: 300
