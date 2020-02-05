@@ -11,10 +11,12 @@
   docker_image:
     name: "{{ CACHER_RELEASE_IMAGE_NAME }}"
     push: yes
+    timeout: 300
 
 - name: Add Tag to Repository from name
   docker_image:
     name: "{{ CACHER_RELEASE_IMAGE_NAME }}"
     repository: "{{ CACHER_NETWORK_IMAGE_NAME }}"
     push: yes
+    timeout: 300
 
