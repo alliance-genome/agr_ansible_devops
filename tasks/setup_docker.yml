@@ -16,6 +16,11 @@
     state: directory
     mode: 0755
 
+- name: Chmod Docker Sock File
+  file:
+    path: /var/run/docker.sock
+    mode: o+rw
+
 - name: Copy ssl CRT File 
   copy:
     content: "{{ AGR_WEB_CRT_FILE }}"
@@ -30,7 +35,7 @@
 
 - name: Copy CA file
   copy:
-    content: ca-certs.pem
+    src: ca-certs.pem
     dest: "/home/core/ssl/ca-certs.pem"
     mode: 0644
 
