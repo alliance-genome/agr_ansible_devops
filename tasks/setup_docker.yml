@@ -1,4 +1,4 @@
-- name: Make Docker config directory
+- name: Make DockerHub config directory
   file:
     path: /home/core/.docker
     state: directory
@@ -10,15 +10,25 @@
     dest: "/home/core/.docker/config.json"
     mode: 0600
 
-- name: Copy SSL Files
+- name: Make ssl directory
+  file:
+    path: /home/core/ssl
+    state: directory
+    mode: 0755
+
+- name: Copy ssl CRT File 
   copy:
     content: "{{ AGR_WEB_CRT_FILE }}"
     dest: "/home/core/ssl/agr.crt"
     mode: 0600
+
+- name: Copy ssl KEY File 
   copy:
     content: "{{ AGR_WEB_KEY_FILE }}"
     dest: "/home/core/ssl/agr.key"
     mode: 0600
+
+- name: Copy CA file
   copy:
     content: ca-certs.pem
     dest: "/home/core/ssl/ca-certs.pem"
@@ -28,7 +38,7 @@
   docker_network:
     name: "{{ NET }}"
 
-- name: Update number of open files for ES to run
+- name: Set Max open files 
   sysctl:
     name: vm.max_map_count
     value: '262144'
@@ -38,7 +48,7 @@
   become: true
   become_user: root
 
-- name: Stop locksmithd so system does not reboot
+- name: Turn off locksmithd
   service:
     name: locksmithd
     state: stopped

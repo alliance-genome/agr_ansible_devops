@@ -14,7 +14,7 @@
         key_name: AGR-ssl2
         keypair: AGR-ssl2
         group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
-        instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
+        instance_type: "{{ WEBSERVER_INSTANCE_TYPE }}"
         image: ami-047242a24cd6b4bc9
         region: us-east-1
         vpc_subnet_id: subnet-3ebf4477
@@ -23,9 +23,8 @@
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         volumes:
           - device_name: /dev/xvda
-            volume_type: io1
-            volume_size: 1000
-            iops: 3000
+            volume_type: standard
+            volume_size: 200
             delete_on_termination: yes
         wait: yes
         user_data: "" # Otherwise get weird error on start up
