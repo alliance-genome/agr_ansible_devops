@@ -12,6 +12,10 @@
     name: "{{ NEO_RELEASE_IMAGE_NAME }}"
     push: yes
     timeout: 300
+  register: push_result
+    until: push_result is success
+    retries: 10
+    delay: 2
 
 - name: Add Tag to Repository from name
   docker_image:
@@ -19,3 +23,9 @@
     repository: "{{ NEO_NETWORK_IMAGE_NAME }}"
     push: yes
     timeout: 300
+  register: push_result
+    until: push_result is success
+    retries: 10
+    delay: 2
+
+
