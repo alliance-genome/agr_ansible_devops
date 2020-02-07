@@ -1,7 +1,7 @@
 ---
 
 - import_playbook: playbook_pre_tasks.yml
-- import_playbook: playbook_launch_instance.yml
+- import_playbook: playbook_launch_web_instance.yml
 
 - name: Configure Servers
   hosts: launched
