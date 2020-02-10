@@ -20,6 +20,8 @@
   file:
     path: /var/run/docker.sock
     mode: o+rw
+  become: true
+  become_user: root
 
 - name: Copy ssl CRT File 
   copy:
