@@ -7,25 +7,11 @@
 - name: Commit container
   command: docker commit "{{ NEO_SERVER_NAME }}" "{{ NEO_RELEASE_IMAGE_NAME }}"
 
-- name: Push Container To Docker Hub
-  docker_image:
-    name: "{{ NEO_RELEASE_IMAGE_NAME }}"
-    push: yes
-    timeout: 300
-  register: push_result
-    until: push_result is success
-    retries: 10
-    delay: 2
+- name: Push Container
+  command: docker push "{{ NEO_RELEASE_IMAGE_NAME }}"
 
-- name: Add Tag to Repository from name
-  docker_image:
-    name: "{{ NEO_RELEASE_IMAGE_NAME }}"
-    repository: "{{ NEO_NETWORK_IMAGE_NAME }}"
-    push: yes
-    timeout: 300
-  register: push_result
-    until: push_result is success
-    retries: 10
-    delay: 2
+- name: Tag NET Container
+  command: docker tag "{{ NEO_RELEASE_IMAGE_NAME }}" "{{ NEO_NETWORK_IMAGE_NAME }}"
 
-
+- name: Push NET Container
+  command: docker push "{{ NEO_NETWORK_IMAGE_NAME }}"
