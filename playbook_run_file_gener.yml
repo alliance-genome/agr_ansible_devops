@@ -26,6 +26,8 @@
         - set_fact:
            failed_flag: "passed"
       rescue:
+        - debug:
+          mgs: "Error Detected Failing Build"
         - set_fact:
            failed_flag: "failed"
 
