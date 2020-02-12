@@ -106,7 +106,7 @@
 
       rescue:
         - fail:
-           msg: 'Tasked Failed Terminating instances'
+            msg: 'Tasked Failed Terminating instances'
 
 #- name: Terminations
 #  hosts: local

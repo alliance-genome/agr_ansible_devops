@@ -25,12 +25,12 @@
         - include_tasks: tasks/start_neo_data.yml
         - include_tasks: tasks/run_indexer.yml
         - set_fact:
-           failed_flag: "passed"
+            failed_flag: "passed"
       rescue:
         - debug:
-          msg: "Error Detected Failing Build"
+            msg: "Error Detected Failing Build"
         - set_fact:
-           failed_flag: "failed"
+            failed_flag: "failed"
 
 - import_playbook: playbook_terminate_instance.yml
 
@@ -38,6 +38,7 @@
   hosts: launched
   gather_facts: False
   tasks:  
-    - fail: msg="The execution has failed because of errors."
+    - fail:
+        msg: "The execution has failed because of errors."
       when: failed_flag == "failed"
 
