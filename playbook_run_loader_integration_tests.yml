@@ -16,6 +16,9 @@
     - "environments/shared_secrets.yml"
     - "environments/shared_variables.yml"
 
+  vars:
+    API_ACCESS_TOKEN: "{{ LOADER_BUILD_API_ACCESS_TOKEN if env == 'build' else LOADER_STAGE_API_ACCESS_TOKEN }}"
+
   tasks: 
     - name: Setup Neo, Run Loader, Run Loader Tests
       block:
