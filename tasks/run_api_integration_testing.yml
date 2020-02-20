@@ -18,7 +18,7 @@
       ES_HOST: "{{ ES_TESTING_SERVER_NAME }}"
 
 - pause:
-    minutes: 2
+    seconds: 90
 
 - name: Run API Tests
   docker_container:

@@ -16,9 +16,6 @@
     - "environments/shared_secrets.yml"
     - "environments/shared_variables.yml"
 
-  vars:
-    COMPUTE_INSTANCE_TYPE: m5d.8xlarge
-
   tasks: 
     - name: Setup Docker, Start ES, Start Neo, Run Indexer
       block:
