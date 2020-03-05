@@ -1,6 +1,7 @@
 ---
 
 PLAYBOOK_NAME: "{{ lookup('env','PLAYBOOK_NAME') or 'No Name Specified' }}"
+THREADED: "{{ lookup('env','THREADED') or 'true' }}"
 NET: "build"
 DOWNLOAD_HOST: "download.alliancegenome.org"
 FMS_API_URL: "https://fms.alliancegenome.org"
