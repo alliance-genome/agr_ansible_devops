@@ -20,5 +20,5 @@
       DEFAULT_LOG_LEVEL: INFO
       ES_HOST: "{{ ES_SERVER_NAME }}"
       NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
-    command: java -Xms24g -Xmx24g -DTHREADED={{ THREADED }} -jar agr_indexer/target/agr_indexer-jar-with-dependencies.jar
+    command: java -Xms{{ INDEXER_MEMORY }} -Xmx{{ INDEXER_MEMORY }} -DTHREADED={{ THREADED }} -jar agr_indexer/target/agr_indexer-jar-with-dependencies.jar
 
