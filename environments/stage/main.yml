@@ -7,5 +7,5 @@ DOWNLOAD_HOST: "download.alliancegenome.org"
 FMS_API_URL: "https://fms.alliancegenome.org"
 GENERATE_REPORTS: "true"
 LOADER_TEST_SET: "False"
-COMPUTE_INSTANCE_TYPE: c5d.12xlarge
+COMPUTE_INSTANCE_TYPE: r5d.8xlarge
 WEBSERVER_INSTANCE_TYPE: r5a.2xlarge
