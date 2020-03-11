@@ -17,8 +17,10 @@
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
         image: ami-047242a24cd6b4bc9
         region: us-east-1
+        # zone: us-east-1a
+        # vpc_subnet_id: subnet-3ebf4477
         zone: us-east-1b
-        vpc_subnet_id: subnet-3ebf4477
+        vpc_subnet_id: subnet-df7c7487
         assign_public_ip: yes
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
