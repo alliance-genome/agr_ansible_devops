@@ -30,7 +30,7 @@
   docker_container:
     name: "{{ LOADER_RUN_NAME }}"
     image: "{{ LOADER_RUN_IMAGE_NAME }}"
-    command: pytest --verbose
+    command: pytest --verbose --workers 8
     detach: no
     log_driver: "gelf"
     log_options:
