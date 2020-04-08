@@ -5,8 +5,9 @@ THREADED: "{{ lookup('env','THREADED') or 'true' }}"
 NET: "testing"
 DOWNLOAD_HOST: "download.alliancegenome.org"
 FMS_API_URL: "https://fms.alliancegenome.org"
+FMSDEV_API_URL: "https://fmsdev.alliancegenome.org"
 GENERATE_REPORTS: "false"
 LOADER_TEST_SET: "True"
-COMPUTE_INSTANCE_TYPE: r5d.8xlarge
+COMPUTE_INSTANCE_TYPE: r5d.4xlarge
 WEBSERVER_INSTANCE_TYPE: r5a.2xlarge
 

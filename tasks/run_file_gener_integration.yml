@@ -1,0 +1,19 @@
+- name: Pull File Generator Run Image
+  docker_image:
+    name: "{{ FILE_GENER_TEST_RUN_IMAGE_NAME }}"
+
+- name: Run File Generator Tests
+  docker_container:
+    name: "{{ FILE_GENER_TEST_RUN_NAME }}"
+    image: "{{ FILE_GENER_TEST_RUN_IMAGE_NAME }}"
+    detach: no
+    log_driver: "gelf"
+    log_options:
+      gelf-address: udp://logs.alliancegenome.internal:12201
+    networks:
+      - name: "{{ NET }}"
+    env:
+      FMS_API_URL: "{{ FMSDEV_API_URL }}"
+      API_KEY: "{{ API_ACCESS_TOKEN }}"
+      RELEASE_VERSION: "{{ ALLIANCE_RELEASE }}"
+      NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
