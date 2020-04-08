@@ -51,6 +51,7 @@ INDEXER_RUN_NAME: "agr.{{ env }}.indexer"
 LOADER_TEST_NAME: "agr.{{ env }}.loader.test"
 INDEXER_TEST_NAME: "agr.{{ env }}.indexer.test"
 FILE_GENER_RUN_NAME: "agr.{{ env }}.filegenerator"
+FILE_GENER_TEST_RUN_NAME: "agr.{{ env }}.filegenerator.test"
 
 # Server Env DockerHub Paths
 ES_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ ES_ENV_NAME }}"
@@ -68,6 +69,7 @@ JAVA_SOFTWARE_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ JAVA_SOFTWARE_IMAGE_NAME }}:{{ 
 LOADER_TEST_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ LOADER_IMAGE_NAME }}:{{ env }}_loader"
 API_TEST_IMAGE_NAME: "{{ REGISTRY }}/{{ JAVA_SOFTWARE_IMAGE_NAME }}:{{ env }}_api"
 INDEXER_TEST_IMAGE_NAME: "{{ REGISTRY }}/{{ JAVA_SOFTWARE_IMAGE_NAME }}:{{ env }}_indexer"
+FILE_GENER_TEST_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ FILEGENER_IMAGE_NAME }}:{{ env }}_filegen"
 
 #Server Images
 UI_SERVER_IMAGE_NAME: "{{ REGISTRY }}/{{ UI_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
