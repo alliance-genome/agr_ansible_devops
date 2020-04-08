@@ -1,0 +1,18 @@
+- name: Pull Cacher (Infinispan) Data Image
+  docker_image:
+    name: "{{ CACHER_RELEASE_IMAGE_NAME }}"
+
+- name: Run Infinispan
+  docker_container:
+    name: "{{ INFINISPAN_SERVER_NAME }}"
+    image: "{{ CACHER_RELEASE_IMAGE_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: udp://logs.alliancegenome.internal:12201
+    networks:
+      - name: "{{ NET }}"
+    env:
+      MEM_OPTS: "-Xms{{ INFINISPAN_MEMORY }} -Xmx{{ INFINISPAN_MEMORY }}"
+
+- pause:
+    minutes: 2

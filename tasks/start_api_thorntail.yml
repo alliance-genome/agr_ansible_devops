@@ -13,7 +13,7 @@
       gelf-address: udp://logs.alliancegenome.internal:12201
     networks:
       - name: "{{ NET }}"
-    command: java -jar agr_api/target/agr_api-swarm.jar
+    command: java -jar agr_api/target/agr_api-thorntail.jar
     env:
       NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
       CACHE_HOST: "{{ INFINISPAN_SERVER_NAME }}"

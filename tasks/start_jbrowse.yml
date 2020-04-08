@@ -1,0 +1,15 @@
+---
+
+- name: Pull JBrowse Server Image
+  docker_image:
+    name: "{{ JBROWSE_SERVER_IMAGE_NAME }}"
+
+- name: Run JBrowse Server
+  docker_container:
+    name: "{{ JBROWSE_SERVER_NAME }}"
+    image: "{{ JBROWSE_SERVER_IMAGE_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: udp://logs.alliancegenome.internal:12201
+    networks:
+      - name: "{{ NET }}"
