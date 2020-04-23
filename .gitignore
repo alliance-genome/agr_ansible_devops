@@ -1,3 +1,4 @@
 secrets
 *.swp
 *.swo
+.password
