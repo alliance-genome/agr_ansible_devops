@@ -9,7 +9,6 @@ REGISTRY: agrdocker
 # Env Images
 NEO_ENV_NAME: agr_neo4j_env
 ES_ENV_NAME: agr_elasticsearch_env
-INFINISPAN_ENV_NAME: agr_infinispan_env
 
 # Data Images
 NEO_DATA_IMAGE_NAME: agr_neo4j_data_image
@@ -55,7 +54,7 @@ FILE_GENER_RUN_NAME: "agr.{{ env }}.filegenerator"
 # Server Env DockerHub Paths
 ES_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ ES_ENV_NAME }}"
 NEO_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ NEO_ENV_NAME }}"
-INFINISPAN_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ INFINISPAN_ENV_NAME }}"
+INFINISPAN_ENV_IMAGE_NAME: "jboss/infinispan-server:11.0"
 
 # Release Image names
 QC_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ QC_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
