@@ -12,4 +12,5 @@
     networks:
       - name: "{{ NET }}"
     env:
+      MEM_OPTS: "-Xms{{ INFINISPAN_MEMORY }} -Xmx{{ INFINISPAN_MEMORY }}"
       JAVA_OPTIONS: "-Xms{{ INFINISPAN_MEMORY }} -Xmx{{ INFINISPAN_MEMORY }}"
