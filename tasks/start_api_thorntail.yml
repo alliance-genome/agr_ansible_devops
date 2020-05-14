@@ -11,6 +11,8 @@
     log_driver: "gelf"
     log_options:
       gelf-address: udp://logs.alliancegenome.internal:12201
+    ports:
+      - "8080:8080"
     networks:
       - name: "{{ NET }}"
     command: java -jar agr_api/target/agr_api-thorntail.jar

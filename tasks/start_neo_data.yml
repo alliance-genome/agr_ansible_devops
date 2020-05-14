@@ -9,6 +9,9 @@
     log_driver: "gelf"
     log_options:
       gelf-address: udp://logs.alliancegenome.internal:12201
+    ports:
+      - "7474:7474"
+      - "7687:7687"
     networks:
       - name: "{{ NET }}"
     env:
