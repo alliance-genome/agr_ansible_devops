@@ -13,3 +13,5 @@
       gelf-address: udp://logs.alliancegenome.internal:12201
     networks:
       - name: "{{ NET }}"
+    env:
+      APOLLO_PATH: apollo

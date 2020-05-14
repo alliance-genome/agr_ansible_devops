@@ -22,7 +22,7 @@ LOADER_TEST_IMAGE_NAME: agr_loader_test_run
 JAVA_SOFTWARE_IMAGE_NAME: agr_java_software
 FILEGENER_IMAGE_NAME: agr_file_generator_run
 JBROWSE_IMAGE_NAME: agr_jbrowse_run
-APOLLO_IMAGE_NAME: agr_jbrowse_run
+APOLLO_IMAGE_NAME: agr_apollo_run
 
 # Server Images
 UI_IMAGE_NAME: agr_ui_server
