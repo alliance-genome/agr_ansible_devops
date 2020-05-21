@@ -1,0 +1,15 @@
+---
+
+- name: Pull InterMine Bluegenes
+  docker_image:
+    name: "intermine/bluegenes:latest"
+
+- name: Run InterMine Bluegenes
+  docker_container:
+    name: "agr.intermine.server"
+    image: "intermine/bluegenes:latest"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: udp://logs.alliancegenome.internal:12201
+    networks:
+      - name: "{{ NET }}"
