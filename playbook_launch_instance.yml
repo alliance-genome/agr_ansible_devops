@@ -22,6 +22,8 @@
         zone: us-east-1b
         vpc_subnet_id: subnet-df7c7487
         assign_public_ip: yes
+        roles:
+          - S3DataAccess
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         volumes:
