@@ -1,0 +1,20 @@
+- name: Pull Preprocess Run Image
+  docker_image:
+    name: "{{ PREPROCESS_RUN_IMAGE_NAME }}"
+
+- name: Run Preprocess
+  docker_container:
+    name: "{{ PREPROCESS_RUN_NAME }}"
+    image: "{{ PREPROCESS_RUN_IMAGE_NAME }}"
+    detach: no
+    log_driver: "gelf"
+    log_options:
+      gelf-address: udp://logs.alliancegenome.internal:12201
+    networks:
+      - name: "{{ NET }}"
+    env:
+      API_KEY: "{{ API_ACCESS_TOKEN }}"
+      DEBUG: "False"
+      DOWNLOAD_HOST: "{{ DOWNLOAD_HOST }}"
+      ALLIANCE_RELEASE: "{{ ALLIANCE_RELEASE }}"
+      FMS_API_URL: "{{ FMS_API_URL }}"
