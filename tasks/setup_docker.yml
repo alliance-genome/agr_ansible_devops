@@ -23,13 +23,13 @@
   become: true
   become_user: root
 
-- name: Copy ssl CRT File 
+- name: Copy ssl CRT File
   copy:
     content: "{{ AGR_WEB_CRT_FILE }}"
     dest: "/home/core/ssl/agr.crt"
     mode: 0644
 
-- name: Copy ssl KEY File 
+- name: Copy ssl KEY File
   copy:
     content: "{{ AGR_WEB_KEY_FILE }}"
     dest: "/home/core/ssl/agr.key"
@@ -45,7 +45,7 @@
   docker_network:
     name: "{{ NET }}"
 
-- name: Set Max open files 
+- name: Set Max open files
   sysctl:
     name: vm.max_map_count
     value: '262144'

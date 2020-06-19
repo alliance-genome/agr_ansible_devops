@@ -16,7 +16,7 @@
     - "environments/shared_secrets.yml"
     - "environments/shared_variables.yml"
 
-  tasks: 
+  tasks:
     - name: Setup Docker, Start ES, Start Neo, Run Indexer
       block:
         - include_tasks: tasks/install_docker_py.yml
@@ -38,7 +38,7 @@
 - name: Check Failures
   hosts: launched
   gather_facts: False
-  tasks:  
+  tasks:
     - fail:
         msg: "The execution has failed because of errors."
       when: failed_flag == "failed"
