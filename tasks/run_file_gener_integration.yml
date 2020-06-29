@@ -26,7 +26,7 @@
     detach: no
     log_driver: "gelf"
     log_options:
-      gelf-address: udp://logs.alliancegenome.internal:12201
+      gelf-address: "{{ LOGSTASH_SERVER_ADDRESS }}"
     networks:
       - name: "{{ NET }}"
     env:
