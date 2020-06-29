@@ -36,6 +36,7 @@ APOLLO_SERVER_NAME: "agr.{{ env }}.apollo.server"
 API_SERVER_NAME: "agr.{{ env }}.api.server"
 NEO_SERVER_NAME: "agr.{{ env }}.neo4j.server"
 INFINISPAN_SERVER_NAME: "agr.{{ env }}.infinispan.server"
+LOGSTASH_SERVER_NAME: "agr.{{ env }}.log.server"
 
 # Testing Vars
 API_TESTING_SERVER_NAME: "build.alliancegenome.internal"
