@@ -1,3 +1,6 @@
+- name: upgdate pip
+  command: /home/core/pypy/bin/pip install --upgrade pip
+
 - name: install docker-py for supporting Docker
   pip:
     name: docker-py

@@ -2,12 +2,12 @@
 
 - name: Pull Nginx Server Image
   docker_image:
-    name: "{{ REGISTRY }}/agr_nginx:{{ NET }}"
+    name: "{{ REGISTRY }}/agr_nginx:{{ NGINX_TAG }}"
 
 - name: Run Nginx
   docker_container:
     name: "agr.{{ NET }}.nginx.server"
-    image: "{{ REGISTRY }}/agr_nginx:{{ NET }}"
+    image: "{{ REGISTRY }}/agr_nginx:{{ NGINX_TAG }}"
     ports:
       - "80:80"
       - "443:443"
