@@ -4,11 +4,10 @@
   docker_image:
     name: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
 
-- name: Run API
+- name: Restore Latest ES Snapshot
   docker_container:
     name: "agr.{{ NET }}.restore_es.run"
     image: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
-    auto_remove: yes
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOGSTASH_SERVER_ADDRESS }}"
