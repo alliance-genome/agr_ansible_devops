@@ -8,7 +8,7 @@
     image: "{{ NEO_RELEASE_IMAGE_NAME }}"
     log_driver: "gelf"
     log_options:
-      gelf-address: udp://logs.alliancegenome.internal:12201
+      gelf-address: "{{ LOGSTASH_SERVER_ADDRESS }}"
     ports:
       - "7474:7474"
       - "7687:7687"
@@ -17,7 +17,7 @@
     env:
       NEO4J_dbms_memory_pagecache_size: "{{ NEO_PAGE_CACHE }}"
       NEO4J_dbms_memory_heap_maxSize: "{{ NEO_MAX_HEAP }}"
-      NEO4J_AUTH: "none" 
+      NEO4J_AUTH: "none"
 
 - pause:
     minutes: 2

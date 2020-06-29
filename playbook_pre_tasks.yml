@@ -7,7 +7,7 @@
   pre_tasks:
     - name: Import Secret Variable file
       include_vars: "environments/shared_secrets.yml"
-    
+
     - name: Copy SSH private key file
       copy:
         content: "{{ AGRSSL2_content }}"

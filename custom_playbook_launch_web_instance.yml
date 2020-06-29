@@ -16,7 +16,7 @@
     - "environments/shared_secrets.yml"
     - "environments/shared_variables.yml"
 
-  tasks: 
+  tasks:
     - name: Setup Docker, Setup Neo, Run Loader, Push Images
       block:
         - include_tasks: tasks/install_docker_py.yml

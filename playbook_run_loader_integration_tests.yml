@@ -19,7 +19,7 @@
   vars:
     API_ACCESS_TOKEN: "{{ LOADER_BUILD_API_ACCESS_TOKEN if env == 'build' else LOADER_STAGE_API_ACCESS_TOKEN }}"
 
-  tasks: 
+  tasks:
     - name: Setup Neo, Run Loader, Run Loader Tests
       block:
         - include_tasks: tasks/install_docker_py.yml
@@ -39,7 +39,7 @@
 - name: Check Failures
   hosts: launched
   gather_facts: False
-  tasks:  
+  tasks:
     - fail:
         msg: "The execution has failed because of errors."
       when: failed_flag == "failed"
