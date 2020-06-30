@@ -35,6 +35,7 @@
         region: us-east-1
         vpc_subnet_id: subnet-3ebf4477
         assign_public_ip: yes
+        instance_profile_name: S3DataAccess
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         volumes:
@@ -102,8 +103,8 @@
       block:
         - include_tasks: tasks/install_docker_py.yml
         - include_tasks: tasks/setup_docker.yml
+        - include_tasks: tasks/start_elk.yml
         - include_tasks: tasks/start_neo_data.yml
-        - include_tasks: tasks/start_es_env.yml
         - include_tasks: tasks/start_ui.yml
         - include_tasks: tasks/start_infinispan_data.yml
         - include_tasks: tasks/start_api_thorntail.yml

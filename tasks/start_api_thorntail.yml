@@ -10,7 +10,7 @@
     image: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
     log_driver: "gelf"
     log_options:
-      gelf-address: "{{ LOGSTASH_SERVER_ADDRESS }}"
+      gelf-address: "udp://{{ GELF_LOG_SERVER_NAME }}:12201"
     ports:
       - "8080:8080"
     networks:
