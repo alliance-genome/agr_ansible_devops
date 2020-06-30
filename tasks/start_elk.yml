@@ -1,0 +1,60 @@
+- name: Pull ES Env Image
+  docker_image:
+    name: "{{ ES_ENV_IMAGE_NAME }}"
+
+- name: Pull Cerebro Image
+  docker_image:
+    name: "yannart/cerebro:latest"
+
+- name: Run ES
+  docker_container:
+    name: "{{ ES_SERVER_NAME }}"
+    image: "{{ ES_ENV_IMAGE_NAME }}"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    env:
+      discovery.type: single-node
+
+- name: Run Cerebro
+  docker_container:
+    name: "cerebro"
+    image: "yannart/cerebro:latest"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "9000:9000"
+
+- name: Pull Log Image
+  docker_image:
+    name: "{{ LOG_IMAGE_NAME }}"
+
+- name: Run Log Server
+  docker_container:
+    name: "{{ LOG_SERVER_NAME }}"
+    image: "{{ LOG_IMAGE_NAME }}"
+    networks:
+      - name: "{{ NET }}"
+    env:
+      xpack.monitoring.elasticsearch.hosts: "http://{{ ES_SERVER_NAME }}:9200"
+    ports:
+      - "9600:9600"
+      - "12201:12201/udp"
+    command: ./bin/logstash -e "input { gelf { type => docker } } output { elasticsearch { hosts => [\"{{ ES_SERVER_NAME }}\"] } }"
+
+- name: Pull Kibana Image
+  docker_image:
+    name: "{{ KIBANA_IMAGE_NAME }}"
+
+- name: Run Kibana
+  docker_container:
+    name: "{{ KIBANA_SERVER_NAME }}"
+    image: "{{ KIBANA_IMAGE_NAME }}"
+    env:
+      ELASTICSEARCH_HOSTS: "http://{{ ES_SERVER_NAME }}:9200"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "5601:5601"

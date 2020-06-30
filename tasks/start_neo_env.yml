@@ -12,7 +12,7 @@
     image: "{{ NEO_ENV_IMAGE_NAME }}"
     log_driver: "gelf"
     log_options:
-      gelf-address: "{{ LOGSTASH_SERVER_ADDRESS }}"
+      gelf-address: "udp://{{ GELF_LOG_SERVER_NAME }}:12201"
     volumes:
       - "{{ NEO_VOLUME_NAME }}:/var/lib/neo4j/import"
     networks:

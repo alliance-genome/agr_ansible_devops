@@ -9,6 +9,7 @@ REGISTRY: agrdocker
 # Env Images
 NEO_ENV_NAME: agr_neo4j_env
 ES_ENV_NAME: agr_elasticsearch_env
+KIBANA_ENV_NAME: agr_kibana_env
 INFINISPAN_ENV_NAME: agr_infinispan_env
 
 # Data Images
@@ -29,7 +30,6 @@ APOLLO_IMAGE_NAME: agr_apollo_run
 UI_IMAGE_NAME: agr_ui_server
 
 # Server Names
-ES_SERVER_NAME: "agr.{{ env }}.elasticsearch.server"
 UI_SERVER_NAME: "agr.{{ env }}.ui.server"
 JBROWSE_SERVER_NAME: "agr.{{ env }}.jbrowse.server"
 APOLLO_SERVER_NAME: "agr.{{ env }}.apollo.server"
@@ -38,6 +38,12 @@ NEO_SERVER_NAME: "agr.{{ env }}.neo4j.server"
 INFINISPAN_SERVER_NAME: "agr.{{ env }}.infinispan.server"
 LOGSTASH_SERVER_ADDRESS: "udp://logs.alliancegenome.internal:12201"
 #LOGSTASH_SERVER_ADDRESS: "udp://agr.{{ env }}.log.server:12201"
+
+#Elk Servers
+ES_SERVER_NAME: "agr.{{ env }}.elasticsearch.server"
+LOG_SERVER_NAME: "agr.{{ env }}.log.server" # Gelf runs outside the docker network
+KIBANA_SERVER_NAME: "agr.{{ env }}.kibana.server"
+GELF_LOG_SERVER_NAME: "localhost" # Gelf runs outside the docker network
 
 # Testing Vars
 API_TESTING_SERVER_NAME: "build.alliancegenome.internal"
@@ -59,6 +65,8 @@ FILE_GENER_TEST_RUN_NAME: "agr.{{ env }}.filegenerator.test"
 
 # Server Env DockerHub Paths
 ES_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ ES_ENV_NAME }}"
+LOG_IMAGE_NAME: "docker.elastic.co/logstash/logstash:7.7.0"
+KIBANA_IMAGE_NAME: "{{ REGISTRY }}/{{ KIBANA_ENV_NAME }}"
 NEO_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ NEO_ENV_NAME }}"
 INFINISPAN_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ INFINISPAN_ENV_NAME }}"
 
