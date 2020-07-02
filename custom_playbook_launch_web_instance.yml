@@ -21,3 +21,4 @@
       block:
         - include_tasks: tasks/install_docker_py.yml
         - include_tasks: tasks/setup_docker.yml
+        - include_tasks: tasks/start_elk.yml
