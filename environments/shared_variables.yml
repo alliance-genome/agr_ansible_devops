@@ -43,7 +43,6 @@ LOGSTASH_SERVER_ADDRESS: "udp://logs.alliancegenome.internal:12201"
 ES_SERVER_NAME: "agr.{{ env }}.elasticsearch.server"
 LOG_SERVER_NAME: "agr.{{ env }}.log.server" # Gelf runs outside the docker network
 KIBANA_SERVER_NAME: "agr.{{ env }}.kibana.server"
-GELF_LOG_SERVER_NAME: "localhost" # Gelf runs outside the docker network
 
 # Testing Vars
 API_TESTING_SERVER_NAME: "build.alliancegenome.internal"
