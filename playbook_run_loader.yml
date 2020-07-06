@@ -24,7 +24,6 @@
       block:
         - include_tasks: tasks/install_docker_py.yml
         - include_tasks: tasks/setup_docker.yml
-        - include_tasks: tasks/start_elk.yml
         - include_tasks: tasks/start_neo_env.yml
         - include_tasks: tasks/run_loader.yml
         - include_tasks: tasks/push_neo_image.yml

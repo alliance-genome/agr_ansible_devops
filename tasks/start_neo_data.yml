@@ -8,7 +8,7 @@
     image: "{{ NEO_RELEASE_IMAGE_NAME }}"
     log_driver: "gelf"
     log_options:
-      gelf-address: "udp://{{ GELF_LOG_SERVER_NAME }}:12201"
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     ports:
       - "7474:7474"
       - "7687:7687"

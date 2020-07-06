@@ -12,7 +12,7 @@
     image: "{{ ES_ENV_IMAGE_NAME }}"
     log_driver: "gelf"
     log_options:
-      gelf-address: "udp://{{ GELF_LOG_SERVER_NAME }}:12201"
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     networks:
       - name: "{{ NET }}"
     ports:
@@ -23,7 +23,7 @@
 
 - name: Run Cerebro
   docker_container:
-    name: "cerebro"
+    name: "agr.{{ env }}.cerebro.server"
     image: "yannart/cerebro:latest"
     networks:
       - name: "{{ NET }}"
