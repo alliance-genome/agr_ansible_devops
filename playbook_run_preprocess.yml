@@ -23,6 +23,7 @@
     - name: Setup Docker, Run Preprocess
       block:
         - include_tasks: tasks/install_docker_py.yml
+        - include_tasks: tasks/setup_swap.yml
         - include_tasks: tasks/setup_docker.yml
         - include_tasks: tasks/run_preprocess.yml
         - set_fact:
