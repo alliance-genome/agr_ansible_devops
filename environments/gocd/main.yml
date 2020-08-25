@@ -10,3 +10,4 @@ LOADER_TEST_SET: "False"
 COMPUTE_INSTANCE_TYPE: r5d.8xlarge
 WEBSERVER_INSTANCE_TYPE: "{{ lookup('env','WEBSERVER_INSTANCE_TYPE') or 'r5a.2xlarge' }}"
 NGINX_TAG: "{{ NET }}"
+LOG_SERVER_HOST: "{{ lookup('env','LOG_SERVER_HOST') or 'gocd.alliancegenome.internal' }}" # Logging runs outside the docker network

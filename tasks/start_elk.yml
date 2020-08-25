@@ -20,7 +20,7 @@
 
 - name: Run Cerebro
   docker_container:
-    name: "cerebro"
+    name: "agr.{{ env }}.cerebro.server"
     image: "yannart/cerebro:latest"
     networks:
       - name: "{{ NET }}"
