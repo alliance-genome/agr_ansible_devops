@@ -1,9 +1,4 @@
----
-
-- import_playbook: playbook_pre_tasks.yml
-- import_playbook: playbook_launch_instance.yml
-
-- name: Configure Servers
+- name: Launch Post Tasks
   hosts: launched
   user: core
   gather_facts: False
@@ -11,6 +6,7 @@
   roles:
     - install_python
     - setup_docker
+    - setup_swap
 
   vars_files:
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first
@@ -20,7 +16,6 @@
   tasks:
     - name: Setup Docker, Start ES, Start Neo, Run Indexer
       block:
-        - include_tasks: tasks/setup_swap.yml
         - include_tasks: tasks/start_es_env.yml
         - include_tasks: tasks/start_neo_data.yml
         - include_tasks: tasks/run_indexer.yml
@@ -31,14 +26,3 @@
             msg: "Error Detected Failing Build"
         - set_fact:
             failed_flag: "failed"
-
-- import_playbook: playbook_terminate_instance.yml
-
-- name: Check Failures
-  hosts: launched
-  gather_facts: False
-  tasks:
-    - fail:
-        msg: "The execution has failed because of errors."
-      when: failed_flag == "failed"
-
