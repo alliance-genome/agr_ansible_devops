@@ -1,15 +1,13 @@
 ---
 
-- import_playbook: playbook_pre_tasks.yml
+- import_playbook: playbook_launch_pre_tasks.yml
 - import_playbook: playbook_launch_web_instance.yml
+- import_playbook: playbook_launch_post_tasks.yml
 
-- name: Configure Servers
+- name: configure servers
   hosts: launched
   user: core
-  gather_facts: False
-
-  roles:
-    - akirak.coreos-python
+  gather_facts: false
 
   vars_files:
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first
@@ -17,8 +15,6 @@
     - "environments/shared_variables.yml"
 
   tasks:
-    - name: Setup Docker, Setup Neo, Run Loader, Push Images
+    - name: Start Elk
       block:
-        - include_tasks: tasks/install_docker_py.yml
-        - include_tasks: tasks/setup_docker.yml
         - include_tasks: tasks/start_elk.yml

@@ -1,0 +1,7 @@
+---
+# tasks file for install_python
+
+- name: Installing Pypy and Pip by running install_python.sh
+  script: install_python.sh
+  become: true
+  become_user: root

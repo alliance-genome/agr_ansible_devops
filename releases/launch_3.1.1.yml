@@ -1,0 +1,143 @@
+---
+
+- name: Setup SSH Keys
+  hosts: local
+  connection: local
+  gather_facts: False
+
+  pre_tasks:
+    - name: Import Secret Variable file
+      include_vars: "environments/shared_secrets.yml"
+    
+    - name: Copy SSH private key file
+      copy:
+        content: "{{ AGRSSL2_content }}"
+        dest: "/root/.ssh/id_rsa"
+        mode: 0600
+
+- name: Setup Docker Server
+  hosts: local
+  connection: local
+  gather_facts: False
+
+  vars_files:
+    - "environments/{{ env }}/main.yml" # ENV must always be loaded first
+    - "environments/shared_secrets.yml"
+
+  tasks:
+    - name: Launch instances
+      ec2:
+        key_name: AGR-ssl2
+        keypair: AGR-ssl2
+        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        instance_type: "{{ WEBSERVER_INSTANCE_TYPE }}"
+        image: ami-047242a24cd6b4bc9
+        region: us-east-1
+        vpc_subnet_id: subnet-3ebf4477
+        assign_public_ip: yes
+        instance_profile_name: S3DataAccess
+        aws_access_key: "{{ AWS_ACCESS_KEY }}"
+        aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        volumes:
+          - device_name: /dev/xvda
+            volume_type: standard
+            volume_size: 750
+            delete_on_termination: yes
+        wait: yes
+        user_data: "" # Otherwise get weird error on start up
+        instance_tags:
+          Name: "AGR Release 3.1.1"
+      register: ec2
+
+    - name: Add all instance public IPs to host group
+      add_host:
+        hostname: '{{ item.public_ip }}'
+        groupname: launched
+      with_items: "{{ ec2.instances }}"
+      register: launched
+
+    - name: Retrieve all volumes for a queried instance
+      ec2_vol:
+        instance: '{{ item }}'
+        region: us-east-1
+        state: list
+        aws_access_key: "{{ AWS_ACCESS_KEY }}"
+        aws_secret_key: "{{ AWS_SECRET_KEY }}"
+      with_items: "{{ ec2.instance_ids }}"
+      register: ec2_volumes
+
+    - name: Ensure all volumes are tagged
+      ec2_tag:
+        region: us-east-1
+        resource: '{{ item.1.id }}'
+        aws_access_key: "{{ AWS_ACCESS_KEY }}"
+        aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        tags:
+          Name: "Ansible Generated - Docker Volume"
+      with_subelements:
+        - "{{ ec2_volumes.results }}"
+        - volumes
+
+    - include_tasks: tasks/check_ssh.yml
+
+- name: Configure Servers
+  hosts: launched
+  user: core
+  gather_facts: False
+
+  roles:
+    - akirak.coreos-python
+
+  vars:
+    NEO_PAGE_CACHE: "8g"
+    NEO_MAX_HEAP: "6g"
+    REPO: "stage"
+
+  vars_files:
+    - "environments/{{ env }}/main.yml" # ENV must always be loaded first
+    - "environments/shared_secrets.yml"
+    - "environments/shared_variables.yml"
+
+  tasks: 
+    - name: Setup Neo, Run Loader, Run Loader Tests
+      block:
+        - include_tasks: tasks/install_docker_py.yml
+        - include_tasks: tasks/setup_swap.yml
+        - include_tasks: tasks/setup_docker.yml
+        - include_tasks: tasks/start_elk.yml
+        - include_tasks: tasks/start_neo_data.yml
+        - include_tasks: tasks/start_ui.yml
+        - include_tasks: tasks/start_infinispan_data.yml
+        - include_tasks: tasks/start_api_thorntail.yml
+        - include_tasks: tasks/start_jbrowse.yml
+        - include_tasks: tasks/start_apollo.yml
+        - include_tasks: tasks/run_restore_index.yml
+        - include_tasks: tasks/start_nginx.yml
+
+        # Login to :9000 and add site_index as an alias
+        # Edit the default.conf file to change the server names
+        # Also change www -> x_y_z release name
+        # Add DNS entry for new server to x_y_z
+        # cd /var/lib/docker
+        # vim `find ./ | grep default.conf | grep ngin`
+
+      rescue:
+        - fail:
+            msg: 'Tasked Failed Terminating instances'
+
+#- name: Terminations
+#  hosts: local
+#  connection: local
+#
+#  vars_files:
+#    - "environments/{{ env }}/main.yml" # ENV must always be loaded first
+#    - "environments/shared_secrets.yml"
+#
+#  tasks:
+#    - name: Terminate instances
+#      ec2:
+#        state: 'absent'
+#        region: us-east-1
+#        aws_access_key: "{{ AWS_ACCESS_KEY }}"
+#        aws_secret_key: "{{ AWS_SECRET_KEY }}"
+#        instance_ids: '{{ ec2.instance_ids }}'

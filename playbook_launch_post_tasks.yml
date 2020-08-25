@@ -1,0 +1,25 @@
+- name: Launch Post Tasks
+  hosts: launched
+  user: core
+  gather_facts: False
+
+  vars_files:
+    - "environments/{{ env }}/main.yml" # ENV must always be loaded first
+    - "environments/shared_secrets.yml"
+    - "environments/shared_variables.yml"
+
+  roles:
+    - install_python
+    - setup_docker
+    - setup_swap
+
+  tasks:
+    - name: Setup Docker, Start ES, Start Neo, Run Indexer
+      block:
+        - set_fact:
+            failed_flag: "passed"
+      rescue:
+        - debug:
+            msg: "Error Detected Failing Build"
+        - set_fact:
+            failed_flag: "failed"

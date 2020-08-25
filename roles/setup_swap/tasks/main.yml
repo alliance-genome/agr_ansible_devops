@@ -1,0 +1,25 @@
+---
+# tasks file for setup_swap
+
+- name: Create swap file
+  command: fallocate -l 64G /swapfile
+  become: true
+  become_user: root
+
+- name: Format swap file
+  command: mkswap /swapfile
+  become: true
+  become_user: root
+
+- name: Set permissions on swap file
+  file:
+    path: /swapfile
+    mode: 0600
+  become: true
+  become_user: root
+
+- name: Turn on swap file
+  command: swapon /swapfile
+  become: true
+  become_user: root
+
