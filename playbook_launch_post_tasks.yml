@@ -3,22 +3,19 @@
   user: core
   gather_facts: False
 
-  roles:
-    - install_python
-    - setup_docker
-    - setup_swap
-
   vars_files:
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first
     - "environments/shared_secrets.yml"
     - "environments/shared_variables.yml"
 
+  roles:
+    - install_python
+    - setup_docker
+    - setup_swap
+
   tasks:
     - name: Setup Docker, Start ES, Start Neo, Run Indexer
       block:
-        - include_tasks: tasks/start_es_env.yml
-        - include_tasks: tasks/start_neo_data.yml
-        - include_tasks: tasks/run_indexer.yml
         - set_fact:
             failed_flag: "passed"
       rescue:
