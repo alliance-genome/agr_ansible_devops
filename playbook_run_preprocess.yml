@@ -1,15 +1,13 @@
 ---
 
-- import_playbook: playbook_pre_tasks.yml
+- import_playbook: playbook_launch_pre_tasks.yml
 - import_playbook: playbook_launch_instance.yml
+- import_playbook: playbook_launch_post_tasks.yml
 
 - name: Configure Servers
   hosts: launched
   user: core
   gather_facts: False
-
-  roles:
-    - akirak.coreos-python
 
   vars_files:
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first
@@ -20,11 +18,8 @@
     API_ACCESS_TOKEN: "{{ PREPROCESS_BUILD_API_ACCESS_TOKEN if env == 'build' else PREPROCESS_STAGE_API_ACCESS_TOKEN }}"
 
   tasks:
-    - name: Setup Docker, Run Preprocess
+    - name: Run Preprocess
       block:
-        - include_tasks: tasks/install_docker_py.yml
-        - include_tasks: tasks/setup_swap.yml
-        - include_tasks: tasks/setup_docker.yml
         - include_tasks: tasks/run_preprocess.yml
         - set_fact:
             failed_flag: "passed"

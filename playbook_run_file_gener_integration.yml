@@ -1,15 +1,13 @@
 ---
 
-- import_playbook: playbook_pre_tasks.yml
+- import_playbook: playbook_launch_pre_tasks.yml
 - import_playbook: playbook_launch_instance.yml
+- import_playbook: playbook_launch_post_tasks.yml
 
 - name: Configure Servers
   hosts: launched
   user: core
   gather_facts: False
-
-  roles:
-    - akirak.coreos-python
 
   vars_files:
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first
@@ -20,11 +18,8 @@
     API_ACCESS_TOKEN: "{{ FILEGEN_BUILD_API_ACCESS_TOKEN if env == 'build' else FILEGEN_STAGE_API_ACCESS_TOKEN }}"
 
   tasks:
-    - name: Setup Docker, Start Neo, Run File Generator
+    - name: Start Neo, Run File Generator
       block:
-        - include_tasks: tasks/install_docker_py.yml
-        - include_tasks: tasks/setup_swap.yml
-        - include_tasks: tasks/setup_docker.yml
         - include_tasks: tasks/start_neo_data.yml
         - include_tasks: tasks/run_file_gener_integration.yml
         - set_fact:

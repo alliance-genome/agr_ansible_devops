@@ -15,6 +15,6 @@
     - "environments/shared_variables.yml"
 
   tasks:
-    - name: Setup Docker, Setup Neo, Run Loader, Push Images
+    - name: Start Elk
       block:
         - include_tasks: tasks/start_elk.yml

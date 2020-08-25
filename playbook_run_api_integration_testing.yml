@@ -1,15 +1,13 @@
 ---
 
-- import_playbook: playbook_pre_tasks.yml
+- import_playbook: playbook_launch_pre_tasks.yml
 - import_playbook: playbook_launch_instance.yml
+- import_playbook: playbook_launch_post_tasks.yml
 
 - name: Configure Servers
   hosts: launched
   user: core
   gather_facts: False
-
-  roles:
-    - install_python
 
   vars_files:
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first
@@ -17,10 +15,8 @@
     - "environments/shared_variables.yml"
 
   tasks:
-    - name: Setup Docker, Run Integration Tests
+    - name: Run Integration Tests
       block:
-        - include_tasks: tasks/setup_swap.yml
-        - include_tasks: tasks/setup_docker.yml
         - include_tasks: tasks/run_api_integration_testing.yml
         - set_fact:
             failed_flag: "passed"
