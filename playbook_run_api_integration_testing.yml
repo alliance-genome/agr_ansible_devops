@@ -9,7 +9,7 @@
   gather_facts: False
 
   roles:
-    - akirak.coreos-python
+    - install_python
 
   vars_files:
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first
@@ -19,7 +19,6 @@
   tasks:
     - name: Setup Docker, Run Integration Tests
       block:
-        - include_tasks: tasks/install_docker_py.yml
         - include_tasks: tasks/setup_swap.yml
         - include_tasks: tasks/setup_docker.yml
         - include_tasks: tasks/run_api_integration_testing.yml
