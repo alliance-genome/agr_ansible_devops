@@ -1,0 +1,168 @@
+- name: Pull ES Env Image
+  docker_image:
+    name: "{{ ES_ENV_IMAGE_NAME }}"
+
+- name: Pull Cerebro Image
+  docker_image:
+    name: "yannart/cerebro:latest"
+
+- name: Run ES Cluster Node 01
+  docker_container:
+    name: "{{ ES_SERVER_NAME }}01"
+    image: "{{ ES_ENV_IMAGE_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "9201:9200"
+      - "9301:9300"
+    env:
+      node.name: "{{ ES_SERVER_NAME }}01"
+      cluster.name: es-cluster
+      discovery.seed_hosts: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08"
+      cluster.initial_master_nodes: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08"
+      ES_JAVA_OPTS: "-Xms24g -Xmx24g"
+
+- name: Run ES Cluster Node 02
+  docker_container:
+    name: "{{ ES_SERVER_NAME }}02"
+    image: "{{ ES_ENV_IMAGE_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "9202:9200"
+      - "9302:9300"
+    env:
+      node.name: "{{ ES_SERVER_NAME }}02"
+      cluster.name: es-cluster
+      discovery.seed_hosts: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08"
+      cluster.initial_master_nodes: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08"
+      ES_JAVA_OPTS: "-Xms24g -Xmx24g"
+
+- name: Run ES Cluster Node 03
+  docker_container:
+    name: "{{ ES_SERVER_NAME }}03"
+    image: "{{ ES_ENV_IMAGE_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "9203:9200"
+      - "9303:9300"
+    env:
+      node.name: "{{ ES_SERVER_NAME }}03"
+      cluster.name: es-cluster
+      discovery.seed_hosts: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08"
+      cluster.initial_master_nodes: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08"
+      ES_JAVA_OPTS: "-Xms24g -Xmx24g"
+
+- name: Run ES Cluster Node 04
+  docker_container:
+    name: "{{ ES_SERVER_NAME }}04"
+    image: "{{ ES_ENV_IMAGE_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "9204:9200"
+      - "9304:9300"
+    env:
+      node.name: "{{ ES_SERVER_NAME }}04"
+      cluster.name: es-cluster
+      discovery.seed_hosts: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08"
+      cluster.initial_master_nodes: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08"
+      ES_JAVA_OPTS: "-Xms24g -Xmx24g"
+
+- name: Run ES Cluster Node 05
+  docker_container:
+    name: "{{ ES_SERVER_NAME }}05"
+    image: "{{ ES_ENV_IMAGE_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "9205:9200"
+      - "9305:9300"
+    env:
+      node.name: "{{ ES_SERVER_NAME }}05"
+      cluster.name: es-cluster
+      discovery.seed_hosts: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08"
+      cluster.initial_master_nodes: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08"
+      ES_JAVA_OPTS: "-Xms24g -Xmx24g"
+
+- name: Run ES Cluster Node 06
+  docker_container:
+    name: "{{ ES_SERVER_NAME }}06"
+    image: "{{ ES_ENV_IMAGE_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "9206:9200"
+      - "9306:9300"
+    env:
+      node.name: "{{ ES_SERVER_NAME }}06"
+      cluster.name: es-cluster
+      discovery.seed_hosts: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08"
+      cluster.initial_master_nodes: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08"
+      ES_JAVA_OPTS: "-Xms24g -Xmx24g"
+
+- name: Run ES Cluster Node 07
+  docker_container:
+    name: "{{ ES_SERVER_NAME }}07"
+    image: "{{ ES_ENV_IMAGE_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "9207:9200"
+      - "9307:9300"
+    env:
+      node.name: "{{ ES_SERVER_NAME }}07"
+      cluster.name: es-cluster
+      discovery.seed_hosts: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08"
+      cluster.initial_master_nodes: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08"
+      ES_JAVA_OPTS: "-Xms24g -Xmx24g"
+
+- name: Run ES Cluster Node 08
+  docker_container:
+    name: "{{ ES_SERVER_NAME }}08"
+    image: "{{ ES_ENV_IMAGE_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "9208:9200"
+      - "9308:9300"
+    env:
+      node.name: "{{ ES_SERVER_NAME }}08"
+      cluster.name: es-cluster
+      discovery.seed_hosts: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08"
+      cluster.initial_master_nodes: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08"
+      ES_JAVA_OPTS: "-Xms24g -Xmx24g"
+
+- name: Run Cerebro
+  docker_container:
+    name: "agr.{{ env }}.cerebro.server"
+    image: "yannart/cerebro:latest"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "9000:9000"

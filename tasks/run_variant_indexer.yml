@@ -1,0 +1,38 @@
+- name: Pull Variant Indexer Run Image
+  docker_image:
+    name: "{{ VARIANT_INDEXER_RUN_IMAGE_NAME }}"
+
+- name: Run Variant Indexer
+  docker_container:
+    name: "{{ VARIANT_INDEXER_RUN_NAME }}"
+    image: "{{ VARIANT_INDEXER_RUN_IMAGE_NAME }}"
+    detach: no
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    networks:
+      - name: "{{ NET }}"
+    volumes:
+      - "agr_variant_data:/data"
+    env:
+      ES_INDEX_SUFFIX: "{{ NET }}"
+      ES_INDEX: variant_index
+      THREADED: "{{ THREADED }}"
+      BOLT_LOG_LEVEL: INFO
+      VARIANT_DOCUMENT_CREATOR_THREADS: 6
+      VARIANT_DOCUMENT_CREATOR_DISPLAY_INTERVAL: 90
+      VARIANT_DOCUMENT_CREATOR_CONTEXT_QUEUE_SIZE: 1000
+      VARIANT_DOCUMENT_CREATOR_CONTEXT_TRANSFORMER_THREADS: 4
+      VARIANT_DOCUMENT_CREATOR_CONTEXT_INDEXER_THREADS: 2
+      VARIANT_DOCUMENT_CREATOR_JSON_QUEUE_SIZE: 10000
+      VARIANT_ES_BULK_ACTION_SIZE: 1000
+      VARIANT_ES_BULK_CONCURRENT_REQUESTS: 10
+      VARIANT_ES_BULK_SIZE_MB: 95
+      VARIANT_ES_INDEX_NUMBER_OF_SHARDS: 8
+      VARIANT_FILE_DOWNLOAD_PATH: /data
+      DEFAULT_LOG_LEVEL: INFO
+      ES_HOST: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08"
+      #ES_HOST: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02"
+      #NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
+    command: java -jar agr_variant_indexer/target/agr_variant_indexer-jar-with-dependencies.jar
+
