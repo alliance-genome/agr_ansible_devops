@@ -19,8 +19,8 @@
       - "9200:9200"
       - "9300:9300"
     env:
-      - discovery.type: single-node
-      - ES_JAVA_OPTS: "-Xms{{ ES_CLUSTER_MEMORY }} -Xmx{{ ES_CLUSTER_MEMORY }}"
+      discovery.type: single-node
+      ES_JAVA_OPTS: "-Xms{{ ES_CLUSTER_MEMORY }} -Xmx{{ ES_CLUSTER_MEMORY }}"
 
 - name: Run Cerebro
   docker_container:
