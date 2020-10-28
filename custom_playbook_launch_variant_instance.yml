@@ -1,0 +1,21 @@
+---
+
+- import_playbook: playbook_launch_pre_tasks.yml
+- import_playbook: playbook_launch_instance.yml
+- import_playbook: playbook_launch_post_tasks.yml
+
+- name: Configure Servers
+  hosts: launched
+  user: core
+  gather_facts: False
+
+  vars_files:
+    - "environments/{{ env }}/main.yml" # ENV must always be loaded first
+    - "environments/shared_secrets.yml"
+    - "environments/shared_variables.yml"
+
+  tasks:
+    - name: Start ES and Cerebro
+      block:
+        #- include_tasks: tasks/start_elk.yml
+        - include_tasks: tasks/start_es_cluster_env.yml

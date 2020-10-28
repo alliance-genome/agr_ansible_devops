@@ -9,9 +9,18 @@
     - "environments/shared_variables.yml"
 
   roles:
-    - install_python
-    - setup_docker
-    - setup_swap
+    - role: install_python
+      become: true
+      become_user: root
+    - role: setup_nvme_drives
+      become: true
+      become_user: root
+    - role: setup_docker
+      become: true
+      become_user: root
+    - role: setup_swap
+      become: true
+      become_user: root
 
   tasks:
     - name: Setup Docker, Start ES, Start Neo, Run Indexer

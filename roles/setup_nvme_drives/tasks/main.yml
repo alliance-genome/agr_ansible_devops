@@ -1,0 +1,38 @@
+---
+# tasks file for setup_nvme_drives
+
+- name: Shutdown Docker
+  command: systemctl stop docker.service
+
+- name: Get directory stats
+  stat:
+    path: "/var/lib/docker"
+  register: directory_stat
+
+- name: Delete directory
+  file:
+    path: "/var/lib/docker"
+    state: absent
+
+- name: Create directory
+  file:
+    path: "/var/lib/docker"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "711"
+
+- name: Create Raid
+  command: mdadm --create --verbose --auto=yes /dev/md0 --level=0 --raid-devices=2 /dev/nvme1n1 /dev/nvme2n1
+
+- name: Create Partitions
+  shell: echo -e "p\nn\np\n1\n\n\nw" | fdisk /dev/md0
+
+- name: Create File System
+  command: mkfs.ext4 /dev/md0p1
+
+- name: Mount Raid AS docker FS
+  command: mount /dev/md0p1 /var/lib/docker
+
+- name: Start Docker
+  command: systemctl start docker.service
