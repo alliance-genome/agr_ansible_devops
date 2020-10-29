@@ -4,7 +4,7 @@ ansible_ssh_user: core
 ansible_python_interpreter: /home/core/pypy/bin/pypy
 
 ALLIANCE_RELEASE: "{{ lookup('env','ALLIANCE_RELEASE') }}"
-REGISTRY: agrdocker
+REGISTRY: 100225593120.dkr.ecr.us-east-1.amazonaws.com
 
 # Env Images
 NEO_ENV_NAME: agr_neo4j_env
