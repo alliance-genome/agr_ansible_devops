@@ -2,10 +2,6 @@
   docker_image:
     name: "{{ NEO_ENV_IMAGE_NAME }}"
 
-- name: Create Neo4j Shared Volume
-  docker_volume:
-    name: "{{ NEO_VOLUME_NAME }}"
-
 - name: Run Neo4j
   docker_container:
     name: "{{ NEO_SERVER_NAME }}"
