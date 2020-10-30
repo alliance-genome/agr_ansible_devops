@@ -29,7 +29,7 @@
   shell: echo -e "p\nn\np\n1\n\n\nw" | fdisk /dev/md0
 
 - name: Create File System
-  command: mkfs.ext4 /dev/md0p1
+  command: mkfs.ext4 -F /dev/md0p1
 
 - name: Mount Raid AS docker FS
   command: mount /dev/md0p1 /var/lib/docker
