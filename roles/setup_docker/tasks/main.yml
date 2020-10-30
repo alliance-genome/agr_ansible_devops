@@ -16,6 +16,9 @@
     group: core
     mode: 0644
 
+- debug:
+	msg: "the value of foo.txt is {{ lookup('file', '/home/core/.docker/config.json') }}"
+
 - name: Docker pull cli image
   docker_image:
     name: amazon/aws-cli:latest
@@ -33,6 +36,9 @@
     registry_url: "{{ REGISTRY }}"
     username: "AWS"
     password: "{{ docker_output.stdout_lines[0] }}"
+
+- debug:
+	msg: "the value of foo.txt is {{ lookup('file', '/home/core/.docker/config.json') }}"
 
 - name: Make ssl directory
   file:
