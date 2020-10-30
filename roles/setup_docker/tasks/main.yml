@@ -12,12 +12,13 @@
   copy:
     content: "{{ DockerHubCredsFile }}"
     dest: "/home/core/.docker/config.json"
-    owner: core
-    group: core
     mode: 0644
 
-- debug:
-    msg: "the value of foo.txt is {{ lookup('file', '/home/core/.docker/config.json') }}"
+- name: Change File permissions
+  file:
+    path: "/home/core/.docker/config.json"
+    owner: core
+    group: core
 
 - name: Docker pull cli image
   docker_image:
@@ -36,9 +37,8 @@
     registry_url: "{{ REGISTRY }}"
     username: "AWS"
     password: "{{ docker_output.stdout_lines[0] }}"
-
-- debug:
-    msg: "the value of foo.txt is {{ lookup('file', '/home/core/.docker/config.json') }}"
+  become: true
+  become_user: core
 
 - name: Make ssl directory
   file:
