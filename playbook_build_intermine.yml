@@ -5,7 +5,7 @@
 - import_playbook: playbook_launch_post_tasks.yml
 
 - name: Configure Servers
-  hosts: remote
+  hosts: launched
   user: core
   gather_facts: False
 
