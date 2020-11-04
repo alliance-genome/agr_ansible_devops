@@ -1,0 +1,46 @@
+- name: Pull Intermine Builder Image
+  docker_image:
+    name: "{{ INTERMINE_BUILDER_RUN_IMAGE_NAME }}"
+
+- name: Pull Java Run Image
+  docker_image:
+    name: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
+
+- name: Run Java Intermine Data Extractor
+  docker_container:
+    name: "{{ INTERMINE_DATA_EXTRACTOR_RUN_NAME }}"
+    image: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
+    detach: no
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    networks:
+      - name: "{{ NET }}"
+    volumes:
+      - "{{ INTERMINE_DATA_VOLUME_NAME }}:/data"
+    env:
+      MEM_OPTS: "-Xms{{ INFINISPAN_MEMORY }} -Xmx{{ INFINISPAN_MEMORY }}"
+      ALLIANCE_RELEASE: "{{ ALLIANCE_RELEASE }}"
+      EXTRACTOR_OUTPUTDIR: "/data"
+      NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
+    command: java -Xms{{ INDEXER_MEMORY }} -Xmx{{ INDEXER_MEMORY }} -jar agr_intermine_data_extractor/target/agr_intermine_data_extractor-jar-with-dependencies.jar
+
+- name: Run Intermine Builder
+  docker_container:
+    name: "{{ INTERMINE_BUILDER_RUN_NAME }}"
+    image: "{{ INTERMINE_BUILDER_RUN_IMAGE_NAME }}"
+    detach: no
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    volumes:
+      - "{{ INTERMINE_DATA_VOLUME_NAME }}:/root/data"
+    networks:
+      - name: "{{ NET }}"
+    env:
+      MINE_NAME: "alliancemine"
+      MINE_REPO_URL: "https://github.com/alliance-genome/alliancemine.git"
+      BIOSOURCES_REPO_URL: "https://github.com/alliance-genome/alliancemine-bio-sources.git"
+      PGHOST: "{{ INTERMINE_POSTGRES_SERVER_NAME }}"
+      SOLR_HOST: "{{ INTERMINE_SOLR_SERVER_NAME }}"
+      TOMCAT_HOST: "{{ INTERMINE_TOMCAT_SERVER_NAME }}"

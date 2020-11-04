@@ -1,0 +1,44 @@
+---
+
+- import_playbook: playbook_launch_pre_tasks.yml
+#- import_playbook: playbook_launch_instance.yml
+#- import_playbook: playbook_launch_post_tasks.yml
+
+- name: Configure Servers
+  hosts: remote
+  user: core
+  gather_facts: False
+
+  vars_files:
+    - "environments/{{ env }}/main.yml" # ENV must always be loaded first
+    - "environments/shared_secrets.yml"
+    - "environments/shared_variables.yml"
+
+  tasks:
+    - name: Setup Neo, Run Loader, Push Images
+      block:
+        #- include_tasks: tasks/create_data_volume_container.yml
+        #- include_tasks: tasks/start_intermine_postgres_env.yml
+        #- include_tasks: tasks/start_intermine_solr_env.yml
+        #- include_tasks: tasks/start_intermine_tomcat_env.yml
+        #- include_tasks: tasks/start_neo_data.yml
+        #- include_tasks: tasks/run_intermine_builder.yml
+        - include_tasks: tasks/push_intermine_images.yml
+        #- set_fact:
+        #    failed_flag: "passed"
+
+      #rescue:
+      #  - debug:
+      #      msg: "Error Detected Failing Build"
+      #  - set_fact:
+      #      failed_flag: "failed"
+
+#- import_playbook: playbook_terminate_instance.yml
+#
+#- name: Check Failures
+#  hosts: launched
+#  gather_facts: False
+#  tasks:
+#    - fail:
+#        msg: "The execution has failed because of errors."
+#      when: failed_flag == "failed"

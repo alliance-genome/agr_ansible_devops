@@ -1,0 +1,17 @@
+- name: Pull Intermine Tomcat Env Image
+  docker_image:
+    name: "{{ INTERMINE_TOMCAT_ENV_NAME }}"
+
+- name: Run Tomcat
+  docker_container:
+    name: "{{ INTERMINE_TOMCAT_SERVER_NAME }}"
+    image: "{{ INTERMINE_TOMCAT_ENV_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+#    volumes:
+#      - "{{ NEO_VOLUME_NAME }}:/var/lib/neo4j/import"
+    networks:
+      - name: "{{ NET }}"
+    env:
+      JAVA_OPTS: "-Xmx2g -Xms1g"

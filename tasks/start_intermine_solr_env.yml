@@ -1,0 +1,19 @@
+- name: Pull Intermine Solr Env Image
+  docker_image:
+    name: "{{ INTERMINE_SOLR_ENV_NAME }}"
+
+- name: Run Solr
+  docker_container:
+    name: "{{ INTERMINE_SOLR_SERVER_NAME }}"
+    image: "{{ INTERMINE_SOLR_ENV_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+#    volumes:
+#      - "{{ NEO_VOLUME_NAME }}:/var/lib/neo4j/import"
+    networks:
+      - name: "{{ NET }}"
+    env:
+      MINE_NAME: "alliancemine"
+      MEM_OPTS: "-Xmx2g -Xms1g"
+      JAVA_OPTS: "-Dorg.apache.el.parser.SKIP_IDENTIFIER_CHECK=true -Xmx2g -Xms1g -XX:+UseParallelGC -XX:SoftRefLRUPolicyMSPerMB=1 -XX:MaxHeapFreeRatio=99"

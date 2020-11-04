@@ -28,9 +28,9 @@
   raw: docker run -it --rm amazon/aws-cli ecr get-login-password
   register: docker_output
 
-- name: Docker Token
-  debug:
-    var: docker_output.stdout_lines[0]
+#- name: Docker Token
+#  debug:
+#    var: docker_output.stdout_lines[0]
 
 - name: Docker Login
   docker_login:
