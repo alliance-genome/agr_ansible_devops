@@ -1,10 +1,16 @@
 REG := 100225593120.dkr.ecr.us-east-1.amazonaws.com
+AWS_PROFILE ?= default
 TAG := latest
 
 build: pull
 	docker build -t agrlocal/agr_ansible_run_unlocked:${TAG} --build-arg REG=${REG} --build-arg ALLIANCE_RELEASE=${TAG} .
 
-pull:
+registry-docker-login:
+ifneq ($(shell echo ${REG} | egrep "ecr\..+\.amazonaws\.com"),)
+	aws --profile ${AWS_PROFILE} ecr get-login-password | docker login -u AWS --password-stdin https://${REG}
+endif
+
+pull: registry-docker-login
 	docker pull ${REG}/agr_base_linux_env:${TAG}
 
 bash:
