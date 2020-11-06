@@ -2,7 +2,7 @@ REG := 100225593120.dkr.ecr.us-east-1.amazonaws.com
 TAG := latest
 
 build: pull
-	docker build -t ${REG}/agr_ansible_run:${TAG} --build-arg REG=${REG} --build-arg ALLIANCE_RELEASE=${TAG} .
+	docker build -t agrlocal/agr_ansible_run_unlocked:${TAG} --build-arg REG=${REG} --build-arg ALLIANCE_RELEASE=${TAG} .
 
 pull:
 	docker pull ${REG}/agr_base_linux_env:${TAG}
