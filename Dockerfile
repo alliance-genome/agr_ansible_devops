@@ -1,5 +1,5 @@
 ARG ALLIANCE_RELEASE=latest
-ARG REG=dockerhub
+ARG REG=agrdocker
 FROM ${REG}/agr_base_linux_env:${ALLIANCE_RELEASE}
 
 WORKDIR /usr/src/ansible
