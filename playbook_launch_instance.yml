@@ -8,11 +8,17 @@
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first
     - "environments/shared_secrets.yml"
 
+  #Note: Define the on_demand variable as true to request on-demand instances
+  #Default launch behaviour: spot instances
+  vars:
+    on_demand: false
+
   tasks:
     - name: Install jq
       package:
         name: jq
         state: present
+      when: not on_demand
     - name: Fetch on-demand pricing
       shell: >-
         aws pricing get-products --service-code AmazonEC2 --region us-east-1
@@ -22,15 +28,16 @@
         AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY }}"
         AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_KEY }}"
       register: ec2_instance_price
+      when: not on_demand
     - name: Launch instances
       ec2:
         key_name: AGR-ssl2
         keypair: AGR-ssl2
         group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-        spot_price: "{{ ec2_instance_price.stdout }}"
-        spot_type: one-time
-        spot_wait_timeout: 300
+        spot_price: "{{ on_demand | ternary(omit, ec2_instance_price.stdout) }}"
+        spot_type: "{{ on_demand | ternary(omit, 'one-time') }}"
+        spot_wait_timeout: "{{ on_demand | ternary(omit, 300) }}"
         image: ami-0b0b90473c097c55a
         region: us-east-1
         # zone: us-east-1a
