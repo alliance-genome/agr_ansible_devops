@@ -14,11 +14,6 @@
     on_demand: false
 
   tasks:
-    - name: Install jq
-      package:
-        name: jq
-        state: present
-      when: not on_demand
     - name: Fetch on-demand pricing
       shell: >-
         aws pricing get-products --service-code AmazonEC2 --region us-east-1
