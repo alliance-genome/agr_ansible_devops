@@ -24,7 +24,6 @@ INFINISPAN_DATA_IMAGE_NAME: agr_infinispan_data_image
 # Runable images
 QC_IMAGE_NAME: agr_qc_run
 LOADER_IMAGE_NAME: agr_loader_run
-LOADER_TEST_IMAGE_NAME: agr_loader_test_run
 PREPROCESS_IMAGE_NAME: agr_preprocess_run
 JAVA_SOFTWARE_IMAGE_NAME: agr_java_software
 FILEGENER_IMAGE_NAME: agr_file_generator_run
