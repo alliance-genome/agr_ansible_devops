@@ -19,11 +19,10 @@
     volumes:
       - "{{ INTERMINE_DATA_VOLUME_NAME }}:/data"
     env:
-      MEM_OPTS: "-Xms{{ INFINISPAN_MEMORY }} -Xmx{{ INFINISPAN_MEMORY }}"
       ALLIANCE_RELEASE: "{{ ALLIANCE_RELEASE }}"
       EXTRACTOR_OUTPUTDIR: "/data"
       NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
-    command: java -Xms{{ INDEXER_MEMORY }} -Xmx{{ INDEXER_MEMORY }} -jar agr_intermine_data_extractor/target/agr_intermine_data_extractor-jar-with-dependencies.jar
+    command: java -Xms{{ INDEXER_MEMORY }} -Xmx{{ INDEXER_MEMORY }} -DDEFAULT_LOG_LEVEL=DEBUG -jar agr_intermine_data_extractor/target/agr_intermine_data_extractor-jar-with-dependencies.jar
 
 - name: Run Intermine Builder
   docker_container:
