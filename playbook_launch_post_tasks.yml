@@ -13,6 +13,7 @@
       become: true
       become_user: root
     - role: setup_nvme_drives
+      when: SKIP_NVME_DRIVES == false
       become: true
       become_user: root
     - role: setup_docker
@@ -23,7 +24,7 @@
       become_user: root
 
   tasks:
-    - name: Setup Docker, Start ES, Start Neo, Run Indexer
+    - name: Setup Docker, Start ES, Start Neo, Run Indexer, Start Prometheus, Start Grafana
       block:
         - set_fact:
             failed_flag: "passed"

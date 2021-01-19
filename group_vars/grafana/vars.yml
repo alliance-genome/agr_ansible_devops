@@ -1,0 +1,17 @@
+---
+grafana_security:
+  admin_user: admin
+  admin_password: "{{ GRAFANA_PASSWORD }}"
+
+grafana_auth:
+  anonymous:
+    org_name: "Alliance of Genome Resources"
+    org_role: Viewer
+
+grafana_datasources:
+- name: "Prometheus"
+  type: "prometheus"
+  access: "proxy"
+  url: "http://{{ item.public_dns_name }}:9090"
+  isDefault: true
+grafana_dashboards: []

@@ -1,0 +1,13 @@
+- name: Start Prometheus
+  roles:
+    - cloudalchemy.blackbox-exporter
+    - cloudalchemy.prometheus
+    - cloudalchemy.alertmanager
+  tags:
+    - prometheus
+
+- name: Start Grafana
+  roles:
+    - cloudalchemy.grafana
+  tags:
+    - grafana

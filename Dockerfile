@@ -13,3 +13,5 @@ RUN mkdir /root/.ssh
 RUN mkdir /root/.docker
 
 ADD . .
+
+RUN ansible-galaxy install -r roles/setup_monitoring/requirements.yml

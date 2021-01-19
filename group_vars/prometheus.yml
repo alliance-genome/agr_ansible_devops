@@ -1,0 +1,71 @@
+---
+prometheus_web_external_url: "http://{{ item.public_dns_name }}:9090"
+prometheus_storage_retention: "31d"
+
+prometheus_alertmanager_config:
+- scheme: http
+  static_configs:
+  - targets:
+    - "{{ item.public_dns_name}}:9093"
+
+prometheus_alert_rules_files:
+- rules/*.rules
+
+prometheus_alert_rules:
+- alert: Watchdog
+  expr: vector(1)
+  for: 10m
+  labels:
+    severity: warning
+  annotations:
+    description: 'This is an alert meant to ensure that the entire alerting pipeline is functional.
+      This alert is always firing, therefore it should always be firing in Alertmanager
+      and always fire against a receiver. There are integrations with various notification
+      mechanisms that send a notification when this alert is not firing. For example the
+      "DeadMansSnitch" integration in PagerDuty.'
+    summary: 'Ensure entire alerting pipeline is functional'
+
+prometheus_targets:
+  node:
+  - targets:
+      "{{ groups['all'] | map('extract', hostvars, ['ansible_host']) | map('regex_replace', '$', ':9100') | list }}"
+    labels:
+      env: demo
+  alertmanager:
+  - targets:
+    - "{{ item.public_dns_name }}:9093"
+    labels:
+      env: demo
+
+prometheus_scrape_configs:
+- job_name: "prometheus"
+  metrics_path: "/metrics"
+  static_configs:
+  - targets:
+    - "{{ item.public_dns_name }}:9090"
+- job_name: "grafana"
+  static_configs:
+  - targets:
+    - "{{ item.public_dns_name }}:3000"
+- job_name: "node"
+  file_sd_configs:
+  - files:
+    - "/etc/prometheus/file_sd/node.yml"
+- job_name: "alertmanager"
+  file_sd_configs:
+  - files:
+    - "/etc/prometheus/file_sd/alertmanager.yml"
+- job_name: 'blackbox'
+  metrics_path: /probe
+  params:
+    module: [http_2xx]
+  static_configs:
+  - targets:
+    - "http://localhost:9100"
+  relabel_configs:
+  - source_labels: [__address__]
+    target_label: __param_target
+  - source_labels: [__param_target]
+    target_label: instance
+  - target_label: __address__
+    replacement: 127.0.0.1:9115  # Blackbox exporter.
