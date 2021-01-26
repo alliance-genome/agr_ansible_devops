@@ -2,7 +2,7 @@
 - name: Setup Docker Server
   hosts: local
   connection: local
-  gather_facts: False
+#  gather_facts: False
 
   vars_files:
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first

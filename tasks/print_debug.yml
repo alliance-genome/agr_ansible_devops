@@ -1,0 +1,4 @@
+- name: Print Debug
+  debug:
+    var: hostvars[inventory_hostname]
+  tags: debug_info

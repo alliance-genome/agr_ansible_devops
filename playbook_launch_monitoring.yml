@@ -1,4 +1,4 @@
-- name: Launch Post Tasks
+- name: Launch Monitoring
   hosts: launched
   user: core
   gather_facts: False
@@ -8,25 +8,11 @@
     - "environments/shared_secrets.yml"
     - "environments/shared_variables.yml"
 
-  roles:
-    - role: install_python
-      become: true
-      become_user: root
-    - role: setup_nvme_drives
-      when: SKIP_NVME_DRIVES == false
-      become: true
-      become_user: root
-    - role: setup_docker
-      become: true
-      become_user: root
-    - role: setup_swap
-      become: true
-      become_user: root
-
   tasks:
-    - name: Setup Docker, Start ES, Start Neo, Run Indexer
+    - name: Start Monitoring
       debugger: on_failed
       block:
+        - include_tasks: tasks/start_monitoring.yml
         - set_fact:
             failed_flag: "passed"
       rescue:
