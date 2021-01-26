@@ -1,0 +1,27 @@
+- name: Pull Nginx Server Image
+  docker_image:
+    name: "{{ STATUS_NGINX_IMAGE_NAME }}"
+
+- name: Create NGINX HTML Directory
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ STATUS_NGINX_HTML_PATH }}"
+
+- name: Copy Status NGINX HTML Directory
+  copy:
+    src: status/
+    dest: "{{ STATUS_NGINX_HTML_PATH }}"
+    directory_mode: yes
+
+- name: Run Status Nginx
+  docker_container:
+    name: "agr.{{ NET }}.status.nginx.server"
+    image: "{{ STATUS_NGINX_IMAGE_NAME }}"
+    ports:
+      - "7883:80"
+    networks:
+      - name: "{{ NET }}"
+    volumes:
+      - "{{ STATUS_NGINX_HTML_PATH }}:/usr/share/nginx/html"

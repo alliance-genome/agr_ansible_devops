@@ -85,6 +85,7 @@ FILE_GENER_TEST_RUN_NAME: "agr.{{ env }}.filegenerator.test"
 
 # Server Env DockerHub Paths
 LOG_IMAGE_NAME: "docker.elastic.co/logstash/logstash:7.7.0"
+STATUS_NGINX_IMAGE_NAME: "nginx:latest"
 
 # Release Image names
 ES_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ ES_ENV_NAME }}:{{ ALLIANCE_RELEASE }}"
@@ -141,3 +142,4 @@ ES_CLUSTER_SERVER_LIST: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SER
 PROMETHEUS_CONFIG_PATH: "/home/core/config/prometheus"
 GRAFANA_CONFIG_PATH: "/home/core/config/grafana"
 ALERTMANAGER_CONFIG_PATH: "/home/core/config/alert_manager"
+STATUS_NGINX_HTML_PATH: "/home/core/config/status_nginx"
