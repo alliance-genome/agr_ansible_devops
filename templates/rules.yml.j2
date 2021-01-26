@@ -6,20 +6,19 @@ groups:
     expr: up == 0
     for: 0m
     labels:
-      severity: 'critical'
+      severity: critical
     annotations:
-      title: 'Prometheus target missing (instance {{ $labels.instance }})'
-      description: 'A Prometheus target has disappeared. An exporter might be crashed. VALUE = {{ $value }}  LABELS = { { $labels } }'
+      summary: Prometheus target missing (instance {{ $labels.instance }})
+      description: A Prometheus target has disappeared. An exporter might be crashed. VALUE = {{ $value }}  LABELS = { { $labels } }
 
   - alert: PrometheusTooManyRestarts
     expr: changes(process_start_time_seconds{job=~"prometheus|pushgateway|alertmanager"}[15m]) > 2
     for: 0m
     labels:
-      severity: 'warning'
+      severity: warning
     annotations:
-      title: 'Prometheus too many restarts (instance {{ $labels.instance }})'
-      description: 'Prometheus has restarted more than twice in the last 15 minutes.
-      It might be crash-looping. VALUE = {{ $value }} LABELS = { { $labels } }'
+      summary: Prometheus too many restarts (instance {{ $labels.instance }})
+      description: Prometheus has restarted more than twice in the last 15 minutes. It might be crash-looping. VALUE = {{ $value }} LABELS = { { $labels } }
 
 - name: Hardware
   rules:
@@ -84,7 +83,7 @@ groups:
       expr: (node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes < 10 and ON (instance, device, mountpoint) node_filesystem_readonly == 0
       for: 2m
       labels:
-        severity: warning
+        severity: critical
       annotations:
         summary: Host out of disk space (instance {{ $labels.instance }})
         description: Disk is almost full (< 10% left). VALUE = {{ $value }} LABELS = { { $labels } }
@@ -96,7 +95,7 @@ groups:
       expr: (node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes < 10 and ON (instance, device, mountpoint) predict_linear(node_filesystem_avail_bytes{fstype!~"tmpfs"}[1h], 24 * 3600) < 0 and ON (instance, device, mountpoint) node_filesystem_readonly == 0
       for: 2m
       labels:
-        severity: warning
+        severity: critical
       annotations:
         summary: Host disk will fill in 24 hours (instance {{ $labels.instance }})
         description: Filesystem is predicted to run out of space within the next 24 hours at current write rate. VALUE = {{ $value }} LABELS = { { $labels } }
@@ -105,7 +104,7 @@ groups:
       expr: node_filesystem_files_free{mountpoint ="/rootfs"} / node_filesystem_files{mountpoint="/rootfs"} * 100 < 10 and ON (instance, device, mountpoint) node_filesystem_readonly{mountpoint="/rootfs"} == 0
       for: 2m
       labels:
-        severity: warning
+        severity: critical
       annotations:
         summary: Host out of inodes (instance {{ $labels.instance }})
         description: Disk is almost running out of available inodes (< 10% left). VALUE = {{ $value }} LABELS = { { $labels } }
@@ -114,7 +113,7 @@ groups:
       expr: node_filesystem_files_free{mountpoint ="/rootfs"} / node_filesystem_files{mountpoint="/rootfs"} * 100 < 10 and predict_linear(node_filesystem_files_free{mountpoint="/rootfs"}[1h], 24 * 3600) < 0 and ON (instance, device, mountpoint) node_filesystem_readonly{mountpoint="/rootfs"} == 0
       for: 2m
       labels:
-        severity: warning
+        severity: critical
       annotations:
         summary: Host inodes will fill in 24 hours (instance {{ $labels.instance }})
         description: Filesystem is predicted to run out of inodes within the next 24 hours at current write rate. VALUE = {{ $value }} LABELS = { { $labels } }
@@ -144,7 +143,7 @@ groups:
         severity: warning
       annotations:
         summary: Host high CPU load (instance {{ $labels.instance }})
-        description: CPU load is > 80%. VALUE = {{ $value }} LABELS = { { $labels } }
+        description: Host CPU load is above 95% for 5 minutes. VALUE = {{ $value }} LABELS = { { $labels } }
 
     - alert: HostSwapIsFillingUp
       expr: (1 - (node_memory_SwapFree_bytes / node_memory_SwapTotal_bytes)) * 100 > 80
@@ -179,7 +178,7 @@ groups:
     expr: time() - container_last_seen > 60
     for: 0m
     labels:
-      severity: warning
+      severity: critical
     annotations:
       summary: Container killed (instance {{ $labels.instance }})
       description: A container has disappeared. VALUE = {{ $value }} LABELS = {{ $labels }}
@@ -188,13 +187,13 @@ groups:
   # If you want to exclude it from this alert, exclude the series having an empty name:
   # container_cpu_usage_seconds_total{name!=""}
   - alert: ContainerCpuUsage
-    expr: (sum(rate(container_cpu_usage_seconds_total[3m])) BY (instance, name) * 100) > 80
+    expr: (sum(rate(container_cpu_usage_seconds_total[5m])) BY (instance, name) * 100) > 95
     for: 2m
     labels:
       severity: warning
     annotations:
       summary: Container CPU usage (instance {{ $labels.instance }})
-      description: Container CPU usage is above 80%  VALUE = {{ $value }}  LABELS = {{ $labels }}
+      description: Container CPU usage is above 95% for 5 minutes.  VALUE = {{ $value }}  LABELS = {{ $labels }}
 
   # See https://medium.com/faun/how-much-is-too-much-the-linux-oomkiller-and-used-memory-d32186f29c9d
   - alert: ContainerMemoryUsage
@@ -210,7 +209,7 @@ groups:
     expr: (1 - (sum(container_fs_inodes_free) BY (instance) / sum(container_fs_inodes_total) BY (instance)) * 100) > 80
     for: 2m
     labels:
-      severity: warning
+      severity: critical
     annotations:
       summary: Container Volume usage (instance {{ $labels.instance }})
       description: Container Volume usage is above 80%. VALUE = {{ $value }} LABELS = { { $labels } }
@@ -219,7 +218,7 @@ groups:
     expr: (sum(container_fs_io_current) BY (instance, name) * 100) > 80
     for: 2m
     labels:
-      severity: warning
+      severity: critical
     annotations:
       summary: Container Volume IO usage (instance {{ $labels.instance }})
       description: Container Volume IO usage is above 80%. VALUE = {{ $value }} LABELS = { { $labels } }
