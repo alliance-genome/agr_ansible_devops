@@ -7,18 +7,37 @@
 		<script >
 			var host = location.hostname;
 			var articles = [
+//| -Prometheus
+//| -Grafana
+//| -cAdvisor
 				{ 
-					"title":"Title 1",
-					"url": "http://" + host + ":8080/api/index.html",
-					"description":"jQuery",
+					"title":"Cerebro",
+					"url": "http://" + host + ":9000/",
+					"description":"Elastic Search Cluster UI",
 				}, {
-					"title":"Title 2",
-					"url":"URL 2",
-					"description":"Java",
+					"title":"Kibana",
+					"url": "http://" + host + ":5601/",
+					"description":"Kibana Logs and Monitoring ES",
 				}, {
-					"title":"Title 3",
-					"url":"URL 2",
-					"description":"Olin",
+					"title":"ElasticSearch",
+					"url": "http://" + host + ":9200/",
+					"description":"REST Interface to Elastic Search",
+				}, {
+					"title":"Neo4j",
+					"url": "http://" + host + ":7474/",
+					"description":"Neo4j UI Interface to the Database",
+				}, {
+					"title":"Infinispan",
+					"url": "http://" + host + ":11222/console/",
+					"description":"Infinispan Cacher server web console",
+				}, {
+					"title":"Intermine",
+					"url": "http://" + host + "/alliancemine",
+					"description":"Web Console to intermine",
+				}, {
+					"title":"Swagger API Interface",
+					"url": "https://" + host + "/api/swagger-ui/",
+					"description":"UI Interface to AGR Api",
 				}
 			];
 		</script>

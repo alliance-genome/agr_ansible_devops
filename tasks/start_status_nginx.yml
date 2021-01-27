@@ -19,8 +19,10 @@
   docker_container:
     name: "agr.{{ NET }}.status.nginx.server"
     image: "{{ STATUS_NGINX_IMAGE_NAME }}"
-    ports:
-      - "7883:80"
+    recreate: yes
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     networks:
       - name: "{{ NET }}"
     volumes:
