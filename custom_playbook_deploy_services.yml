@@ -17,4 +17,4 @@
       block:
         #- include_tasks: tasks/start_status_nginx.yml
         #- include_tasks: tasks/start_gocd_agent.yml
-        #- include_tasks: tasks/start_monitoring.yml
+        - include_tasks: tasks/start_monitoring.yml

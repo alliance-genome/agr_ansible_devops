@@ -48,6 +48,7 @@
     ports:
       - "8080:8080"
     recreate: yes
+    memory: 0
 
 
 - name: Copy Alert Manager Config
@@ -140,4 +141,4 @@
       - "3000:3000"
     env:
       GF_SECURITY_ADMIN_PASSWORD: "{{ GRAFANA_PASSWORD }}"
-      recreate: yes
+    recreate: yes
