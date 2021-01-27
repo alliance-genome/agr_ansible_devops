@@ -15,4 +15,4 @@
   tasks:
     - name: Start Services
       block:
-        - include_tasks: tasks/start_status_nginx.yml
+        - include_tasks: tasks/start_monitoring.yml

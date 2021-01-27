@@ -4,8 +4,8 @@
     state: directory
   with_items:
     - "{{ PROMETHEUS_CONFIG_PATH }}"
-    - "{{ GRAFANA_CONFIG_PATH }}/datasource"
-    - "{{ GRAFANA_CONFIG_PATH }}/dashboard"
+    - "{{ GRAFANA_CONFIG_PATH }}/datasources"
+    - "{{ GRAFANA_CONFIG_PATH }}/dashboards"
     - "{{ ALERTMANAGER_CONFIG_PATH}}"
 
 - name: Pull Node Exporter Image
@@ -100,15 +100,21 @@
     ports:
       - "9090:9090"
 
-- name: Copy Grafana Datasource
+- name: Copy Grafana Datasource Config
   template:
     src: datasource.yml.j2
-    dest: "{{ GRAFANA_CONFIG_PATH }}/datasource/datasource.yml"
+    dest: "{{ GRAFANA_CONFIG_PATH }}/datasources/datasource.yml"
 
-- name: Copy Grafana Dashboard
+- name: Copy Grafana Dashboard Config
   template:
     src: dashboard.yml.j2
-    dest: "{{ GRAFANA_CONFIG_PATH }}/dashboard/dashboard.yml"
+    dest: "{{ GRAFANA_CONFIG_PATH }}/dashboards/dashboard.yml"
+
+- name: Copy Grafana Dashboards
+  copy:
+    src: dashboards/
+    dest: "{{ GRAFANA_CONFIG_PATH }}/dashboards/"
+    directory_mode: yes
 
 - name: Pull Grafana Image
   docker_image:
