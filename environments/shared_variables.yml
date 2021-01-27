@@ -10,6 +10,7 @@ REGISTRY: 100225593120.dkr.ecr.us-east-1.amazonaws.com
 # Env Images
 NEO_ENV_NAME: agr_neo4j_env
 ES_ENV_NAME: agr_elasticsearch_env
+GOCD_ENV_NAME: agr_gocd_env
 KIBANA_ENV_NAME: agr_kibana_env
 INFINISPAN_ENV_NAME: agr_infinispan_env
 INTERMINE_BUILDER_ENV_NAME: agr_intermine_builder_env
@@ -55,8 +56,9 @@ INTERMINE_POSTGRES_SERVER_NAME: "agr.{{ env }}.intermine.postgres.server"
 INTERMINE_SOLR_SERVER_NAME: "agr.{{ env }}.intermine.solr.server"
 INTERMINE_TOMCAT_SERVER_NAME: "agr.{{ env }}.intermine.tomcat.server"
 
-#Elk Servers
+#Servers
 ES_SERVER_NAME: "agr.{{ env }}.elasticsearch.server"
+GOCD_AGENT_NAME: "agr.{{ env }}.gocd.agent"
 LOG_SERVER_NAME: "agr.{{ env }}.log.server" # Logging runs outside the docker network
 KIBANA_SERVER_NAME: "agr.{{ env }}.kibana.server"
 
@@ -88,6 +90,8 @@ LOG_IMAGE_NAME: "docker.elastic.co/logstash/logstash:7.7.0"
 STATUS_NGINX_IMAGE_NAME: "nginx:latest"
 
 # Release Image names
+GOCD_IMAGE_NAME: "{{ REGISTRY }}/{{ GOCD_ENV_NAME }}:latest"
+
 ES_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ ES_ENV_NAME }}:{{ ALLIANCE_RELEASE }}"
 QC_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ QC_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
 KIBANA_IMAGE_NAME: "{{ REGISTRY }}/{{ KIBANA_ENV_NAME }}:{{ ALLIANCE_RELEASE }}"

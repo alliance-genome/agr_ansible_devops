@@ -1,0 +1,46 @@
+- name: Pull GOCD Env Image
+  docker_image:
+    name: "{{ GOCD_IMAGE_NAME }}"
+  when: START_GOCD_AGENT
+
+- name: Run GoCD Agent 0
+  docker_container:
+    name: "{{ GOCD_AGENT_NAME }}0"
+    image: "{{GOCD_IMAGE_NAME }}"
+    volumes:
+      - "/home/core/.docker:/root/.docker"
+      - "/var/run/docker.sock:/var/run/docker.sock:rw"
+    env:
+      GO_SERVER_URL: "http://gocd.alliancegenome.internal:8153/go"
+    networks:
+      - name: "{{ NET }}"
+    recreate: yes
+  when: START_GOCD_AGENT
+
+- name: Run GoCD Agent 1
+  docker_container:
+    name: "{{ GOCD_AGENT_NAME }}1"
+    image: "{{GOCD_IMAGE_NAME }}"
+    volumes:
+      - "/home/core/.docker:/root/.docker"
+      - "/var/run/docker.sock:/var/run/docker.sock:rw"
+    env:
+      GO_SERVER_URL: "http://gocd.alliancegenome.internal:8153/go"
+    networks:
+      - name: "{{ NET }}"
+    recreate: yes
+  when: START_GOCD_AGENT
+
+- name: Run GoCD Agent 2
+  docker_container:
+    name: "{{ GOCD_AGENT_NAME }}2"
+    image: "{{GOCD_IMAGE_NAME }}"
+    volumes:
+      - "/home/core/.docker:/root/.docker"
+      - "/var/run/docker.sock:/var/run/docker.sock:rw"
+    env:
+      GO_SERVER_URL: "http://gocd.alliancegenome.internal:8153/go"
+    networks:
+      - name: "{{ NET }}"
+    recreate: yes
+  when: START_GOCD_AGENT
