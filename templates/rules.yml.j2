@@ -187,7 +187,7 @@ groups:
   # If you want to exclude it from this alert, exclude the series having an empty name:
   # container_cpu_usage_seconds_total{name!=""}
   - alert: ContainerCpuUsage
-    expr: (sum(rate(container_cpu_usage_seconds_total[5m])) BY (instance, name) * 100) > 95
+    expr: (sum(rate(container_cpu_usage_seconds_total{name!=""}[5m])) BY (instance, name) * 100) > 95
     for: 2m
     labels:
       severity: warning
