@@ -7,6 +7,9 @@
   docker_container:
     name: "{{ GOCD_AGENT_NAME }}0"
     image: "{{GOCD_IMAGE_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     volumes:
       - "/home/core/.docker:/root/.docker"
       - "/var/run/docker.sock:/var/run/docker.sock:rw"
@@ -21,6 +24,9 @@
   docker_container:
     name: "{{ GOCD_AGENT_NAME }}1"
     image: "{{GOCD_IMAGE_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     volumes:
       - "/home/core/.docker:/root/.docker"
       - "/var/run/docker.sock:/var/run/docker.sock:rw"
@@ -35,6 +41,9 @@
   docker_container:
     name: "{{ GOCD_AGENT_NAME }}2"
     image: "{{GOCD_IMAGE_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     volumes:
       - "/home/core/.docker:/root/.docker"
       - "/var/run/docker.sock:/var/run/docker.sock:rw"
