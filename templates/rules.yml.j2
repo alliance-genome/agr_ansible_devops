@@ -197,7 +197,7 @@ groups:
 
   # See https://medium.com/faun/how-much-is-too-much-the-linux-oomkiller-and-used-memory-d32186f29c9d
   - alert: ContainerMemoryUsage
-    expr: (sum(container_memory_working_set_bytes) BY (instance, name) / sum(container_spec_memory_limit_bytes > 0) BY (instance, name) * 100) > 90
+    expr: (sum(container_memory_working_set_bytes{name!=""}) BY (instance, name) / sum(container_spec_memory_limit_bytes{name!=""} > 0) BY (instance, name) * 100) > 90
     for: 5m
     labels:
       severity: warning
