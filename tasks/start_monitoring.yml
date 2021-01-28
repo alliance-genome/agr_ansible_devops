@@ -142,3 +142,30 @@
     env:
       GF_SECURITY_ADMIN_PASSWORD: "{{ GRAFANA_PASSWORD }}"
     recreate: yes
+
+- name: Pull Portainer Image
+  docker_image:
+    name: portainer/portainer-ce:latest
+
+- name: Create Portainer Volume
+  docker_volume:
+    name: portainer_data
+
+- name: Run Portainer Image
+  docker_container:
+    name: "{{ PORTAINER_SERVER_NAME }}"
+    image: "portainer/portainer-ce:latest"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    volumes:
+      - "portainer_data:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "8500:8000"
+      - "9500:9000"
+    command:
+      - "--admin-password={{ PORTAINER_PASSWORD }}"
+    recreate: yes
