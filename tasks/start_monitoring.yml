@@ -150,6 +150,8 @@
 - name: Create Portainer Volume
   docker_volume:
     name: portainer_data
+    state: present
+    force: yes
 
 - name: Run Portainer Image
   docker_container:
