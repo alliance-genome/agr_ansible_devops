@@ -188,7 +188,7 @@ groups:
   # container_cpu_usage_seconds_total{name!=""}
   - alert: ContainerCpuUsage
     expr: (sum(rate(container_cpu_usage_seconds_total{name!=""}[5m])) BY (instance, name) * 100) > 95
-    for: 2m
+    for: 5m
     labels:
       severity: warning
     annotations:
