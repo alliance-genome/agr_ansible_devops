@@ -141,8 +141,6 @@
       - "3000:3000"
     env:
       GF_SECURITY_ADMIN_PASSWORD: "{{ GRAFANA_PASSWORD }}"
-#      GF_AUTH_ANONYMOUS_ORG_NAME: "Alliance of Genome Resources"
-#      GF_AUTH_ANONYMOUS_ORG_ROLE: "Viewer"
       GF_AUTH_ANONYMOUS_ENABLED: "true"
       GF_AUTH_DISABLE_LOGIN_FORM: "true"
 
