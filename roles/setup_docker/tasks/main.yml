@@ -91,10 +91,10 @@
     state: stopped
   become: true
   become_user: root
-
-- name: Prune dangling images nightly at 2 AM
-  cron:
-    name: prune_dangling_images
-    minute: "0"
-    hour: "2"
-    job: "docker image prune -f"
+#
+#- name: Prune dangling images nightly at 2 AM
+#  cron:
+#    name: prune_dangling_images
+#    minute: "0"
+#    hour: "2"
+#    job: "docker image prune -f"
