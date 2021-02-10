@@ -8,11 +8,3 @@
 
 - name: Push Container To Docker Hub
   command: docker push "{{ CACHER_RELEASE_IMAGE_NAME }}"
-
-- name: Add Tag to Repository from name
-  command: docker tag "{{ CACHER_RELEASE_IMAGE_NAME }}" "{{ CACHER_NETWORK_IMAGE_NAME }}"
-  when: NET != DOCKER_IMAGE_TAG
-
-- name: Push Net Container To Docker Hub
-  command: docker push "{{ CACHER_NETWORK_IMAGE_NAME }}"
-  when: NET != DOCKER_IMAGE_TAG
