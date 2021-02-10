@@ -1,6 +1,6 @@
-ARG ALLIANCE_RELEASE=latest
+ARG DOCKER_IMAGES_TAG=latest
 ARG REG=agrdocker
-FROM ${REG}/agr_base_linux_env:${ALLIANCE_RELEASE}
+FROM ${REG}/agr_base_linux_env:${DOCKER_IMAGES_TAG}
 
 WORKDIR /usr/src/ansible
 
