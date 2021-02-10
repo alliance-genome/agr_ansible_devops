@@ -20,10 +20,10 @@
   command: docker push "{{ INTERMINE_TOMCAT_SERVER_IMAGE_NAME }}"
 - name: Tag Tomcat NET Container
   command: docker tag "{{ INTERMINE_TOMCAT_SERVER_IMAGE_NAME }}" "{{ INTERMINE_TOMCAT_NETWORK_IMAGE_NAME }}"
-  when: NET != DOCKER_IMAGES_TAG
+  when: NET != DOCKER_IMAGE_TAG
 - name: Push Tomcat NET Container
   command: docker push "{{ INTERMINE_TOMCAT_NETWORK_IMAGE_NAME }}"
-  when: NET != DOCKER_IMAGES_TAG
+  when: NET != DOCKER_IMAGE_TAG
 
 - name: Commit Solr container
   command: docker commit "{{ INTERMINE_SOLR_SERVER_NAME }}" "{{ INTERMINE_SOLR_SERVER_IMAGE_NAME }}"
@@ -31,10 +31,10 @@
   command: docker push "{{ INTERMINE_SOLR_SERVER_IMAGE_NAME }}"
 - name: Tag Solr NET Container
   command: docker tag "{{ INTERMINE_SOLR_SERVER_IMAGE_NAME }}" "{{ INTERMINE_SOLR_NETWORK_IMAGE_NAME}}"
-  when: NET != DOCKER_IMAGES_TAG
+  when: NET != DOCKER_IMAGE_TAG
 - name: Push Solr NET Container
   command: docker push "{{ INTERMINE_SOLR_NETWORK_IMAGE_NAME }}"
-  when: NET != DOCKER_IMAGES_TAG
+  when: NET != DOCKER_IMAGE_TAG
 
 - name: Commit Postgres container
   command: docker commit "{{ INTERMINE_POSTGRES_SERVER_NAME }}" "{{ INTERMINE_POSTGRES_SERVER_IMAGE_NAME }}"
@@ -42,7 +42,7 @@
   command: docker push "{{ INTERMINE_POSTGRES_SERVER_IMAGE_NAME }}"
 - name: Tag Postgres NET Container
   command: docker tag "{{ INTERMINE_POSTGRES_SERVER_IMAGE_NAME }}" "{{ INTERMINE_POSTGRES_NETWORK_IMAGE_NAME }}"
-  when: NET != DOCKER_IMAGES_TAG
+  when: NET != DOCKER_IMAGE_TAG
 - name: Push Postgres NET Container
   command: docker push "{{ INTERMINE_POSTGRES_NETWORK_IMAGE_NAME }}"
-  when: NET != DOCKER_IMAGES_TAG
+  when: NET != DOCKER_IMAGE_TAG
