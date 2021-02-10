@@ -9,9 +9,3 @@
 
 - name: Push Container
   command: docker push "{{ NEO_RELEASE_IMAGE_NAME }}"
-
-- name: Tag NET Container
-  command: docker tag "{{ NEO_RELEASE_IMAGE_NAME }}" "{{ NEO_NETWORK_IMAGE_NAME }}"
-
-- name: Push NET Container
-  command: docker push "{{ NEO_NETWORK_IMAGE_NAME }}"
