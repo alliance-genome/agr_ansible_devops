@@ -11,6 +11,7 @@ REGISTRY: 100225593120.dkr.ecr.us-east-1.amazonaws.com
 # Env Image names
 NEO_ENV_NAME: agr_neo4j_env
 ES_ENV_NAME: agr_elasticsearch_env
+GOCD_ENV_NAME: agr_gocd_env
 KIBANA_ENV_NAME: agr_kibana_env
 INFINISPAN_ENV_NAME: agr_infinispan_env
 INTERMINE_BUILDER_ENV_NAME: agr_intermine_builder_env
@@ -46,13 +47,20 @@ API_SERVER_NAME: "agr.{{ env }}.api.server"
 NEO_SERVER_NAME: "agr.{{ env }}.neo4j.server"
 INFINISPAN_SERVER_NAME: "agr.{{ env }}.infinispan.server"
 LOGSTASH_SERVER_ADDRESS: "udp://logs.alliancegenome.internal:12201"
+PROMETHEUS_SERVER_NAME: "agr.{{ env }}.prometheus.server"
+ALERTMANAGER_SERVER_NAME: "agr.{{ env }}.alertmanager.server"
+CADVISOR_SERVER_NAME: "agr.{{ env }}.cadvisor.server"
+NODEEXPORTER_SERVER_NAME: "agr.{{ env }}.nodeexporter.server"
+GRAFANA_SERVER_NAME: "agr.{{ env }}.grafana.server"
+PORTAINER_SERVER_NAME: "agr.{{ env }}.portainer.server"
 #LOGSTASH_SERVER_ADDRESS: "udp://agr.{{ env }}.log.server:12201"
 INTERMINE_POSTGRES_SERVER_NAME: "agr.{{ env }}.intermine.postgres.server"
 INTERMINE_SOLR_SERVER_NAME: "agr.{{ env }}.intermine.solr.server"
 INTERMINE_TOMCAT_SERVER_NAME: "agr.{{ env }}.intermine.tomcat.server"
 
-#Elk Servers
+#Servers
 ES_SERVER_NAME: "agr.{{ env }}.elasticsearch.server"
+GOCD_AGENT_NAME: "agr.{{ env }}.gocd.agent"
 LOG_SERVER_NAME: "agr.{{ env }}.log.server" # Logging runs outside the docker network
 KIBANA_SERVER_NAME: "agr.{{ env }}.kibana.server"
 
@@ -81,14 +89,18 @@ FILE_GENER_TEST_RUN_NAME: "agr.{{ env }}.filegenerator.test"
 
 # Server Env DockerHub Paths
 LOG_IMAGE_NAME: "docker.elastic.co/logstash/logstash:7.7.0"
+STATUS_NGINX_IMAGE_NAME: "nginx:latest"
 
-# Complete Image names (REGISTRY/NAME:TAG used directly for pushing/pulling)
-ES_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ ES_ENV_NAME }}:{{ DOCKER_IMAGE_TAG }}"
-QC_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ QC_IMAGE_NAME }}:{{ DOCKER_IMAGE_TAG }}"
-KIBANA_IMAGE_NAME: "{{ REGISTRY }}/{{ KIBANA_ENV_NAME }}:{{ DOCKER_IMAGE_TAG }}"
-NEO_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ NEO_ENV_NAME }}:{{ DOCKER_IMAGE_TAG }}"
-LOADER_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ LOADER_IMAGE_NAME }}:{{ DOCKER_IMAGE_TAG }}"
-NEO_RELEASE_IMAGE_NAME: "{{ REGISTRY }}/{{ NEO_DATA_IMAGE_NAME }}:{{ DOCKER_IMAGE_TAG }}"
+# Release Image names
+GOCD_IMAGE_NAME: "{{ REGISTRY }}/{{ GOCD_ENV_NAME }}:latest"
+
+ES_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ ES_ENV_NAME }}:{{ ALLIANCE_RELEASE }}"
+QC_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ QC_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
+KIBANA_IMAGE_NAME: "{{ REGISTRY }}/{{ KIBANA_ENV_NAME }}:{{ ALLIANCE_RELEASE }}"
+NEO_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ NEO_ENV_NAME }}:{{ ALLIANCE_RELEASE }}"
+LOADER_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ LOADER_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
+NEO_RELEASE_IMAGE_NAME: "{{ REGISTRY }}/{{ NEO_DATA_IMAGE_NAME }}:{{ ALLIANCE_RELEASE }}"
+
 VARIANT_RUN_IMAGE_NAME: "{{ REGISTRY }}/agr_variant_indexer:{{ ALLIANCE_RELEASE }}"
 PREPROCESS_RUN_IMAGE_NAME: "{{ REGISTRY }}/{{ PREPROCESS_IMAGE_NAME }}:{{ DOCKER_IMAGE_TAG }}"
 INFINISPAN_ENV_IMAGE_NAME: "{{ REGISTRY }}/{{ INFINISPAN_ENV_NAME }}:{{ DOCKER_IMAGE_TAG }}"
@@ -111,7 +123,7 @@ INTERMINE_POSTGRES_SERVER_IMAGE_NAME: "{{ REGISTRY }}/{{ INTERMINE_POSTGRES_NAME
 INTERMINE_SOLR_SERVER_IMAGE_NAME: "{{ REGISTRY }}/{{ INTERMINE_SOLR_NAME }}:{{ DOCKER_IMAGE_TAG }}"
 INTERMINE_TOMCAT_SERVER_IMAGE_NAME: "{{ REGISTRY }}/{{ INTERMINE_TOMCAT_NAME }}:{{ DOCKER_IMAGE_TAG }}"
 
-# Convinience names
+# Convenience names
 CACHER_RUN_IMAGE_NAME: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
 INDEXER_RUN_IMAGE_NAME: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
 VARIANT_INDEXER_RUN_IMAGE_NAME: "{{ VARIANT_RUN_IMAGE_NAME }}"
@@ -127,3 +139,7 @@ CACHER_MEMORY: "31g"
 ES_CLUSTER_MEMORY: "20g"
 #ES_CLUSTER_SERVER_LIST: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08,{{ ES_SERVER_NAME }}09,{{ ES_SERVER_NAME }}10,{{ ES_SERVER_NAME }}11,{{ ES_SERVER_NAME }}12,{{ ES_SERVER_NAME }}13,{{ ES_SERVER_NAME }}14,{{ ES_SERVER_NAME }}15,{{ ES_SERVER_NAME }}16"
 ES_CLUSTER_SERVER_LIST: "{{ ES_SERVER_NAME }}01,{{ ES_SERVER_NAME }}02,{{ ES_SERVER_NAME }}03,{{ ES_SERVER_NAME }}04,{{ ES_SERVER_NAME }}05,{{ ES_SERVER_NAME }}06,{{ ES_SERVER_NAME }}07,{{ ES_SERVER_NAME }}08"
+PROMETHEUS_CONFIG_PATH: "/home/core/config/prometheus"
+GRAFANA_CONFIG_PATH: "/home/core/config/grafana"
+ALERTMANAGER_CONFIG_PATH: "/home/core/config/alert_manager"
+STATUS_NGINX_HTML_PATH: "/home/core/config/status_nginx"

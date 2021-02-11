@@ -1,0 +1,176 @@
+- name: Create Config Directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ PROMETHEUS_CONFIG_PATH }}"
+    - "{{ GRAFANA_CONFIG_PATH }}/datasources"
+    - "{{ GRAFANA_CONFIG_PATH }}/dashboards"
+    - "{{ ALERTMANAGER_CONFIG_PATH}}"
+
+- name: Pull Node Exporter Image
+  docker_image:
+    name: prom/node-exporter
+
+- name: Run Node Exporter Image
+  docker_container:
+    name: "{{ NODEEXPORTER_SERVER_NAME }}"
+    image: "prom/node-exporter"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "9100:9100"
+    recreate: yes
+
+- name: Pull cAdvisor
+  docker_image:
+    name: google/cadvisor:latest
+
+- name: Run cAdvisor Image
+  docker_container:
+    name: "{{ CADVISOR_SERVER_NAME }}"
+    image: "google/cadvisor:latest"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    volumes:
+      - "/:/rootfs:ro"
+      - "/var/run:/var/run:rw"
+      - "/sys:/sys:ro"
+      - "/var/lib/docker/:/var/lib/docker:ro"
+      - "/cgroup:/cgroup:ro"
+    privileged: yes
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "8080:8080"
+    recreate: yes
+    memory: 0
+    memory_reservation: 0
+
+- name: Copy Alert Manager Config
+  template:
+    src: alertmanager.yml.j2
+    dest: "{{ ALERTMANAGER_CONFIG_PATH }}/alertmanager.yml"
+
+- name: Pull Alertmanager Image
+  docker_image:
+    name: prom/alertmanager:latest
+
+- name: Run Alertmanager
+  docker_container:
+    name: "{{ ALERTMANAGER_SERVER_NAME }}"
+    image: "prom/alertmanager:latest"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    volumes:
+      - "{{ ALERTMANAGER_CONFIG_PATH }}:/etc/alertmanager"
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "9093:9093"
+    recreate: yes
+
+- name: Copy Prometheus Config
+  template:
+    src: prometheus.yml.j2
+    dest: "{{ PROMETHEUS_CONFIG_PATH }}/prometheus.yml"
+
+- name: Copy Prometheus Rules
+  template:
+    src: rules.yml.j2
+    dest: "{{ PROMETHEUS_CONFIG_PATH }}/rules.yml"
+
+- name: Pull Prometheus Image
+  docker_image:
+    name: prom/prometheus:latest
+
+- name: Run Prometheus
+  docker_container:
+    name: "{{ PROMETHEUS_SERVER_NAME }}"
+    image: "prom/prometheus:latest"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    volumes:
+      - "{{ PROMETHEUS_CONFIG_PATH }}:/etc/prometheus"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "9090:9090"
+    recreate: yes
+
+- name: Copy Grafana Datasource Config
+  template:
+    src: datasource.yml.j2
+    dest: "{{ GRAFANA_CONFIG_PATH }}/datasources/datasource.yml"
+
+- name: Copy Grafana Dashboard Config
+  template:
+    src: dashboard.yml.j2
+    dest: "{{ GRAFANA_CONFIG_PATH }}/dashboards/dashboard.yml"
+
+- name: Copy Grafana Dashboards
+  copy:
+    src: dashboards/
+    dest: "{{ GRAFANA_CONFIG_PATH }}/dashboards/"
+    directory_mode: yes
+
+- name: Pull Grafana Image
+  docker_image:
+    name: grafana/grafana:latest
+
+- name: Run Grafana Image
+  docker_container:
+    name: "{{ GRAFANA_SERVER_NAME }}"
+    image: "grafana/grafana:latest"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    volumes:
+      - "{{ GRAFANA_CONFIG_PATH }}:/etc/grafana/provisioning/"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "3000:3000"
+    env:
+      GF_SECURITY_ADMIN_PASSWORD: "{{ GRAFANA_PASSWORD }}"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+
+    recreate: yes
+
+- name: Pull Portainer Image
+  docker_image:
+    name: portainer/portainer-ce:latest
+
+- name: Create Portainer Volume
+  docker_volume:
+    name: portainer_data
+    state: present
+    force: yes
+
+- name: Run Portainer Image
+  docker_container:
+    name: "{{ PORTAINER_SERVER_NAME }}"
+    image: "portainer/portainer-ce:latest"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    volumes:
+      - "portainer_data:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "8500:8000"
+      - "9500:9000"
+    command:
+      - "--admin-password={{ PORTAINER_PASSWORD }}"
+    recreate: yes

@@ -1,0 +1,21 @@
+---
+
+- import_playbook: playbook_launch_pre_tasks.yml
+
+- name: Deploy Services
+  hosts: "{{ env }}"
+  user: core
+  gather_facts: false
+
+  vars_files:
+    - "environments/{{ env }}/main.yml" # ENV must always be loaded first
+    - "environments/shared_secrets.yml"
+    - "environments/shared_variables.yml"
+
+  tasks:
+    - name: Start Services
+      block:
+        #- include_tasks: tasks/start_status_nginx.yml
+        #- include_tasks: tasks/start_gocd_agent.yml
+        - include_tasks: tasks/start_monitoring.yml
+        

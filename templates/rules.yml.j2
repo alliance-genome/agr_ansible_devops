@@ -1,0 +1,234 @@
+{% raw %}
+groups:
+- name: Prometheus and Targets
+  rules:
+  - alert: PrometheusTargetMissing
+    expr: up == 0
+    for: 0m
+    labels:
+      severity: critical
+    annotations:
+      summary: Prometheus target missing (instance {{ $labels.instance }})
+      description: A Prometheus target has disappeared. An exporter might be crashed. VALUE = {{ $value }}  
+
+  - alert: PrometheusTooManyRestarts
+    expr: changes(process_start_time_seconds{job=~"prometheus|pushgateway|alertmanager"}[15m]) > 2
+    for: 0m
+    labels:
+      severity: warning
+    annotations:
+      summary: Prometheus too many restarts (instance {{ $labels.instance }})
+      description: Prometheus has restarted more than twice in the last 15 minutes. It might be crash-looping. VALUE = {{ $value }} 
+
+- name: Hardware
+  rules:
+    - alert: HostOutOfMemory
+      expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 < 10
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: Host out of memory (instance {{ $labels.instance }})
+        description: Node memory is filling up (< 10% left) VALUE = {{ $value }} 
+
+    - alert: HostMemoryUnderMemoryPressure
+      expr: rate(node_vmstat_pgmajfault[1m]) > 1000
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: Host memory under memory pressure (instance {{ $labels.instance }})
+        description: The node is under heavy memory pressure. High rate of major page faults. VALUE = {{ $value }} LABELS =  { { $labels } }
+
+    - alert: HostUnusualNetworkThroughputIn
+      expr: sum by (instance) (rate(node_network_receive_bytes_total[2m])) / 1024 / 1024 > 100
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: Host unusual network throughput in (instance {{ $labels.instance }})
+        description: Host network interfaces are probably receiving too much data (> 100 MB/s). VALUE = {{ $value }} 
+
+    - alert: HostUnusualNetworkThroughputOut
+      expr: sum by (instance) (rate(node_network_transmit_bytes_total[2m])) / 1024 / 1024 > 100
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: Host unusual network throughput out (instance {{ $labels.instance }})
+        description: Host network interfaces are probably sending too much data (> 100 MB/s). VALUE = {{ $value }} 
+
+    - alert: HostUnusualDiskReadRate
+      expr: sum by (instance) (rate(node_disk_read_bytes_total[2m])) / 1024 / 1024 > 50
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: Host unusual disk read rate (instance {{ $labels.instance }})
+        description: Disk is probably reading too much data (> 50 MB/s). VALUE = {{ $value }} 
+
+#    - alert: HostUnusualDiskWriteRate
+#      expr: sum by (instance) (rate(node_disk_written_bytes_total[10m])) / 1024 / 1024 > 50
+#      for: 10m
+#      labels:
+#        severity: warning
+#      annotations:
+#        summary: Host unusual disk write rate (instance {{ $labels.instance }})
+#        description: Disk is probably writing too much data (> 50 MB/s). VALUE = {{ $value }}
+
+    # Please add ignored mountpoints in node_exporter parameters like
+    # "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|run)($|/)".
+    # Same rule using "node_filesystem_free_bytes" will fire when disk fills for non-root users.
+    - alert: HostOutOfDiskSpace
+      expr: (node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes < 10 and ON (instance, device, mountpoint) node_filesystem_readonly == 0
+      for: 2m
+      labels:
+        severity: critical
+      annotations:
+        summary: Host out of disk space (instance {{ $labels.instance }})
+        description: Disk is almost full (< 10% left). VALUE = {{ $value }} 
+
+    # Please add ignored mountpoints in node_exporter parameters like
+    # "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|run)($|/)".
+    # Same rule using "node_filesystem_free_bytes" will fire when disk fills for non-root users.
+    - alert: HostDiskWillFillIn24Hours
+      expr: (node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes < 10 and ON (instance, device, mountpoint) predict_linear(node_filesystem_avail_bytes{fstype!~"tmpfs"}[1h], 24 * 3600) < 0 and ON (instance, device, mountpoint) node_filesystem_readonly == 0
+      for: 2m
+      labels:
+        severity: critical
+      annotations:
+        summary: Host disk will fill in 24 hours (instance {{ $labels.instance }})
+        description: Filesystem is predicted to run out of space within the next 24 hours at current write rate. VALUE = {{ $value }} 
+
+    - alert: HostOutOfInodes
+      expr: node_filesystem_files_free{mountpoint ="/rootfs"} / node_filesystem_files{mountpoint="/rootfs"} * 100 < 10 and ON (instance, device, mountpoint) node_filesystem_readonly{mountpoint="/rootfs"} == 0
+      for: 2m
+      labels:
+        severity: critical
+      annotations:
+        summary: Host out of inodes (instance {{ $labels.instance }})
+        description: Disk is almost running out of available inodes (< 10% left). VALUE = {{ $value }} 
+
+    - alert: HostInodesWillFillIn24Hours
+      expr: node_filesystem_files_free{mountpoint ="/rootfs"} / node_filesystem_files{mountpoint="/rootfs"} * 100 < 10 and predict_linear(node_filesystem_files_free{mountpoint="/rootfs"}[1h], 24 * 3600) < 0 and ON (instance, device, mountpoint) node_filesystem_readonly{mountpoint="/rootfs"} == 0
+      for: 2m
+      labels:
+        severity: critical
+      annotations:
+        summary: Host inodes will fill in 24 hours (instance {{ $labels.instance }})
+        description: Filesystem is predicted to run out of inodes within the next 24 hours at current write rate. VALUE = {{ $value }} 
+
+    - alert: HostUnusualDiskReadLatency
+      expr: rate(node_disk_read_time_seconds_total[1m]) / rate(node_disk_reads_completed_total[1m]) > 0.1 and rate(node_disk_reads_completed_total[1m]) > 0
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: Host unusual disk read latency (instance {{ $labels.instance }})
+        description: Disk latency is growing (read operations > 100ms). VALUE = {{ $value }} 
+
+    - alert: HostUnusualDiskWriteLatency
+      expr: rate(node_disk_write_time_seconds_total[1m]) / rate(node_disk_writes_completed_total[1m]) > 0.1 and rate(node_disk_writes_completed_total[1m]) > 0
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: Host unusual disk write latency (instance {{ $labels.instance }})
+        description: Disk latency is growing (write operations > 100ms). VALUE = {{ $value }} 
+
+    - alert: HostHighCpuLoad
+      expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 95
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: Host high CPU load (instance {{ $labels.instance }})
+        description: Host CPU load is above 95% for 5 minutes. VALUE = {{ $value }} 
+
+    - alert: HostSwapIsFillingUp
+      expr: (1 - (node_memory_SwapFree_bytes / node_memory_SwapTotal_bytes)) * 100 > 80
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: Host swap is filling up (instance {{ $labels.instance }})
+        description: Swap is filling up (>80%). VALUE = {{ $value }} 
+
+    - alert: HostSystemdServiceCrashed
+      expr: node_systemd_unit_state{state="failed"} == 1
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: Host SystemD service crashed (instance {{ $labels.instance }})
+        description: SystemD service crashed. VALUE = {{ $value }} 
+
+    - alert: HostOomKillDetected
+      expr: increase(node_vmstat_oom_kill[1m]) > 0
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: Host OOM kill detected (instance {{ $labels.instance }})
+        description: OOM kill detected. VALUE = {{ $value }} 
+
+- name: Docker
+  rules:
+  - alert: ContainerKilled
+    expr: time() - container_last_seen > 60
+    for: 0m
+    labels:
+      severity: critical
+    annotations:
+      summary: Container killed (instance {{ $labels.instance }})
+      description: A container has disappeared. VALUE = {{ $value }} LABELS = {{ $labels }}
+
+  # cAdvisor can sometimes consume a lot of CPU, so this alert will fire constantly.
+  # If you want to exclude it from this alert, exclude the series having an empty name:
+  # container_cpu_usage_seconds_total{name!=""}
+  - alert: ContainerCpuUsage
+    expr: (sum(rate(container_cpu_usage_seconds_total{name!=""}[5m])) BY (instance, name) * 100) > 95
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: Container CPU usage (instance {{ $labels.instance }})
+      description: Container CPU usage is above 95% for 5 minutes.  VALUE = {{ $value }}
+
+  # See https://medium.com/faun/how-much-is-too-much-the-linux-oomkiller-and-used-memory-d32186f29c9d
+  - alert: ContainerMemoryUsage
+    expr: (sum(container_memory_working_set_bytes{name!=""}) BY (instance, name) / sum(container_spec_memory_limit_bytes{name!=""} > 0) BY (instance, name) * 100) > 90
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: Container Memory usage (instance {{ $labels.instance }})
+      description: Container Memory usage is above 90%. VALUE = {{ $value }} LABELS = {{ $labels }}
+
+  - alert: ContainerVolumeUsage
+    expr: (1 - (sum(container_fs_inodes_free) BY (instance) / sum(container_fs_inodes_total) BY (instance)) * 100) > 80
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: Container Volume usage (instance {{ $labels.instance }})
+      description: Container Volume usage is above 80%. VALUE = {{ $value }} 
+
+  - alert: ContainerVolumeIoUsage
+    expr: (sum(container_fs_io_current) BY (instance, name) * 100) > 80
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: Container Volume IO usage (instance {{ $labels.instance }})
+      description: Container Volume IO usage is above 80%. VALUE = {{ $value }} 
+
+  - alert: ContainerHighThrottleRate
+    expr: rate(container_cpu_cfs_throttled_seconds_total[3m]) > 1
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Container high throttle rate (instance {{ $labels.instance }})
+      description: Container is being throttled. VALUE = {{ $value }} 
+{% endraw %}

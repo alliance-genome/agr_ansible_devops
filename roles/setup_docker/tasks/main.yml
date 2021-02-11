@@ -83,11 +83,24 @@
     state: present
     reload: yes
   become: true
-  become_user: root
 
 - name: Turn off locksmithd
   service:
     name: locksmithd
     state: stopped
   become: true
-  become_user: root
+
+- name: Install Docker pruning service file
+  template: src=docker-prune.service.j2 dest=/etc/systemd/system/docker-prune.service
+  become: true
+
+- name: Install Docker pruning timer file
+  template: src=docker-prune.timer.j2 dest=/etc/systemd/system/docker-prune.timer
+  become: true
+
+- name: Enable the timer for Docker image pruning
+  systemd:
+    name: docker-prune.timer
+    state: started
+    enabled: True
+  become: true

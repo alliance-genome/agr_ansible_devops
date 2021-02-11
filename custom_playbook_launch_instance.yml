@@ -3,6 +3,7 @@
 - import_playbook: playbook_launch_pre_tasks.yml
 - import_playbook: playbook_launch_instance.yml
 - import_playbook: playbook_launch_post_tasks.yml
+- import_playbook: playbook_launch_monitoring.yml
 
 - name: Configure Servers
   hosts: launched

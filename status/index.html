@@ -1,0 +1,83 @@
+<html>
+	<head>
+		<title>Status Page</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+		<script >
+			var host = location.hostname;
+			var articles = [
+				{
+					"title":"Cerebro",
+					"url": "http://" + host + ":9000/",
+					"description":"Elasticsearch Cluster UI.",
+				}, {
+					"title":"Kibana",
+					"url": "http://" + host + ":5601/app/logtrail#/?_g=()",
+					"description":"Kibana Logs and Monitoring Elasticsearch.",
+				}, {
+					"title":"ElasticSearch",
+					"url": "http://" + host + ":9200/",
+					"description":"REST Interface to Elasticsearch.",
+				}, {
+					"title":"Neo4j",
+					"url": "http://" + host + ":7474/",
+					"description":"Neo4j UI Interface to the Database.",
+				}, {
+					"title":"Infinispan",
+					"url": "http://" + host + ":11222/console/",
+					"description":"Infinispan Cacher server web console.",
+				}, {
+					"title":"AllianceMine",
+					"url": "http://" + host + "/alliancemine",
+					"description":"Web Console to Intermine.",
+				}, {
+					"title":"Swagger API Interface",
+					"url": "https://" + host + "/api/swagger-ui/",
+					"description":"UI Interface to AGR API.",
+				}, {
+					"title":"Prometheus",
+					"url": "http://" + host + ":9090",
+					"description":"Metrics aggregator and alarm dispatcher.",
+				}, {
+					"title":"Grafana",
+					"url": "http://" + host + ":3000/dashboards",
+					"description":"Graphs and interactive visualizations. Login required.",
+				}, {
+					"title":"cAdvisor",
+					"url": "http://" + host + ":8080",
+					"description":"Analyzes resource and performance of running containers.",
+				}, {
+					"title":"Portainer",
+					"url": "http://" + host + ":9500",
+					"description":"Container management tool.",
+				}
+			];
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<table id="added-articles" class="table">
+				<tr>
+					<th scope="col">Title</th>
+					<th scope="col">Description</th>
+				</tr>
+			</table>
+		</div>
+	<script>
+		$("tr:has(td)").remove();
+
+		// 2. get each article
+		$.each(articles, function (index, article) {
+
+			// 2.6 Create a new row and append 3 columns (title+url, categories, tags)
+			$("#added-articles").append($('<tr/>')
+				.append($('<td/>').html("<a href='" + article.url + "'>" + article.title + "</a>"))
+				.append($('<td/>').html(article.description))
+			); 
+		}); 
+
+	</script>
+
+	</body>
+</html>
