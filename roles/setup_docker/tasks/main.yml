@@ -91,10 +91,15 @@
     state: stopped
   become: true
   become_user: root
-#
-#- name: Prune dangling images nightly at 2 AM
-#  cron:
-#    name: prune_dangling_images
-#    minute: "0"
-#    hour: "2"
-#    job: "docker image prune -f"
+
+- name: Install Docker pruning service file
+  template: src=docker-prune.service.j2 dest=/etc/systemd/system/docker-prune.service
+
+- name: Install Docker pruning timer file
+  template: src=docker-prune.timer.j2 dest=/etc/systemd/system/docker-prune.timer
+
+- name: Enable the timer for Docker image pruning
+  systemd:
+    name: docker-prune.timer
+    state: started
+    enabled: True

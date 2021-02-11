@@ -1,0 +1,12 @@
+[Unit]
+Description=Prune dangling Docker images nightly
+RefuseManualStart=no
+RefuseManualStop=no
+
+[Timer]
+Persistent=true
+OnCalendar=daily
+Unit=docker-prune.service
+
+[Install]
+WantedBy=timers.target
