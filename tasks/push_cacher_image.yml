@@ -4,7 +4,7 @@
     state: stopped
 
 - name: Commit container
-  command: docker commit "{{ INFINISPAN_SERVER_NAME }}" "{{ CACHER_RELEASE_IMAGE_NAME }}"
+  command: docker commit "{{ INFINISPAN_SERVER_NAME }}" "{{ CACHER_RELEASE_REG_INAME }}:{{ DOCKER_BUILD_TAG }}"
 
 - name: Push Container To Docker Hub
-  command: docker push "{{ CACHER_RELEASE_IMAGE_NAME }}"
+  command: docker push "{{ CACHER_RELEASE_REG_INAME }}:{{ DOCKER_BUILD_TAG }}"
