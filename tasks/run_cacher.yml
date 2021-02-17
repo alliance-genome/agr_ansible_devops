@@ -1,11 +1,11 @@
 - name: Pull Cacher Run Image
   docker_image:
-    name: "{{ CACHER_RUN_IMAGE }}"
+    name: "{{ JAVA_SOFTWARE_RUN_IMAGE }}"
 
 - name: Run Cacher
   docker_container:
     name: "{{ CACHER_RUN_NAME }}"
-    image: "{{ CACHER_RUN_IMAGE }}"
+    image: "{{ JAVA_SOFTWARE_RUN_IMAGE }}"
     detach: no
     log_driver: "gelf"
     log_options:
