@@ -1,0 +1,23 @@
+---
+
+- import_playbook: playbook_launch_pre_tasks.yml
+- import_playbook: playbook_launch_web_instance.yml
+- import_playbook: playbook_launch_post_tasks.yml
+- import_playbook: playbook_launch_monitoring.yml
+
+- name: configure servers
+  hosts: launched
+  user: core
+  gather_facts: false
+
+  vars_files:
+    - "environments/{{ env }}/main.yml" # ENV must always be loaded first
+    - "environments/shared_secrets.yml"
+    - "environments/shared_variables.yml"
+
+  tasks:
+    - name: Start Elk
+      block:
+        - include_tasks: tasks/start_gocd_agent.yml
+        - include_tasks: tasks/start_elk.yml
+        - include_tasks: tasks/start_status_nginx.yml
