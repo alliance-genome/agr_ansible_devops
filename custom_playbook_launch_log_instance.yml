@@ -18,6 +18,5 @@
   tasks:
     - name: Start Elk
       block:
-        - include_tasks: tasks/start_gocd_agent.yml
-        - include_tasks: tasks/start_es_env.yml
+        - include_tasks: tasks/start_elk.yml
         - include_tasks: tasks/start_status_nginx.yml

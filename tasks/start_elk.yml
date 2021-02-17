@@ -42,7 +42,7 @@
     ports:
       - "9600:9600"
       - "12201:12201/udp"
-    command: ./bin/logstash -e "input { gelf { type => docker } } output { elasticsearch { hosts => [\"{{ ES_SERVER_NAME }}\"] } }"
+    command: ./bin/logstash -e "input { gelf { type => docker } } output { elasticsearch { hosts => [\"{{ ES_SERVER_NAME }}\"] ilm_enabled => true ilm_policy => \"ilm-history-ilm-policy\" } }"
 
 - name: Pull Kibana Image
   docker_image:

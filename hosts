@@ -9,3 +9,6 @@ localhost
 
 [production]
 34.203.200.181
+
+[logs]
+54.91.196.72
