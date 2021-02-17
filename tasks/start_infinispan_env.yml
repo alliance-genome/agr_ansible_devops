@@ -1,11 +1,11 @@
 - name: Pull Infinispan Env Image
   docker_image:
-    name: "{{ INFINISPAN_ENV_IMAGE_NAME }}"
+    name: "{{ INFINISPAN_ENV_IMAGE }}"
 
 - name: Run Infinispan
   docker_container:
     name: "{{ INFINISPAN_SERVER_NAME }}"
-    image: "{{ INFINISPAN_ENV_IMAGE_NAME }}"
+    image: "{{ INFINISPAN_ENV_IMAGE }}"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"

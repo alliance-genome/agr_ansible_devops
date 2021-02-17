@@ -2,12 +2,12 @@
 
 - name: Pull Apollo Server Image
   docker_image:
-    name: "{{ APOLLO_SERVER_IMAGE_NAME }}"
+    name: "{{ APOLLO_SERVER_IMAGE }}"
 
 - name: Run Apollo Server
   docker_container:
     name: "{{ APOLLO_SERVER_NAME }}"
-    image: "{{ APOLLO_SERVER_IMAGE_NAME }}"
+    image: "{{ APOLLO_SERVER_IMAGE }}"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"

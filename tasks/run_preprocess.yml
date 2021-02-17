@@ -1,11 +1,11 @@
 - name: Pull Preprocess Run Image
   docker_image:
-    name: "{{ PREPROCESS_RUN_IMAGE_NAME }}"
+    name: "{{ PREPROCESS_RUN_IMAGE }}"
 
 - name: Run Preprocess
   docker_container:
     name: "{{ PREPROCESS_RUN_NAME }}"
-    image: "{{ PREPROCESS_RUN_IMAGE_NAME }}"
+    image: "{{ PREPROCESS_RUN_IMAGE }}"
     detach: no
     log_driver: "gelf"
     log_options:

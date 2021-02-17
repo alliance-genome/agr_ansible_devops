@@ -1,11 +1,11 @@
 - name: Pull File Generator Run Image
   docker_image:
-    name: "{{ FILE_GENER_RUN_IMAGE_NAME }}"
+    name: "{{ FILE_GENER_RUN_IMAGE }}"
 
 - name: Run File Generator
   docker_container:
     name: "{{ FILE_GENER_RUN_NAME }}"
-    image: "{{ FILE_GENER_RUN_IMAGE_NAME }}"
+    image: "{{ FILE_GENER_RUN_IMAGE }}"
     detach: no
     log_driver: "gelf"
     log_options:
@@ -21,7 +21,7 @@
 #- name: Run File Generator Tests
 #  docker_container:
 #    name: "{{ FILE_GENER_RUN_NAME }}"
-#    image: "{{ FILE_GENER_RUN_IMAGE_NAME }}"
+#    image: "{{ FILE_GENER_RUN_IMAGE }}"
 #    command: pytest --verbose --workers 8
 #    detach: no
 #    log_driver: "gelf"

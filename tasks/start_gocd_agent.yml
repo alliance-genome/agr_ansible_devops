@@ -1,12 +1,12 @@
 - name: Pull GOCD Env Image
   docker_image:
-    name: "{{ GOCD_IMAGE_NAME }}"
+    name: "{{ GOCD_IMAGE }}"
   when: START_GOCD_AGENT
 
 - name: Run GoCD Agent 0
   docker_container:
     name: "{{ GOCD_AGENT_NAME }}0"
-    image: "{{GOCD_IMAGE_NAME }}"
+    image: "{{GOCD_IMAGE }}"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
@@ -23,7 +23,7 @@
 - name: Run GoCD Agent 1
   docker_container:
     name: "{{ GOCD_AGENT_NAME }}1"
-    image: "{{GOCD_IMAGE_NAME }}"
+    image: "{{GOCD_IMAGE }}"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
@@ -40,7 +40,7 @@
 - name: Run GoCD Agent 2
   docker_container:
     name: "{{ GOCD_AGENT_NAME }}2"
-    image: "{{GOCD_IMAGE_NAME }}"
+    image: "{{GOCD_IMAGE }}"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"

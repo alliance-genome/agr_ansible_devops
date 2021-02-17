@@ -1,11 +1,11 @@
 - name: Pull Neo4j Data Image
   docker_image:
-    name: "{{ NEO_RELEASE_IMAGE_NAME }}"
+    name: "{{ NEO_DATA_IMAGE }}"
 
 - name: Run Neo4j
   docker_container:
     name: "{{ NEO_SERVER_NAME }}"
-    image: "{{ NEO_RELEASE_IMAGE_NAME }}"
+    image: "{{ NEO_DATA_IMAGE }}"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"

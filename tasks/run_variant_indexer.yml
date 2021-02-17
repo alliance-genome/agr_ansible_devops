@@ -1,11 +1,11 @@
 - name: Pull Variant Indexer Run Image
   docker_image:
-    name: "{{ VARIANT_INDEXER_RUN_IMAGE_NAME }}"
+    name: "{{ VARIANT_RUN_IMAGE }}"
 
 - name: Run Variant Indexer
   docker_container:
     name: "{{ VARIANT_INDEXER_RUN_NAME }}"
-    image: "{{ VARIANT_INDEXER_RUN_IMAGE_NAME }}"
+    image: "{{ VARIANT_RUN_IMAGE }}"
     detach: no
     log_driver: "gelf"
     log_options:

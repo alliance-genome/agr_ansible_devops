@@ -2,12 +2,12 @@
 
 - name: Pull Java Run Image
   docker_image:
-    name: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
+    name: "{{ JAVA_SOFTWARE_RUN_IMAGE }}"
 
 - name: Run API
   docker_container:
     name: "{{ API_SERVER_NAME }}"
-    image: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
+    image: "{{ JAVA_SOFTWARE_RUN_IMAGE }}"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"

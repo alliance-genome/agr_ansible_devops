@@ -1,11 +1,11 @@
 - name: Pull Java Testing Run Image
   docker_image:
-    name: "{{ API_TEST_IMAGE_NAME }}"
+    name: "{{ API_TEST_IMAGE }}"
 
 - name: Run API
   docker_container:
     name: "{{ API_SERVER_NAME }}"
-    image: "{{ API_TEST_IMAGE_NAME }}"
+    image: "{{ API_TEST_IMAGE }}"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
@@ -23,7 +23,7 @@
 - name: Run API Tests
   docker_container:
     name: "{{ API_TEST_NAME }}"
-    image: "{{ API_TEST_IMAGE_NAME }}"
+    image: "{{ API_TEST_IMAGE }}"
     detach: no
     log_driver: "gelf"
     log_options:

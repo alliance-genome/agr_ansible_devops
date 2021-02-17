@@ -2,12 +2,12 @@
 
 - name: Pull UI Server Image
   docker_image:
-    name: "{{ UI_SERVER_IMAGE_NAME }}"
+    name: "{{ UI_SERVER_IMAGE }}"
 
 - name: Run UI
   docker_container:
     name: "{{ UI_SERVER_NAME }}"
-    image: "{{ UI_SERVER_IMAGE_NAME }}"
+    image: "{{ UI_SERVER_IMAGE }}"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"

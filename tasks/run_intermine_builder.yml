@@ -1,15 +1,15 @@
 - name: Pull Intermine Builder Image
   docker_image:
-    name: "{{ INTERMINE_BUILDER_RUN_IMAGE_NAME }}"
+    name: "{{ INTERMINE_BUILDER_RUN_IMAGE }}"
 
 - name: Pull Java Run Image
   docker_image:
-    name: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
+    name: "{{ JAVA_SOFTWARE_RUN_IMAGE }}"
 
 - name: Run Java Intermine Data Extractor
   docker_container:
     name: "{{ INTERMINE_DATA_EXTRACTOR_RUN_NAME }}"
-    image: "{{ JAVA_SOFTWARE_RUN_IMAGE_NAME }}"
+    image: "{{ JAVA_SOFTWARE_RUN_IMAGE }}"
     detach: no
     log_driver: "gelf"
     log_options:
@@ -27,7 +27,7 @@
 - name: Run Intermine Builder
   docker_container:
     name: "{{ INTERMINE_BUILDER_RUN_NAME }}"
-    image: "{{ INTERMINE_BUILDER_RUN_IMAGE_NAME }}"
+    image: "{{ INTERMINE_BUILDER_RUN_IMAGE }}"
     detach: no
     log_driver: "gelf"
     log_options:

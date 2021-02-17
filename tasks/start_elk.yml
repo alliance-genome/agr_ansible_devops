@@ -1,6 +1,6 @@
 - name: Pull ES Env Image
   docker_image:
-    name: "{{ ES_ENV_IMAGE_NAME }}"
+    name: "{{ ES_ENV_IMAGE }}"
 
 - name: Pull Cerebro Image
   docker_image:
@@ -9,7 +9,7 @@
 - name: Run ES
   docker_container:
     name: "{{ ES_SERVER_NAME }}"
-    image: "{{ ES_ENV_IMAGE_NAME }}"
+    image: "{{ ES_ENV_IMAGE }}"
     networks:
       - name: "{{ NET }}"
     ports:
@@ -46,12 +46,12 @@
 
 - name: Pull Kibana Image
   docker_image:
-    name: "{{ KIBANA_IMAGE_NAME }}"
+    name: "{{ KIBANA_IMAGE }}"
 
 - name: Run Kibana
   docker_container:
     name: "{{ KIBANA_SERVER_NAME }}"
-    image: "{{ KIBANA_IMAGE_NAME }}"
+    image: "{{ KIBANA_IMAGE }}"
     env:
       ELASTICSEARCH_HOSTS: "http://{{ ES_SERVER_NAME }}:9200"
     networks:
