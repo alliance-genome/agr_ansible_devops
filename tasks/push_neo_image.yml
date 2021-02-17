@@ -5,7 +5,7 @@
     state: stopped
 
 - name: Commit container
-  command: docker commit "{{ NEO_SERVER_NAME }}" "{{ NEO_RELEASE_BUILD_IMAGE_NAME }}"
+  command: docker commit "{{ NEO_SERVER_NAME }}" "{{ NEO_DATA_BUILD_IMAGE }}"
 
 - name: Push Container
-  command: docker push "{{ NEO_RELEASE_BUILD_IMAGE_NAME }}"
+  command: docker push "{{ NEO_DATA_BUILD_IMAGE }}"

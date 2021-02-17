@@ -1,11 +1,11 @@
 - name: Pull Indexer Run Image
   docker_image:
-    name: "{{ INDEXER_RUN_IMAGE_NAME }}"
+    name: "{{ INDEXER_RUN_IMAGE }}"
 
 - name: Run Indexer
   docker_container:
     name: "{{ INDEXER_RUN_NAME }}"
-    image: "{{ INDEXER_RUN_IMAGE_NAME }}"
+    image: "{{ INDEXER_RUN_IMAGE }}"
     detach: no
     log_driver: "gelf"
     log_options:

@@ -1,11 +1,11 @@
 - name: Pull QC Run Image
   docker_image:
-    name: "{{ QC_RUN_IMAGE_NAME }}"
+    name: "{{ QC_RUN_IMAGE }}"
 
 - name: Run QC
   docker_container:
     name: "{{ QC_RUN_NAME }}"
-    image: "{{ QC_RUN_IMAGE_NAME }}"
+    image: "{{ QC_RUN_IMAGE }}"
     detach: no
     log_driver: "gelf"
     log_options:

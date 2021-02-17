@@ -15,16 +15,16 @@
     state: stopped
 
 - name: Commit Tomcat container
-  command: docker commit "{{ INTERMINE_TOMCAT_SERVER_NAME }}" "{{ INTERMINE_TOMCAT_SERVER_IMAGE_NAME }}"
+  command: docker commit "{{ INTERMINE_TOMCAT_SERVER_NAME }}" "{{ INTERMINE_TOMCAT_SERVER_BUILD_IMAGE }}"
 - name: Push Tomcat Container
-  command: docker push "{{ INTERMINE_TOMCAT_SERVER_IMAGE_NAME }}"
+  command: docker push "{{ INTERMINE_TOMCAT_SERVER_BUILD_IMAGE }}"
 
 - name: Commit Solr container
-  command: docker commit "{{ INTERMINE_SOLR_SERVER_NAME }}" "{{ INTERMINE_SOLR_SERVER_IMAGE_NAME }}"
+  command: docker commit "{{ INTERMINE_SOLR_SERVER_NAME }}" "{{ INTERMINE_SOLR_SERVER_BUILD_IMAGE }}"
 - name: Push Solr Container
-  command: docker push "{{ INTERMINE_SOLR_SERVER_IMAGE_NAME }}"
+  command: docker push "{{ INTERMINE_SOLR_SERVER_BUILD_IMAGE }}"
 
 - name: Commit Postgres container
-  command: docker commit "{{ INTERMINE_POSTGRES_SERVER_NAME }}" "{{ INTERMINE_POSTGRES_SERVER_IMAGE_NAME }}"
+  command: docker commit "{{ INTERMINE_POSTGRES_SERVER_NAME }}" "{{ INTERMINE_POSTGRES_SERVER_BUILD_IMAGE }}"
 - name: Push Postgres Container
-  command: docker push "{{ INTERMINE_POSTGRES_SERVER_IMAGE_NAME }}"
+  command: docker push "{{ INTERMINE_POSTGRES_SERVER_BUILD_IMAGE }}"

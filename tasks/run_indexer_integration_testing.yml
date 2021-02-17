@@ -1,11 +1,11 @@
 - name: Pull Java Testing Run Image
   docker_image:
-    name: "{{ INDEXER_TEST_IMAGE_NAME }}"
+    name: "{{ INDEXER_TEST_IMAGE }}"
 
 - name: Run Indexer Tests
   docker_container:
     name: "{{ INDEXER_TEST_NAME }}"
-    image: "{{ INDEXER_TEST_IMAGE_NAME }}"
+    image: "{{ INDEXER_TEST_IMAGE }}"
     detach: no
     log_driver: "gelf"
     log_options:

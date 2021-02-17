@@ -1,6 +1,6 @@
 - name: Pull ES Env Image
   docker_image:
-    name: "{{ ES_ENV_IMAGE_NAME }}"
+    name: "{{ ES_ENV_IMAGE }}"
 
 - name: Pull Cerebro Image
   docker_image:
@@ -9,7 +9,7 @@
 - name: Run ES
   docker_container:
     name: "{{ ES_SERVER_NAME }}"
-    image: "{{ ES_ENV_IMAGE_NAME }}"
+    image: "{{ ES_ENV_IMAGE }}"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
