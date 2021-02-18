@@ -13,7 +13,7 @@
       become: true
       become_user: root
     - role: setup_nvme_drives
-      when: SKIP_NVME_DRIVES == false
+      when: not SKIP_NVME_DRIVES
       become: true
       become_user: root
     - role: setup_docker
