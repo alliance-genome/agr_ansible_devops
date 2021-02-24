@@ -32,3 +32,9 @@ bash:
 
 mod_jbrowse_server:
 	docker run -it -e PLAYBOOK_NAME="Mod Jbrowse Server" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e START_GOCD_AGENT=true -e DOCKER_PULL_TAG=build -e SKIP_NVME_DRIVES=true -e WEBSERVER_INSTANCE_TYPE=m4.xlarge -e env=jbrowse -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
+
+stage_web_server:
+	docker run -it -e PLAYBOOK_NAME="Stage Web Server" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e env=stage -e SKIP_NVME_DRIVES=true -e START_GOCD_AGENT=true -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
+
+build_web_server:
+	docker run -it -e PLAYBOOK_NAME="Build Web Server" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e env=build -e SKIP_NVME_DRIVES=true -e START_GOCD_AGENT=true -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
