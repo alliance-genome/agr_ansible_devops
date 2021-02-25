@@ -1,0 +1,14 @@
+---
+
+######################### Variables section #################################
+
+# AWS Variables
+COMPUTE_INSTANCE_TYPE: r5d.8xlarge
+COMPUTE_AMI_IMAGE: ami-0b0b90473c097c55a
+WEBSERVER_INSTANCE_TYPE: "{{ lookup('env','WEBSERVER_INSTANCE_TYPE') or 'r5a.4xlarge' }}"
+WEBSERVER_AMI_IMAGE: "{{ lookup('env','WEBSERVER_AMI_IMAGE') or 'ami-0b0b90473c097c55a' }}"
+
+# ARM Vars
+#WEBSERVER_INSTANCE_TYPE: "{{ lookup('env','WEBSERVER_INSTANCE_TYPE') or 'r6g.4xlarge' }}"
+#WEBSERVER_AMI_IMAGE: "{{ lookup('env','WEBSERVER_AMI_IMAGE') or 'ami-0ca95d4becfa1367b' }}"
+
