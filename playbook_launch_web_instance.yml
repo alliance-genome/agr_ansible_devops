@@ -15,7 +15,7 @@
         keypair: AGR-ssl2
         group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ WEBSERVER_INSTANCE_TYPE }}"
-        image: ami-0b0b90473c097c55a
+        image: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
         vpc_subnet_id: subnet-3ebf4477
         assign_public_ip: yes
