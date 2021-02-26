@@ -46,7 +46,7 @@
         wait: yes
         user_data: "" # Otherwise get weird error on start up
         instance_tags:
-          Name: "AGR Release 3.2.0"
+          Name: "AGR Release 4.0.0"
       register: ec2
 
     - name: Add all instance public IPs to host group
