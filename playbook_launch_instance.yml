@@ -7,6 +7,7 @@
   vars_files:
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first
     - "environments/shared_secrets.yml"
+    - "environments/shared_aws_instance_variables.yml"
 
   #Note: Define the on_demand variable as true to request on-demand instances
   #Default launch behaviour: spot instances
@@ -33,7 +34,7 @@
         spot_price: "{{ on_demand | ternary(omit, ec2_instance_price.stdout) }}"
         spot_type: "{{ on_demand | ternary(omit, 'one-time') }}"
         spot_wait_timeout: "{{ on_demand | ternary(omit, 300) }}"
-        image: ami-0b0b90473c097c55a
+        image: "{{ COMPUTE_AMI_IMAGE }}"
         region: us-east-1
         # zone: us-east-1a
         # vpc_subnet_id: subnet-3ebf4477
