@@ -121,8 +121,8 @@ LOG_IMAGE_NAME: "docker.elastic.co/logstash/logstash:7.7.0"
 
 # Server Images
 INTERMINE_POSTGRES_ENV_NAME: "intermine/postgres"
-INTERMINE_SOLR_ENV_NAME: "intermine/solr"
-INTERMINE_TOMCAT_ENV_NAME: "intermine/tomcat"
+INTERMINE_SOLR_ENV_NAME: "{{ REGISTRY }}/agr_intermine_solr_env:{{ DOCKER_BUILD_TAG }}"
+INTERMINE_TOMCAT_ENV_NAME: "{{ REGISTRY }}/agr_intermine_tomcat_env:{{ DOCKER_BUILD_TAG }}"
 
 # Data Images
 INTERMINE_POSTGRES_SERVER_BUILD_IMAGE: "{{ REGISTRY }}/agr_intermine_postgres_data_image:{{ DOCKER_BUILD_TAG }}"
