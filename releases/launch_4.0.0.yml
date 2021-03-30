@@ -103,13 +103,17 @@
   tasks: 
     - name: Setup Neo, Run Loader, Run Loader Tests
       block:
-        - include_tasks: tasks/start_elk.yml
+        - include_tasks: tasks/start_monitoring.yml
+        - include_tasks: tasks/start_es_env.yml
+        - include_tasks: tasks/start_intermine_postgres_data.yml
+        - include_tasks: tasks/start_intermine_solr_data.yml
         - include_tasks: tasks/start_neo_data.yml
         - include_tasks: tasks/start_ui.yml
         - include_tasks: tasks/start_infinispan_data.yml
         - include_tasks: tasks/start_api_thorntail.yml
         - include_tasks: tasks/start_jbrowse.yml
         - include_tasks: tasks/start_apollo.yml
+        - include_tasks: tasks/start_intermine_tomcat_data.yml
         - include_tasks: tasks/run_restore_index.yml
         - include_tasks: tasks/start_nginx.yml
 

@@ -1,0 +1,18 @@
+- name: Pull Intermine Tomcat Data Image
+  docker_image:
+    name: "{{ INTERMINE_TOMCAT_SERVER_BUILD_IMAGE }}"
+
+- name: Run Tomcat
+  docker_container:
+    name: "{{ INTERMINE_TOMCAT_SERVER_NAME }}"
+    image: "{{ INTERMINE_TOMCAT_SERVER_BUILD_IMAGE }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    networks:
+      - name: "{{ NET }}"
+    env:
+      JAVA_OPTS: "-Dorg.apache.el.parser.SKIP_IDENTIFIER_CHECK=true -XX:+UseParallelGC -XX:SoftRefLRUPolicyMSPerMB=1 -Xmx8g -Xms8g"
+
+- pause:
+    minutes: 2

@@ -1,0 +1,19 @@
+- name: Pull Intermine Solr Data Image
+  docker_image:
+    name: "{{ INTERMINE_SOLR_SERVER_BUILD_IMAGE }}"
+
+- name: Run Solr
+  docker_container:
+    name: "{{ INTERMINE_SOLR_SERVER_NAME }}"
+    image: "{{ INTERMINE_SOLR_SERVER_BUILD_IMAGE }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    ports:
+      - "8983:8983"
+    networks:
+      - name: "{{ NET }}"
+    env:
+      MINE_NAME: "alliancemine"
+      MEM_OPTS: "-Xmx2g -Xms1g"
+      JAVA_OPTS: "-Dorg.apache.el.parser.SKIP_IDENTIFIER_CHECK=true -Xmx2g -Xms1g -XX:+UseParallelGC -XX:SoftRefLRUPolicyMSPerMB=1 -XX:MaxHeapFreeRatio=99"
