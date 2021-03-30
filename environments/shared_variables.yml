@@ -46,6 +46,7 @@ APOLLO_SERVER_NAME: "agr.{{ env }}.apollo.server"
 API_SERVER_NAME: "agr.{{ env }}.api.server"
 NEO_SERVER_NAME: "agr.{{ env }}.neo4j.server"
 INFINISPAN_SERVER_NAME: "agr.{{ env }}.infinispan.server"
+INTERMINE_CDN_SERVER_NAME: "agr.{{ env }}.intermine.cdn.server"
 PROMETHEUS_SERVER_NAME: "agr.{{ env }}.prometheus.server"
 ALERTMANAGER_SERVER_NAME: "agr.{{ env }}.alertmanager.server"
 CADVISOR_SERVER_NAME: "agr.{{ env }}.cadvisor.server"
@@ -125,6 +126,11 @@ INTERMINE_SOLR_ENV_NAME: "{{ REGISTRY }}/agr_intermine_solr_env:{{ DOCKER_BUILD_
 INTERMINE_TOMCAT_ENV_NAME: "{{ REGISTRY }}/agr_intermine_tomcat_env:{{ DOCKER_BUILD_TAG }}"
 
 # Data Images
+INTERMINE_POSTGRES_SERVER_IMAGE: "{{ REGISTRY }}/agr_intermine_postgres_data_image:{{ DOCKER_PULL_TAG }}"
 INTERMINE_POSTGRES_SERVER_BUILD_IMAGE: "{{ REGISTRY }}/agr_intermine_postgres_data_image:{{ DOCKER_BUILD_TAG }}"
+INTERMINE_SOLR_SERVER_IMAGE:     "{{ REGISTRY }}/agr_intermine_solr_data_image:{{ DOCKER_PULL_TAG }}"
 INTERMINE_SOLR_SERVER_BUILD_IMAGE:     "{{ REGISTRY }}/agr_intermine_solr_data_image:{{ DOCKER_BUILD_TAG }}"
+INTERMINE_TOMCAT_SERVER_IMAGE:   "{{ REGISTRY }}/agr_intermine_tomcat_data_image:{{ DOCKER_PULL_TAG }}"
 INTERMINE_TOMCAT_SERVER_BUILD_IMAGE:   "{{ REGISTRY }}/agr_intermine_tomcat_data_image:{{ DOCKER_BUILD_TAG }}"
+
+INTERMINE_CDN_SERVER_IMAGE: "{{ REGISTRY }}/agr_intermine_nginx_cdn:{{ DOCKER_PULL_TAG }}"

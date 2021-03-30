@@ -1,11 +1,11 @@
 - name: Pull Intermine Solr Data Image
   docker_image:
-    name: "{{ INTERMINE_SOLR_SERVER_BUILD_IMAGE }}"
+    name: "{{ INTERMINE_SOLR_SERVER_IMAGE }}"
 
 - name: Run Solr
   docker_container:
     name: "{{ INTERMINE_SOLR_SERVER_NAME }}"
-    image: "{{ INTERMINE_SOLR_SERVER_BUILD_IMAGE }}"
+    image: "{{ INTERMINE_SOLR_SERVER_IMAGE }}"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"

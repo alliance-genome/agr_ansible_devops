@@ -23,6 +23,7 @@
   vars_files:
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first
     - "environments/shared_secrets.yml"
+    - "environments/shared_aws_instance_variables.yml"
 
   tasks:
     - name: Launch instances
@@ -99,7 +100,6 @@
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first
     - "environments/shared_secrets.yml"
     - "environments/shared_variables.yml"
-    - "environments/shared_aws_instance_variables.yml"
 
   tasks: 
     - name: Setup Neo, Run Loader, Run Loader Tests
@@ -116,6 +116,7 @@
         - include_tasks: tasks/start_apollo.yml
         - include_tasks: tasks/start_intermine_tomcat_data.yml
         - include_tasks: tasks/run_restore_index.yml
+        - include_tasks: tasks/start_intermine_cdn_server.yml
         - include_tasks: tasks/start_nginx.yml
 
         # Login to :9000 and add site_index as an alias
