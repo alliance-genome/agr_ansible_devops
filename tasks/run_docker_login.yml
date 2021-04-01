@@ -1,0 +1,15 @@
+- name: AWS Create ECR Token (Good only for 12 hours)
+  raw: docker run -it --rm amazon/aws-cli ecr get-login-password
+  register: docker_output
+
+- name: Docker Token
+  debug:
+    var: docker_output.stdout_lines[0]
+
+- name: Docker Login
+  docker_login:
+    registry_url: "{{ REGISTRY }}"
+    username: "AWS"
+    password: "{{ docker_output.stdout_lines[0] }}"
+  become: true
+  become_user: core
