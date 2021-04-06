@@ -28,7 +28,6 @@
     - name: Launch instances
       ec2:
         key_name: AGR-ssl2
-        keypair: AGR-ssl2
         group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
         spot_price: "{{ on_demand | ternary(omit, ec2_instance_price.stdout) }}"
