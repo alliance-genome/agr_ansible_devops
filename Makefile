@@ -40,4 +40,4 @@ build_web_server:
 	docker run -it -e PLAYBOOK_NAME="Build Web Server" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e env=build -e SKIP_NVME_DRIVES=true -e START_GOCD_AGENT=true -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
 
 openvpn_server:
-	docker run -it -e PLAYBOOK_NAME="OpenVPN Server" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e env=build -e WEBSERVER_INSTANCE_TYPE=t3.small -e SKIP_NVME_DRIVES=true -e START_GOCD_AGENT=true -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
+	docker run -it -e PLAYBOOK_NAME="OpenVPN Server" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e env=build -e WEBSERVER_INSTANCE_TYPE=t3.small -e SKIP_NVME_DRIVES=true -i hosts custom_playbook_launch_instance_bare.yml --vault-password-file=.password
