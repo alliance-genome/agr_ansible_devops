@@ -1,0 +1,230 @@
+---
+- name: Setup Docker Server
+  hosts: local
+  connection: local
+  gather_facts: False
+
+  vars_files:
+    - "environments/{{ env }}/main.yml" # ENV must always be loaded first
+    - "environments/shared_secrets.yml"
+    - "environments/shared_aws_instance_variables.yml"
+
+  #Note: Define the on_demand variable as true to request on-demand instances
+  #Default launch behaviour: spot instances
+  vars:
+    on_demand: false
+
+  tasks:
+    - name: Fetch on-demand pricing
+      shell: >-
+        aws pricing get-products --service-code AmazonEC2 --region us-east-1
+        --filters "Type=TERM_MATCH,Field=usageType,Value=boxUsage:{{ COMPUTE_INSTANCE_TYPE }}" "Type=TERM_MATCH,Field=location,Value=US East (N. Virginia)" "Type=TERM_MATCH,Field=operatingSystem,Value=Linux" "Type=TERM_MATCH,Field=preInstalledSw,Value=NA"
+        | jq -rc '.PriceList[]' | jq -r '.terms.OnDemand[].priceDimensions[].pricePerUnit.USD'
+      environment:
+        AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY }}"
+        AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_KEY }}"
+      register: ec2_instance_price
+      when: not on_demand
+
+    - name: Launch instance 1
+      ec2:
+        key_name: AGR-ssl2
+        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
+        spot_price: "{{ on_demand | ternary(omit, ec2_instance_price.stdout) }}"
+        spot_type: "{{ on_demand | ternary(omit, 'one-time') }}"
+        spot_wait_timeout: "{{ on_demand | ternary(omit, 300) }}"
+        image: "{{ COMPUTE_AMI_IMAGE }}"
+        region: us-east-1
+        # zone: us-east-1a
+        # vpc_subnet_id: subnet-3ebf4477
+        zone: us-east-1b
+        vpc_subnet_id: subnet-df7c7487
+        assign_public_ip: yes
+        instance_profile_name: S3DataAccess
+        aws_access_key: "{{ AWS_ACCESS_KEY }}"
+        aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        volumes:
+          - device_name: /dev/xvda
+            volume_type: io1
+            volume_size: 100
+            iops: 1000
+            delete_on_termination: yes
+        wait: yes
+        user_data: "" # Otherwise get weird error on start up
+        instance_tags:
+          Name: "Ansible Generated - {{ PLAYBOOK_NAME }} 1"
+      register: node1
+
+    - name: Launch instance 2
+      ec2:
+        key_name: AGR-ssl2
+        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
+        spot_price: "{{ on_demand | ternary(omit, ec2_instance_price.stdout) }}"
+        spot_type: "{{ on_demand | ternary(omit, 'one-time') }}"
+        spot_wait_timeout: "{{ on_demand | ternary(omit, 300) }}"
+        image: "{{ COMPUTE_AMI_IMAGE }}"
+        region: us-east-1
+        # zone: us-east-1a
+        # vpc_subnet_id: subnet-3ebf4477
+        zone: us-east-1b
+        vpc_subnet_id: subnet-df7c7487
+        assign_public_ip: yes
+        instance_profile_name: S3DataAccess
+        aws_access_key: "{{ AWS_ACCESS_KEY }}"
+        aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        volumes:
+          - device_name: /dev/xvda
+            volume_type: io1
+            volume_size: 100
+            iops: 1000
+            delete_on_termination: yes
+        wait: yes
+        user_data: "" # Otherwise get weird error on start up
+        instance_tags:
+          Name: "Ansible Generated - {{ PLAYBOOK_NAME }} 2"
+      register: node2
+
+    - name: Launch instance 3
+      ec2:
+        key_name: AGR-ssl2
+        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
+        spot_price: "{{ on_demand | ternary(omit, ec2_instance_price.stdout) }}"
+        spot_type: "{{ on_demand | ternary(omit, 'one-time') }}"
+        spot_wait_timeout: "{{ on_demand | ternary(omit, 300) }}"
+        image: "{{ COMPUTE_AMI_IMAGE }}"
+        region: us-east-1
+        # zone: us-east-1a
+        # vpc_subnet_id: subnet-3ebf4477
+        zone: us-east-1b
+        vpc_subnet_id: subnet-df7c7487
+        assign_public_ip: yes
+        instance_profile_name: S3DataAccess
+        aws_access_key: "{{ AWS_ACCESS_KEY }}"
+        aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        volumes:
+          - device_name: /dev/xvda
+            volume_type: io1
+            volume_size: 100
+            iops: 1000
+            delete_on_termination: yes
+        wait: yes
+        user_data: "" # Otherwise get weird error on start up
+        instance_tags:
+          Name: "Ansible Generated - {{ PLAYBOOK_NAME }} 3"
+      register: node3
+
+    - name: Launch instance 4
+      ec2:
+        key_name: AGR-ssl2
+        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
+        spot_price: "{{ on_demand | ternary(omit, ec2_instance_price.stdout) }}"
+        spot_type: "{{ on_demand | ternary(omit, 'one-time') }}"
+        spot_wait_timeout: "{{ on_demand | ternary(omit, 300) }}"
+        image: "{{ COMPUTE_AMI_IMAGE }}"
+        region: us-east-1
+        # zone: us-east-1a
+        # vpc_subnet_id: subnet-3ebf4477
+        zone: us-east-1b
+        vpc_subnet_id: subnet-df7c7487
+        assign_public_ip: yes
+        instance_profile_name: S3DataAccess
+        aws_access_key: "{{ AWS_ACCESS_KEY }}"
+        aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        volumes:
+          - device_name: /dev/xvda
+            volume_type: io1
+            volume_size: 100
+            iops: 1000
+            delete_on_termination: yes
+        wait: yes
+        user_data: "" # Otherwise get weird error on start up
+        instance_tags:
+          Name: "Ansible Generated - {{ PLAYBOOK_NAME }} 4"
+      register: node4
+
+    - name:
+      debug:
+        var: node4
+
+    - name: Setup instance ids
+      set_fact:
+        ec2: {
+          instance_ids: "{{ node1.instance_ids + node2.instance_ids + node3.instance_ids + node4.instance_ids }}",
+          instances: "{{ node1.instances + node2.instances + node3.instances + node4.instances }}"
+        }
+
+    - name: Add cluster host variables node 1
+      add_host:
+        name: "{{ node1.instances[0].public_ip }}"
+        node_name: "node1"
+        node1_id: "01"
+        node2_id: "02"
+        local_address: "{{ node1.instances[0].private_ip }}"
+        node_list:  "{{ node2.instances[0].private_ip }}:9303,{{ node2.instances[0].private_ip }}:9304,{{ node3.instances[0].private_ip }}:9305,{{ node3.instances[0].private_ip }}:9306,{{ node4.instances[0].private_ip }}:9307,{{ node4.instances[0].private_ip }}:9308"
+
+    - name: Add cluster host variables node 2
+      add_host:
+        name: "{{ node2.instances[0].public_ip }}"
+        node_name: "node2"
+        node1_id: "03"
+        node2_id: "04"
+        local_address: "{{ node2.instances[0].private_ip }}"
+        node_list:  "{{ node1.instances[0].private_ip }}:9301,{{ node1.instances[0].private_ip }}:9302,{{ node3.instances[0].private_ip }}:9305,{{ node3.instances[0].private_ip }}:9306,{{ node4.instances[0].private_ip }}:9307,{{ node4.instances[0].private_ip }}:9308"
+
+    - name: Add cluster host variables node 3
+      add_host:
+        name: "{{ node3.instances[0].public_ip }}"
+        node_name: "node3"
+        node1_id: "05"
+        node2_id: "06"
+        local_address: "{{ node3.instances[0].private_ip }}"
+        node_list:  "{{ node1.instances[0].private_ip }}:9301,{{ node1.instances[0].private_ip }}:9302,{{ node2.instances[0].private_ip }}:9303,{{ node2.instances[0].private_ip }}:9304,{{ node4.instances[0].private_ip }}:9307,{{ node4.instances[0].private_ip }}:9308"
+
+    - name: Add cluster host variables node 4
+      add_host:
+        name: "{{ node4.instances[0].public_ip }}"
+        node_name: "node4"
+        node1_id: "07"
+        node2_id: "08"
+        local_address: "{{ node4.instances[0].private_ip }}"
+        node_list:  "{{ node1.instances[0].private_ip }}:9301,{{ node1.instances[0].private_ip }}:9302,{{ node2.instances[0].private_ip }}:9303,{{ node2.instances[0].private_ip }}:9304,{{ node3.instances[0].private_ip }}:9305,{{ node3.instances[0].private_ip }}:9306"
+
+    - name: Add all hosts to list
+      add_host:
+        name: "all_hosts"
+        node_list:  "{{ node1.instances[0].private_ip }}:9301,{{ node1.instances[0].private_ip }}:9302,{{ node2.instances[0].private_ip }}:9303,{{ node2.instances[0].private_ip }}:9304,{{ node3.instances[0].private_ip }}:9305,{{ node3.instances[0].private_ip }}:9306,{{ node4.instances[0].private_ip }}:9307,{{ node4.instances[0].private_ip }}:9308"
+
+    - name: Add all instance public IPs to host group
+      add_host:
+        hostname: '{{ item.public_ip }}'
+        groupname: launched
+      with_items: "{{ ec2.instances }}"
+      register: launched
+
+    - name: Retrieve all volumes for a queried instance
+      ec2_vol:
+        instance: '{{ item }}'
+        region: us-east-1
+        state: list
+        aws_access_key: "{{ AWS_ACCESS_KEY }}"
+        aws_secret_key: "{{ AWS_SECRET_KEY }}"
+      with_items: "{{ ec2.instance_ids }}"
+      register: ec2_volumes
+
+    - name: Ensure all volumes are tagged
+      ec2_tag:
+        region: us-east-1
+        resource: '{{ item.1.id }}'
+        aws_access_key: "{{ AWS_ACCESS_KEY }}"
+        aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        tags:
+          Name: "Ansible Generated Volume - {{ PLAYBOOK_NAME }}"
+      with_subelements:
+        - "{{ ec2_volumes.results }}"
+        - volumes
+
+    - include_tasks: tasks/check_ssh.yml

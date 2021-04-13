@@ -1,11 +1,11 @@
 ---
 
 - import_playbook: playbook_launch_pre_tasks.yml
-#- import_playbook: playbook_launch_instance.yml
-#- import_playbook: playbook_launch_post_tasks.yml
+- import_playbook: playbook_launch_cluster.yml
+- import_playbook: playbook_launch_post_tasks.yml
 
 - name: Configure Servers
-  hosts: remote
+  hosts: launched
   user: core
   gather_facts: False
 
@@ -17,9 +17,8 @@
   tasks:
     - name: Start ES Cluster, Start Neo, Run Variant Indexer
       block:
-        #- include_tasks: tasks/start_es_cluster_env.yml
-        #- include_tasks: tasks/start_neo_data.yml
-        - include_tasks: tasks/run_variant_indexer.yml
+        - include_tasks: tasks/start_es_cluster_env.yml
+
         - set_fact:
             failed_flag: "passed"
       rescue:
