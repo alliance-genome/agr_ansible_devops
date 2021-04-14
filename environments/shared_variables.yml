@@ -77,8 +77,6 @@ INDEXER_RUN_NAME: "agr.{{ env }}.indexer"
 MOD_VARIANT_INDEXER_RUN_NAME: "agr.{{ env }}.mod_variant_indexer"
 HUMAN_VARIANT_INDEXER_RUN_NAME: "agr.{{ env }}.human_variant_indexer"
 
-VARIANT_INDEXER_RUN_NAME: "agr.{{ env }}.variant_indexer"
-
 INTERMINE_DATA_EXTRACTOR_RUN_NAME: "agr.{{ env }}.data_extractor"
 INTERMINE_BUILDER_RUN_NAME: "agr.{{ env }}.intermine_builder"
 LOADER_TEST_NAME: "agr.{{ env }}.loader.test"
@@ -113,7 +111,6 @@ FILE_GENER_TEST_RUN_IMAGE:  "{{ REGISTRY }}/agr_file_generator_run:{{ env }}_fil
 
 JAVA_SOFTWARE_IMAGE_NAME: agr_java_software
 JAVA_SOFTWARE_RUN_IMAGE: "{{ REGISTRY }}/{{ JAVA_SOFTWARE_IMAGE_NAME }}:{{ DOCKER_PULL_TAG }}"
-VARIANT_RUN_IMAGE:       "{{ REGISTRY }}/{{ JAVA_SOFTWARE_IMAGE_NAME }}:{{ DOCKER_PULL_TAG }}"
 API_TEST_IMAGE:          "{{ REGISTRY }}/{{ JAVA_SOFTWARE_IMAGE_NAME }}:{{ env }}_api"
 INDEXER_TEST_IMAGE:      "{{ REGISTRY }}/{{ JAVA_SOFTWARE_IMAGE_NAME }}:{{ env }}_indexer"
 
