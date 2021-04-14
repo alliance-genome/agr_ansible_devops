@@ -21,7 +21,7 @@
     env:
       node.name: "{{ ES_SERVER_NAME }}{{ hostvars[ansible_host]['node1_id'] }}"
       cluster.name: es-cluster
-      discovery.seed_hosts: "{{ ES_CLUSTER_SERVER_LIST[hostvars[ansible_host]['node_name']]}},{{ hostvars[ansible_host]['node_list'] }}"
+      discovery.seed_hosts: "{{ hostvars['all_hosts']['node_transport_list'] }}"
       cluster.initial_master_nodes: "{{ ES_CLUSTER_SERVER_FULLLIST }}"
       ES_JAVA_OPTS: "-Xms{{ ES_CLUSTER_MEMORY }} -Xmx{{ ES_CLUSTER_MEMORY }}"
       transport.host: "0.0.0.0"
@@ -43,12 +43,56 @@
     env:
       node.name: "{{ ES_SERVER_NAME }}{{ hostvars[ansible_host]['node2_id'] }}"
       cluster.name: es-cluster
-      discovery.seed_hosts: "{{ ES_CLUSTER_SERVER_LIST[hostvars[ansible_host]['node_name']]}},{{ hostvars[ansible_host]['node_list'] }}"
+      discovery.seed_hosts: "{{ hostvars['all_hosts']['node_transport_list'] }}"
       cluster.initial_master_nodes: "{{ ES_CLUSTER_SERVER_FULLLIST }}"
       ES_JAVA_OPTS: "-Xms{{ ES_CLUSTER_MEMORY }} -Xmx{{ ES_CLUSTER_MEMORY }}"
       transport.host: "0.0.0.0"
       transport.publish_host: "{{ hostvars[ansible_host]['local_address'] }}"
       transport.publish_port: "93{{ hostvars[ansible_host]['node2_id'] }}"
+
+- name: Run ES Cluster Node "{{ hostvars[ansible_host]['node3_id'] }}"
+  docker_container:
+    name: "{{ ES_SERVER_NAME }}{{ hostvars[ansible_host]['node3_id'] }}"
+    image: "{{ ES_ENV_IMAGE }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "92{{ hostvars[ansible_host]['node3_id'] }}:9200"
+      - "93{{ hostvars[ansible_host]['node3_id'] }}:9300"
+    env:
+      node.name: "{{ ES_SERVER_NAME }}{{ hostvars[ansible_host]['node3_id'] }}"
+      cluster.name: es-cluster
+      discovery.seed_hosts: "{{ hostvars['all_hosts']['node_transport_list'] }}"
+      cluster.initial_master_nodes: "{{ ES_CLUSTER_SERVER_FULLLIST }}"
+      ES_JAVA_OPTS: "-Xms{{ ES_CLUSTER_MEMORY }} -Xmx{{ ES_CLUSTER_MEMORY }}"
+      transport.host: "0.0.0.0"
+      transport.publish_host: "{{ hostvars[ansible_host]['local_address'] }}"
+      transport.publish_port: "93{{ hostvars[ansible_host]['node3_id'] }}"
+
+- name: Run ES Cluster Node "{{ hostvars[ansible_host]['node4_id'] }}"
+  docker_container:
+    name: "{{ ES_SERVER_NAME }}{{ hostvars[ansible_host]['node4_id'] }}"
+    image: "{{ ES_ENV_IMAGE }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    networks:
+      - name: "{{ NET }}"
+    ports:
+      - "92{{ hostvars[ansible_host]['node4_id'] }}:9200"
+      - "93{{ hostvars[ansible_host]['node4_id'] }}:9300"
+    env:
+      node.name: "{{ ES_SERVER_NAME }}{{ hostvars[ansible_host]['node4_id'] }}"
+      cluster.name: es-cluster
+      discovery.seed_hosts: "{{ hostvars['all_hosts']['node_transport_list'] }}"
+      cluster.initial_master_nodes: "{{ ES_CLUSTER_SERVER_FULLLIST }}"
+      ES_JAVA_OPTS: "-Xms{{ ES_CLUSTER_MEMORY }} -Xmx{{ ES_CLUSTER_MEMORY }}"
+      transport.host: "0.0.0.0"
+      transport.publish_host: "{{ hostvars[ansible_host]['local_address'] }}"
+      transport.publish_port: "93{{ hostvars[ansible_host]['node4_id'] }}"
 
 - name: Run Cerebro
   docker_container:

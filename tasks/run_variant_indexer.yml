@@ -2,6 +2,10 @@
   docker_image:
     name: "{{ VARIANT_RUN_IMAGE }}"
 
+- name: Debug
+  debug:
+    msg: "{{ hostvars['all_hosts'] }}"
+
 - name: Run Variant Indexer
   docker_container:
     name: "{{ VARIANT_INDEXER_RUN_NAME }}"
@@ -12,18 +16,15 @@
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     networks:
       - name: "{{ NET }}"
-    volumes:
-      - "/data:/data"
     env:
       ES_INDEX_SUFFIX: "{{ NET }}"
       ES_INDEX_PREFIX: "human"
-      ES_INDEX: variant_index
-      THREADED: "{{ THREADED }}"
+      ES_INDEX: "variant_index"
 
-      VARIANT_INDEXER_SHARDS: 128
+      DVARIANTS_TO_INDEX: "HUMAN"
 
-      #ES_HOST: "{{ hostvars['all_hosts']['node_list'] }}"
-      ES_HOST: "18.234.155.116:9201,18.234.155.116:9202,54.81.196.192:9203,54.81.196.192:9204,18.209.32.14:9205,18.209.32.14:9206,34.226.204.228:9207,34.226.204.228:9208"
+      VARIANT_INDEXER_SHARDS: "64"
 
-    command: java -DVARIANTS_TO_INDEX="HUMAN" -jar agr_variant_indexer/target/agr_variant_indexer-jar-with-dependencies.jar
+      ES_HOST: "{{ hostvars['all_hosts']['node_http_list'] }}"
 
+    command: java -jar agr_variant_indexer/target/agr_variant_indexer-jar-with-dependencies.jar

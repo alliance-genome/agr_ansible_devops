@@ -1,11 +1,34 @@
 ---
 
 - import_playbook: playbook_launch_pre_tasks.yml
-- import_playbook: playbook_launch_cluster.yml
-- import_playbook: playbook_launch_post_tasks.yml
+#- import_playbook: playbook_launch_cluster.yml
+#- import_playbook: playbook_launch_post_tasks.yml
 
-- name: Configure Servers
-  hosts: launched
+#- name: Start up ES Cluster 
+#  hosts: cluster_nodes
+#  user: core
+#  gather_facts: False
+#
+#  vars_files:
+#    - "environments/{{ env }}/main.yml" # ENV must always be loaded first
+#    - "environments/shared_secrets.yml"
+#    - "environments/shared_variables.yml"
+#
+#  tasks:
+#    - name: Start ES Cluster, Start Neo, Run Variant Indexer
+#      block:
+#        - include_tasks: tasks/start_es_cluster_env.yml
+#
+#        - set_fact:
+#            failed_flag: "passed"
+#      rescue:
+#        - debug:
+#            msg: "Error Detected Failing Build"
+#        - set_fact:
+#            failed_flag: "failed"
+
+- name: Run Variant Indexer Cluster 
+  hosts: variant_node
   user: core
   gather_facts: False
 
@@ -17,7 +40,7 @@
   tasks:
     - name: Start ES Cluster, Start Neo, Run Variant Indexer
       block:
-        - include_tasks: tasks/start_es_cluster_env.yml
+        - include_tasks: tasks/run_variant_indexer.yml
 
         - set_fact:
             failed_flag: "passed"
@@ -36,4 +59,3 @@
     - fail:
         msg: "The execution has failed because of errors."
       when: failed_flag == "failed"
-
