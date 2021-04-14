@@ -73,7 +73,12 @@ LOADER_RUN_NAME: "agr.{{ env }}.loader"
 PREPROCESS_RUN_NAME: "agr.{{ env }}.preprocess"
 CACHER_RUN_NAME: "agr.{{ env }}.cacher"
 INDEXER_RUN_NAME: "agr.{{ env }}.indexer"
+
+MOD_VARIANT_INDEXER_RUN_NAME: "agr.{{ env }}.mod_variant_indexer"
+HUMAN_VARIANT_INDEXER_RUN_NAME: "agr.{{ env }}.human_variant_indexer"
+
 VARIANT_INDEXER_RUN_NAME: "agr.{{ env }}.variant_indexer"
+
 INTERMINE_DATA_EXTRACTOR_RUN_NAME: "agr.{{ env }}.data_extractor"
 INTERMINE_BUILDER_RUN_NAME: "agr.{{ env }}.intermine_builder"
 LOADER_TEST_NAME: "agr.{{ env }}.loader.test"

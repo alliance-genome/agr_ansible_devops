@@ -1,0 +1,26 @@
+- name: Pull Indexer Run Image
+  docker_image:
+    name: "{{ JAVA_SOFTWARE_RUN_IMAGE }}"
+
+- name: Run Mod Variant Indexer
+  docker_container:
+    name: "{{ MOD_VARIANT_INDEXER_RUN_NAME }}"
+    image: "{{ JAVA_SOFTWARE_RUN_IMAGE }}"
+    detach: no
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    networks:
+      - name: "{{ NET }}"
+    env:
+      AWS_ACCESS_KEY: "{{ AWS_ACCESS_KEY }}"
+      AWS_SECRET_KEY: "{{ AWS_SECRET_KEY }}"
+      ES_INDEX_PREFIX: "mod"
+      ES_INDEX: "variant_index"
+      ES_INDEX_SUFFIX: "{{ NET }}"
+
+      VARIANTS_TO_INDEX: "MOD"
+      ES_HOST: "{{ ES_SERVER_NAME }}"
+      NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
+
+    command: java -Xms{{ INDEXER_MEMORY }} -Xmx{{ INDEXER_MEMORY }} -jar agr_variant_indexer/target/agr_variant_indexer-jar-with-dependencies.jar
