@@ -2,6 +2,10 @@
   docker_image:
     name: "{{ VARIANT_RUN_IMAGE }}"
 
+- name: Debug
+  debug:
+    msg: "{{ hostvars['all_hosts'] }}"
+
 - name: Run Variant Indexer
   docker_container:
     name: "{{ VARIANT_INDEXER_RUN_NAME }}"
@@ -12,38 +16,15 @@
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     networks:
       - name: "{{ NET }}"
-    volumes:
-      - "/data:/data"
     env:
       ES_INDEX_SUFFIX: "{{ NET }}"
-      ES_INDEX: variant_index
-      THREADED: "{{ THREADED }}"
-      BOLT_LOG_LEVEL: INFO
+      ES_INDEX_PREFIX: "human"
+      ES_INDEX: "variant_index"
 
-      VARIANT_CONFIG_DOWNLOAD: true
-      VARIANT_CONFIG_CREATING: true
-      VARIANT_CONFIG_INDEXING: true
-     
-      VARIANT_FILE_DOWNLOAD_THREADS: 10
-      VARIANT_FILE_DOWNLOAD_PATH: /data
+      DVARIANTS_TO_INDEX: "HUMAN"
 
-      VARIANT_DISPLAY_INTERVAL: 30
+      VARIANT_INDEXER_SHARDS: "64"
 
-      VARIANT_SOURCE_DOCUMENT_CREATOR_THREADS: 1
-      VARIANT_SOURCE_DOCUMENT_CREATOR_VCQUEUE_SIZE: 400
-      VARIANT_SOURCE_DOCUMENT_CREATOR_VCQUEUE_BUCKET_SIZE: 25
-      VARIANT_SOURCE_DOCUMENT_CREATOR_OBJECT_QUEUE_SIZE: 450
-      VARIANT_SOURCE_DOCUMENT_CREATOR_OBJECT_QUEUE_BUCKET_SIZE: 34
+      ES_HOST: "{{ hostvars['all_hosts']['node_http_list'] }}"
 
-      VARIANT_TRANSFORMER_THREADS: 8
-      VARIANT_PRODUCER_THREADS: 16
-
-      VARIANT_INDEXER_SHARDS: 16
-      VARIANT_INDEXER_BULK_PROCESSOR_THREADS: 24
-      VARIANT_BULK_PROCESSOR_SETTINGS: "1000;16;25;100,250;16;25;400,100;10;10;300,550;8;5;150"
-
-      DEFAULT_LOG_LEVEL: INFO
-      ES_HOST: "{{ ES_CLUSTER_SERVER_LIST }}"
-      #NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
     command: java -jar agr_variant_indexer/target/agr_variant_indexer-jar-with-dependencies.jar
-
