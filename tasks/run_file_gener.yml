@@ -10,8 +10,7 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     env:
       FMS_API_URL: "{{ FMS_API_URL }}"
       API_KEY: "{{ API_ACCESS_TOKEN }}"
@@ -27,8 +26,7 @@
 #    log_driver: "gelf"
 #    log_options:
 #      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-#    networks:
-#      - name: "{{ NET }}"
+#    network_mode: "{{ NET }}"
 #    env:
 #      FMS_API_URL: "{{ FMS_API_URL }}"
 #      API_KEY: "{{ API_ACCESS_TOKEN }}"

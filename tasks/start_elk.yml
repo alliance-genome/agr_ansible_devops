@@ -10,8 +10,7 @@
   docker_container:
     name: "{{ ES_SERVER_NAME }}"
     image: "{{ ES_ENV_IMAGE }}"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -22,8 +21,7 @@
   docker_container:
     name: "agr.{{ env }}.cerebro.server"
     image: "yannart/cerebro:latest"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     ports:
       - "9000:9000"
 
@@ -35,8 +33,7 @@
   docker_container:
     name: "{{ LOG_SERVER_NAME }}"
     image: "{{ LOG_IMAGE_NAME }}"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     env:
       xpack.monitoring.elasticsearch.hosts: "http://{{ ES_SERVER_NAME }}:9200"
     ports:
@@ -54,7 +51,6 @@
     image: "{{ KIBANA_IMAGE }}"
     env:
       ELASTICSEARCH_HOSTS: "http://{{ ES_SERVER_NAME }}:9200"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     ports:
       - "5601:5601"

@@ -11,8 +11,7 @@
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
 #    volumes:
 #      - "{{ NEO_VOLUME_NAME }}:/var/lib/neo4j/import"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     env:
       MINE_NAME: "alliancemine"
       MEM_OPTS: "-Xmx2g -Xms1g"

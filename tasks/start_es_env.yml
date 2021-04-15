@@ -13,8 +13,7 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -26,7 +25,6 @@
   docker_container:
     name: "agr.{{ env }}.cerebro.server"
     image: "yannart/cerebro:latest"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     ports:
       - "9000:9000"

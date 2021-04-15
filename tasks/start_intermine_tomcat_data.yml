@@ -11,8 +11,7 @@
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     ports:
       - "8083:8080"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     env:
       JAVA_OPTS: "-Dorg.apache.el.parser.SKIP_IDENTIFIER_CHECK=true -XX:+UseParallelGC -XX:SoftRefLRUPolicyMSPerMB=1 -Xmx8g -Xms8g"
 

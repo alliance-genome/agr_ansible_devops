@@ -19,8 +19,7 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     ports:
       - "9100:9100"
     recreate: yes
@@ -43,8 +42,7 @@
       - "/var/lib/docker/:/var/lib/docker:ro"
       - "/cgroup:/cgroup:ro"
     privileged: yes
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     ports:
       - "8081:8080"
     recreate: yes
@@ -71,8 +69,7 @@
       - "{{ ALERTMANAGER_CONFIG_PATH }}:/etc/alertmanager"
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     ports:
       - "9093:9093"
     recreate: yes
@@ -107,8 +104,7 @@
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     volumes:
       - "{{ PROMETHEUS_CONFIG_PATH }}:/etc/prometheus"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     ports:
       - "9090:9090"
     recreate: yes
@@ -142,8 +138,7 @@
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     volumes:
       - "{{ GRAFANA_CONFIG_PATH }}:/etc/grafana/provisioning/"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     ports:
       - "3000:3000"
     env:
@@ -173,8 +168,7 @@
     volumes:
       - "portainer_data:/data"
       - "/var/run/docker.sock:/var/run/docker.sock"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     ports:
       - "8500:8000"
       - "9500:9000"

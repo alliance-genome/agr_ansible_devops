@@ -13,8 +13,7 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     ports:
       - "92{{ hostvars[ansible_host]['node1_id'] }}:9200"
       - "93{{ hostvars[ansible_host]['node1_id'] }}:9300"
@@ -35,8 +34,7 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     ports:
       - "92{{ hostvars[ansible_host]['node2_id'] }}:9200"
       - "93{{ hostvars[ansible_host]['node2_id'] }}:9300"
@@ -57,8 +55,7 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     ports:
       - "92{{ hostvars[ansible_host]['node3_id'] }}:9200"
       - "93{{ hostvars[ansible_host]['node3_id'] }}:9300"
@@ -79,8 +76,7 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     ports:
       - "92{{ hostvars[ansible_host]['node4_id'] }}:9200"
       - "93{{ hostvars[ansible_host]['node4_id'] }}:9300"
@@ -98,7 +94,6 @@
   docker_container:
     name: "agr.{{ env }}.cerebro.server"
     image: "yannart/cerebro:latest"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     ports:
       - "9000:9000"

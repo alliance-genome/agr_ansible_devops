@@ -13,8 +13,7 @@
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     ports:
       - "8082:8080"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     command: java -jar agr_api/target/agr_api-thorntail.jar
     env:
       NEO4J_HOST: "{{ NEO_SERVER_NAME }}"

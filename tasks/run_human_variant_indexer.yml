@@ -10,8 +10,7 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     env:
       AWS_ACCESS_KEY: "{{ AWS_ACCESS_KEY }}"
       AWS_SECRET_KEY: "{{ AWS_SECRET_KEY }}"

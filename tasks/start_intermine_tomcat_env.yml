@@ -11,7 +11,6 @@
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     ports:
       - "8083:8080"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     env:
       JAVA_OPTS: "-Xmx2g -Xms1g"

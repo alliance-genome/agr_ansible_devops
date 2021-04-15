@@ -14,8 +14,7 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     volumes:
       - "{{ INTERMINE_DATA_VOLUME_NAME }}:/data"
     env:
@@ -34,8 +33,7 @@
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     volumes:
       - "{{ INTERMINE_DATA_VOLUME_NAME }}:/root/data"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     env:
       MINE_NAME: "alliancemine"
       MINE_REPO_URL: "https://github.com/alliance-genome/alliancemine.git"

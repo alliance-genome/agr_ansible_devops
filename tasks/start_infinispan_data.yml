@@ -11,8 +11,7 @@
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     ports:
       - "11222:11222"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     env:
       MEM_OPTS: "-Xms{{ INFINISPAN_MEMORY }} -Xmx{{ INFINISPAN_MEMORY }}"
 

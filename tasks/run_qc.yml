@@ -10,7 +10,6 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     env:
       NEO4J_HOST: "{{ NEO_SERVER_NAME }}"

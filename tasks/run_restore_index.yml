@@ -11,8 +11,7 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     command: java -jar agr_elasticsearch_util/target/agr_elasticsearch_util-jar-with-dependencies.jar snapshot restorelatest "{{ REPO }}"
     env:
       AWS_SECRET_KEY: "{{ AWS_SECRET_KEY }}"

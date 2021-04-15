@@ -10,8 +10,7 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     command: mvn -B verify -pl agr_indexer -am
     env:
       API_HOST: "{{ API_TESTING_SERVER_NAME }}"

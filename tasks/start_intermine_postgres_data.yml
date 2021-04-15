@@ -11,8 +11,7 @@
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     ports:
       - "5432:5432"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     env:
       PGDATA: /var/lib/postgresql/alliancedata
 

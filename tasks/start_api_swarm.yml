@@ -11,8 +11,7 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     command: java -jar agr_api/target/agr_api-swarm.jar
     env:
       NEO4J_HOST: "{{ NEO_SERVER_NAME }}"

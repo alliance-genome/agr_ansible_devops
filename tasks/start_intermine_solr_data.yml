@@ -11,8 +11,7 @@
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     ports:
       - "8983:8983"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     env:
       MINE_NAME: "alliancemine"
       MEM_OPTS: "-Xmx2g -Xms1g"

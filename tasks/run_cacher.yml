@@ -10,8 +10,7 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     env:
       CACHE_HOST: "{{ INFINISPAN_SERVER_NAME }}"
       NEO4J_HOST: "{{ NEO_SERVER_NAME }}"

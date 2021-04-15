@@ -15,8 +15,7 @@
       - "/var/run/docker.sock:/var/run/docker.sock:rw"
     env:
       GO_SERVER_URL: "http://gocd.alliancegenome.internal:8153/go"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     recreate: yes
   when: START_GOCD_AGENT
 
@@ -32,8 +31,7 @@
       - "/var/run/docker.sock:/var/run/docker.sock:rw"
     env:
       GO_SERVER_URL: "http://gocd.alliancegenome.internal:8153/go"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     recreate: yes
   when: START_GOCD_AGENT
 
@@ -49,7 +47,6 @@
       - "/var/run/docker.sock:/var/run/docker.sock:rw"
     env:
       GO_SERVER_URL: "http://gocd.alliancegenome.internal:8153/go"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     recreate: yes
   when: START_GOCD_AGENT

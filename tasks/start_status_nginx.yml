@@ -23,7 +23,6 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    networks:
-      - name: "{{ NET }}"
+    network_mode: "{{ NET }}"
     volumes:
       - "{{ STATUS_NGINX_HTML_PATH }}:/usr/share/nginx/html"
