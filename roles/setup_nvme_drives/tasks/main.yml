@@ -32,7 +32,9 @@
   command: mkfs.ext4 -F /dev/md0p1
 
 - name: Mount Raid AS docker FS
-  command: mount /dev/md0p1 /var/lib/docker
+  mount:
+    src: /dev/md0p1
+    path: /var/lib/docker
 
 - name: Start Docker
   command: systemctl start docker.service
