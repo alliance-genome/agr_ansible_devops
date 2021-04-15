@@ -6,7 +6,7 @@ NET: "build"
 DOWNLOAD_HOST: "download.alliancegenome.org"
 FMS_API_URL: "https://fms.alliancegenome.org"
 GENERATE_REPORTS: "false"
-LOADER_TEST_SET: "False"
+LOADER_TEST_SET: "false"
 NGINX_TAG: "{{ NET }}"
 LOG_SERVER_HOST: "{{ lookup('env', 'LOG_SERVER_HOST') or 'logs.alliancegenome.internal' }}" # Logging runs outside the docker network
 SKIP_NVME_DRIVES: "{{ lookup('env', 'SKIP_NVME_DRIVES') or false }}"
