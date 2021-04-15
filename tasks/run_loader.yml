@@ -18,7 +18,7 @@
       API_KEY: "{{ API_ACCESS_TOKEN }}"
       DEBUG: "False"
       DOWNLOAD_HOST: "{{ DOWNLOAD_HOST }}"
-      TEST_SET: "{{ LOADER_TEST_SET }}"
+      TEST_SET: "{{ LOADER_TEST_SET|quote }}"
       ALLIANCE_RELEASE: "{{ ALLIANCE_RELEASE }}"
       FMS_API_URL: "{{ FMS_API_URL }}"
       AWS_ACCESS_KEY: "{{ AWS_ACCESS_KEY }}"
@@ -41,7 +41,7 @@
       - name: "{{ NET }}"
     env:
       DOWNLOAD_HOST: "{{ DOWNLOAD_HOST }}"
-      TEST_SET: "{{ LOADER_TEST_SET }}"
+      TEST_SET: "{{ LOADER_TEST_SET|quote }}"
       ALLIANCE_RELEASE: "{{ ALLIANCE_RELEASE }}"
       FMS_API_URL: "{{ FMS_API_URL }}"
       NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
