@@ -36,6 +36,7 @@
     src: /dev/md0p1
     path: /var/lib/docker
     state: mounted
+    fstype: ext4
 
 - name: Start Docker
   command: systemctl start docker.service
