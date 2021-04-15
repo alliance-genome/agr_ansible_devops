@@ -1,4 +1,4 @@
-start_nginx.yml---
+---
 
 - name: Pull Nginx Server Image
   docker_image:
@@ -8,6 +8,9 @@ start_nginx.yml---
   docker_container:
     name: "agr.{{ NET }}.nginx.server"
     image: "{{ REGISTRY }}/agr_nginx:{{ NGINX_TAG }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     ports:
       - "80:80"
       - "443:443"

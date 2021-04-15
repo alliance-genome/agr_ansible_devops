@@ -1,0 +1,20 @@
+- name: Pull Intermine Postgres Data Image
+  docker_image:
+    name: "{{ INTERMINE_POSTGRES_SERVER_IMAGE }}"
+
+- name: Start Postgres
+  docker_container:
+    name: "{{ INTERMINE_POSTGRES_SERVER_NAME }}"
+    image: "{{ INTERMINE_POSTGRES_SERVER_IMAGE }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    ports:
+      - "5432:5432"
+    networks:
+      - name: "{{ NET }}"
+    env:
+      PGDATA: /var/lib/postgresql/alliancedata
+
+- pause:
+    minutes: 2

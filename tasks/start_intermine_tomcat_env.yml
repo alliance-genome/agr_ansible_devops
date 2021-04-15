@@ -9,8 +9,8 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-#    volumes:
-#      - "{{ NEO_VOLUME_NAME }}:/var/lib/neo4j/import"
+    ports:
+      - "8083:8080"
     networks:
       - name: "{{ NET }}"
     env:

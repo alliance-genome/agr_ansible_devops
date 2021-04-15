@@ -12,7 +12,7 @@
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     ports:
-      - "8080:8080"
+      - "8082:8080"
     networks:
       - name: "{{ NET }}"
     command: java -jar agr_api/target/agr_api-thorntail.jar
