@@ -11,6 +11,7 @@
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     network_mode: "{{ NET }}"
+    networks_cli_compatible: no
     env:
       API_KEY: "{{ API_ACCESS_TOKEN }}"
       DEBUG: "False"
