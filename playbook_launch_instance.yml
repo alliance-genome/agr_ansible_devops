@@ -50,7 +50,7 @@
             iops: 3000
             delete_on_termination: yes
         wait: yes
-        wait_timeout: 300
+        wait_timeout: 600
         user_data: "" # Otherwise get weird error on start up
         instance_tags:
           Name: "Ansible Generated - {{ PLAYBOOK_NAME }}"
