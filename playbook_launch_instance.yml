@@ -32,7 +32,7 @@
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
         spot_price: "{{ on_demand | ternary(omit, ec2_instance_price.stdout) }}"
         spot_type: "{{ on_demand | ternary(omit, 'one-time') }}"
-        spot_wait_timeout: "{{ on_demand | ternary(omit, 300) }}"
+        spot_wait_timeout: "{{ on_demand | ternary(omit, 600) }}"
         image: "{{ COMPUTE_AMI_IMAGE }}"
         region: us-east-1
         # zone: us-east-1a
@@ -50,6 +50,7 @@
             iops: 3000
             delete_on_termination: yes
         wait: yes
+        wait_timeout: 600
         user_data: "" # Otherwise get weird error on start up
         instance_tags:
           Name: "Ansible Generated - {{ PLAYBOOK_NAME }}"
