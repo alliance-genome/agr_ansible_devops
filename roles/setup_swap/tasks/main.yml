@@ -2,7 +2,7 @@
 # tasks file for setup_swap
 
 - name: Create swap file
-  command: fallocate -l 64G /swapfile
+  command: fallocate -l 128G /swapfile
   become: true
   become_user: root
 
