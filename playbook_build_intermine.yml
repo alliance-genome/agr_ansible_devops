@@ -17,12 +17,12 @@
   tasks:
     - name: Setup Neo, Run Loader, Push Images
       block:
-        - include_tasks: tasks/start_intermine_postgres_env.yml
-        - include_tasks: tasks/start_intermine_solr_env.yml
-        - include_tasks: tasks/start_intermine_tomcat_env.yml
+        #- include_tasks: tasks/start_intermine_postgres_env.yml
+        #- include_tasks: tasks/start_intermine_solr_env.yml
+        #- include_tasks: tasks/start_intermine_tomcat_env.yml
         - include_tasks: tasks/start_neo_data.yml
         - include_tasks: tasks/run_intermine_builder.yml
-        - include_tasks: tasks/push_intermine_images.yml
+        #- include_tasks: tasks/push_intermine_images.yml
         - set_fact:
             failed_flag: "passed"
 
