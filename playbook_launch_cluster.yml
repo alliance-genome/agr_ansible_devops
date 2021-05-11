@@ -46,9 +46,9 @@
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         volumes:
           - device_name: /dev/xvda
-            volume_type: io1
-            volume_size: 100
-            iops: 1000
+            volume_type: gp3
+            volume_size: 1000
+            iops: 3000
             delete_on_termination: yes
         wait: yes
         user_data: "" # Otherwise get weird error on start up
