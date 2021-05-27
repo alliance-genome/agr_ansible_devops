@@ -11,3 +11,5 @@ NGINX_TAG: "{{ NET }}"
 LOG_SERVER_HOST: "{{ lookup('env', 'LOG_SERVER_HOST') or 'logs.alliancegenome.internal' }}" # Logging runs outside the docker network
 SKIP_NVME_DRIVES: "{{ lookup('env', 'SKIP_NVME_DRIVES') or false }}"
 START_GOCD_AGENT: "{{ lookup('env', 'START_GOCD_AGENT') or false }}"
+INTERMINE_PGUSER: "{{ INTERMINE_BUILD_PGUSER }}"
+INTERMINE_PGPASSWORD: "{{ INTERMINE_BUILD_PGPASSWORD }}"
