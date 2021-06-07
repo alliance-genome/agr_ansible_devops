@@ -1,6 +1,7 @@
 - name: Pull Preprocess Run Image
   docker_image:
     name: "{{ PREPROCESS_RUN_IMAGE }}"
+    source: pull
 
 - name: Run Preprocess
   docker_container:

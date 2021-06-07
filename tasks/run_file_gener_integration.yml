@@ -1,6 +1,7 @@
 - name: Pull File Generator Run Image
   docker_image:
     name: "{{ FILE_GENER_TEST_RUN_IMAGE }}"
+    source: pull
 
 - name: Run File Generator Tests
   docker_container:

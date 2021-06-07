@@ -1,6 +1,7 @@
 - name: Pull QC Run Image
   docker_image:
     name: "{{ QC_RUN_IMAGE }}"
+    source: pull
 
 - name: Run QC
   docker_container:

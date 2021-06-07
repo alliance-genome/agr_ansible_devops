@@ -1,6 +1,7 @@
 - name: Pull Neo4j Env Image
   docker_image:
     name: "{{ NEO_ENV_IMAGE }}"
+    source: pull
 
 - name: Run Neo4j
   docker_container:

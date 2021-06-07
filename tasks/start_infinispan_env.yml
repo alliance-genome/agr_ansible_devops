@@ -1,6 +1,7 @@
 - name: Pull Infinispan Env Image
   docker_image:
     name: "{{ INFINISPAN_ENV_IMAGE }}"
+    source: pull
 
 - name: Run Infinispan
   docker_container:

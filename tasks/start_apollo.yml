@@ -3,6 +3,7 @@
 - name: Pull Apollo Server Image
   docker_image:
     name: "{{ APOLLO_SERVER_IMAGE }}"
+    source: pull
 
 - name: Run Apollo Server
   docker_container:

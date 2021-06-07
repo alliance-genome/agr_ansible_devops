@@ -1,10 +1,12 @@
 - name: Pull ES Env Image
   docker_image:
     name: "{{ ES_ENV_IMAGE }}"
+    source: pull
 
 - name: Pull Cerebro Image
   docker_image:
     name: "yannart/cerebro:latest"
+    source: pull
 
 - name: Run ES
   docker_container:

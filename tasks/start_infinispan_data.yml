@@ -1,6 +1,7 @@
 - name: Pull Cacher (Infinispan) Data Image
   docker_image:
     name: "{{ CACHER_DATA_IMAGE }}"
+    source: pull
 
 - name: Run Infinispan
   docker_container:

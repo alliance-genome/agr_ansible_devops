@@ -11,6 +11,7 @@
 - name: Pull Node Exporter Image
   docker_image:
     name: prom/node-exporter
+    source: pull
 
 - name: Run Node Exporter Image
   docker_container:
@@ -27,6 +28,7 @@
 - name: Pull cAdvisor
   docker_image:
     name: google/cadvisor:latest
+    source: pull
 
 - name: Run cAdvisor Image
   docker_container:
@@ -57,6 +59,7 @@
 - name: Pull Alertmanager Image
   docker_image:
     name: prom/alertmanager:latest
+    source: pull
 
 - name: Run Alertmanager
   docker_container:
@@ -94,6 +97,7 @@
 - name: Pull Prometheus Image
   docker_image:
     name: prom/prometheus:latest
+    source: pull
 
 - name: Run Prometheus
   docker_container:
@@ -128,6 +132,7 @@
 - name: Pull Grafana Image
   docker_image:
     name: grafana/grafana:latest
+    source: pull
 
 - name: Run Grafana Image
   docker_container:
@@ -151,6 +156,7 @@
 - name: Pull Portainer Image
   docker_image:
     name: portainer/portainer-ce:latest
+    source: pull
 
 - name: Create Portainer Volume
   docker_volume:

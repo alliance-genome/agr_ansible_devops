@@ -3,6 +3,7 @@
 - name: Pull UI Server Image
   docker_image:
     name: "{{ UI_SERVER_IMAGE }}"
+    source: pull
 
 - name: Run UI
   docker_container:

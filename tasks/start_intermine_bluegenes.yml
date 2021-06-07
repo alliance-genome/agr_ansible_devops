@@ -3,6 +3,7 @@
 - name: Pull InterMine Bluegenes
   docker_image:
     name: "intermine/bluegenes:latest"
+    source: pull
 
 - name: Run InterMine Bluegenes
   docker_container:

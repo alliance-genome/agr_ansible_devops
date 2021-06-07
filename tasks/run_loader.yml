@@ -1,6 +1,7 @@
 - name: Pull Loader Run Image
   docker_image:
     name: "{{ LOADER_RUN_IMAGE }}"
+    source: pull
 
 - name: Run Loader
   docker_container:

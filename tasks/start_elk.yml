@@ -1,10 +1,12 @@
 - name: Pull ES Env Image
   docker_image:
     name: "{{ ES_ENV_IMAGE }}"
+    source: pull
 
 - name: Pull Cerebro Image
   docker_image:
     name: "yannart/cerebro:latest"
+    source: pull
 
 - name: Run ES
   docker_container:
@@ -28,6 +30,7 @@
 - name: Pull Log Image
   docker_image:
     name: "{{ LOG_IMAGE_NAME }}"
+    source: pull
 
 - name: Run Log Server
   docker_container:
@@ -44,6 +47,7 @@
 - name: Pull Kibana Image
   docker_image:
     name: "{{ KIBANA_IMAGE }}"
+    source: pull
 
 - name: Run Kibana
   docker_container:

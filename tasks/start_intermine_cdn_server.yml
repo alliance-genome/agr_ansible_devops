@@ -1,6 +1,7 @@
 - name: Pull Intermine CDN Image
   docker_image:
     name: "{{ INTERMINE_CDN_SERVER_IMAGE }}"
+    source: pull
 
 - name: Run CDN Nginx container
   docker_container:

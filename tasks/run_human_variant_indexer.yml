@@ -1,6 +1,7 @@
 - name: Pull Java Software Run Image
   docker_image:
     name: "{{ JAVA_SOFTWARE_RUN_IMAGE }}"
+    source: pull
 
 - name: Run Human Variant Indexer
   docker_container:

@@ -1,6 +1,7 @@
 - name: Pull GOCD Env Image
   docker_image:
     name: "{{ GOCD_IMAGE }}"
+    source: pull
   when: START_GOCD_AGENT
 
 - name: Run GoCD Agent 0

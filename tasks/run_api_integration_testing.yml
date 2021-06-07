@@ -1,6 +1,7 @@
 - name: Pull Java Testing Run Image
   docker_image:
     name: "{{ API_TEST_IMAGE }}"
+    source: pull
 
 - name: Run API
   docker_container:

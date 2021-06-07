@@ -1,6 +1,7 @@
 - name: Pull Intermine Tomcat Env Image
   docker_image:
     name: "{{ INTERMINE_TOMCAT_ENV_NAME }}"
+    source: pull
 
 - name: Run Tomcat
   docker_container:

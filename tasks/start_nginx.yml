@@ -3,6 +3,7 @@
 - name: Pull Nginx Server Image
   docker_image:
     name: "{{ REGISTRY }}/agr_nginx:{{ NGINX_TAG }}"
+    source: pull
 
 - name: Run Nginx
   docker_container:

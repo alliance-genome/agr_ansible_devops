@@ -1,6 +1,7 @@
 - name: Pull Intermine Postgres Data Image
   docker_image:
     name: "{{ INTERMINE_POSTGRES_SERVER_IMAGE }}"
+    source: pull
 
 - name: Start Postgres
   docker_container:

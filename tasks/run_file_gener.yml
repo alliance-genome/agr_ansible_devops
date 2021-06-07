@@ -1,6 +1,7 @@
 - name: Pull File Generator Run Image
   docker_image:
     name: "{{ FILE_GENER_RUN_IMAGE }}"
+    source: pull
 
 - name: Run File Generator
   docker_container:

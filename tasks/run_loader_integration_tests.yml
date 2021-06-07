@@ -1,6 +1,7 @@
 - name: Pull Loader Run Image
   docker_image:
     name: "{{ LOADER_TEST_RUN_IMAGE }}"
+    source: pull
 
 - name: Run Loader in Test Mode
   docker_container:
