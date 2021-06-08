@@ -18,7 +18,6 @@
   tasks:
     - name: Start ES Cluster, Start Neo, Run Variant Indexer
       block:
-        - include_tasks: tasks/start_neo_data.yml
         - include_tasks: tasks/start_es_cluster4_env.yml
 
         - set_fact:
@@ -42,6 +41,7 @@
   tasks:
     - name: Start ES Cluster, Start Neo, Run Variant Indexer
       block:
+        - include_tasks: tasks/start_neo_data.yml
         - include_tasks: tasks/run_human_variant_indexer.yml
 
         - set_fact:
