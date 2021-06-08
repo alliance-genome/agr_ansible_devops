@@ -53,35 +53,5 @@ start_stage_intermine_app_server:
 
 CLUSTER_MACHINE_TYPE := i3en.large
 
-start_node1:
-	docker run -it -e PLAYBOOK_NAME="Build ES Cluster 1" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=true -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node1.yml --vault-password-file=.password
-start_node2:
-	docker run -it -e PLAYBOOK_NAME="Build ES Cluster 2" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=true -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node2.yml --vault-password-file=.password
-start_node3:
-	docker run -it -e PLAYBOOK_NAME="Build ES Cluster 3" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=true -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node3.yml --vault-password-file=.password
-start_node4:
-	docker run -it -e PLAYBOOK_NAME="Build ES Cluster 4" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=true -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node4.yml --vault-password-file=.password
-start_node5:
-	docker run -it -e PLAYBOOK_NAME="Build ES Cluster 5" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=true -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node5.yml --vault-password-file=.password
-start_node6:
-	docker run -it -e PLAYBOOK_NAME="Build ES Cluster 6" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=true -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node6.yml --vault-password-file=.password
-start_node7:
-	docker run -it -e PLAYBOOK_NAME="Build ES Cluster 7" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=true -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node7.yml --vault-password-file=.password
-start_node8:
-	docker run -it -e PLAYBOOK_NAME="Build ES Cluster 8" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=true -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node8.yml --vault-password-file=.password
-start_node9:
-	docker run -it -e PLAYBOOK_NAME="Build ES Cluster 9" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=true -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node9.yml --vault-password-file=.password
-start_node10:
-	docker run -it -e PLAYBOOK_NAME="Build ES Cluster 10" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=true -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node10.yml --vault-password-file=.password
-start_node11:
-	docker run -it -e PLAYBOOK_NAME="Build ES Cluster 11" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=true -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node11.yml --vault-password-file=.password
-start_node12:
-	docker run -it -e PLAYBOOK_NAME="Build ES Cluster 12" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=true -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node12.yml --vault-password-file=.password
-start_node13:
-	docker run -it -e PLAYBOOK_NAME="Build ES Cluster 13" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=true -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node13.yml --vault-password-file=.password
-start_node14:
-	docker run -it -e PLAYBOOK_NAME="Build ES Cluster 14" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=true -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node14.yml --vault-password-file=.password
-start_node15:
-	docker run -it -e PLAYBOOK_NAME="Build ES Cluster 15" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=true -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node15.yml --vault-password-file=.password
-start_node16:
-	docker run -it -e PLAYBOOK_NAME="Build ES Cluster 16" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=true -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node16.yml --vault-password-file=.password
+start_node%:
+	docker run -it -e PLAYBOOK_NAME="Build ES Cluster $*" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e SKIP_NVME_DRIVES=true -e CLUSTER_NODE=NODE$* -e SETUP_NVME_DRIVE=true -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node.yml --vault-password-file=.password
