@@ -15,25 +15,12 @@
     on_demand: false
 
   tasks:
-    - name: Fetch on-demand pricing
-      shell: >-
-        aws pricing get-products --service-code AmazonEC2 --region us-east-1
-        --filters "Type=TERM_MATCH,Field=usageType,Value=boxUsage:{{ COMPUTE_INSTANCE_TYPE }}" "Type=TERM_MATCH,Field=location,Value=US East (N. Virginia)" "Type=TERM_MATCH,Field=operatingSystem,Value=Linux" "Type=TERM_MATCH,Field=preInstalledSw,Value=NA"
-        | jq -rc '.PriceList[]' | jq -r '.terms.OnDemand[].priceDimensions[].pricePerUnit.USD'
-      environment:
-        AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY }}"
-        AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_KEY }}"
-      register: ec2_instance_price
-      when: not on_demand
 
     - name: Launch instance 1
       ec2:
         key_name: AGR-ssl2
         group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-        spot_price: "{{ on_demand | ternary(omit, ec2_instance_price.stdout) }}"
-        spot_type: "{{ on_demand | ternary(omit, 'one-time') }}"
-        spot_wait_timeout: "{{ on_demand | ternary(omit, 300) }}"
         image: "{{ COMPUTE_AMI_IMAGE }}"
         region: us-east-1
         # zone: us-east-1a
@@ -61,9 +48,6 @@
         key_name: AGR-ssl2
         group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-        spot_price: "{{ on_demand | ternary(omit, ec2_instance_price.stdout) }}"
-        spot_type: "{{ on_demand | ternary(omit, 'one-time') }}"
-        spot_wait_timeout: "{{ on_demand | ternary(omit, 300) }}"
         image: "{{ COMPUTE_AMI_IMAGE }}"
         region: us-east-1
         # zone: us-east-1a
@@ -91,9 +75,6 @@
         key_name: AGR-ssl2
         group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-        spot_price: "{{ on_demand | ternary(omit, ec2_instance_price.stdout) }}"
-        spot_type: "{{ on_demand | ternary(omit, 'one-time') }}"
-        spot_wait_timeout: "{{ on_demand | ternary(omit, 300) }}"
         image: "{{ COMPUTE_AMI_IMAGE }}"
         region: us-east-1
         # zone: us-east-1a
@@ -121,9 +102,6 @@
         key_name: AGR-ssl2
         group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-        spot_price: "{{ on_demand | ternary(omit, ec2_instance_price.stdout) }}"
-        spot_type: "{{ on_demand | ternary(omit, 'one-time') }}"
-        spot_wait_timeout: "{{ on_demand | ternary(omit, 300) }}"
         image: "{{ COMPUTE_AMI_IMAGE }}"
         region: us-east-1
         # zone: us-east-1a
@@ -151,9 +129,6 @@
         key_name: AGR-ssl2
         group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-        spot_price: "{{ on_demand | ternary(omit, ec2_instance_price.stdout) }}"
-        spot_type: "{{ on_demand | ternary(omit, 'one-time') }}"
-        spot_wait_timeout: "{{ on_demand | ternary(omit, 300) }}"
         image: "{{ COMPUTE_AMI_IMAGE }}"
         region: us-east-1
         # zone: us-east-1a

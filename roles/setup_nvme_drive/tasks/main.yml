@@ -1,0 +1,39 @@
+---
+# tasks file for setup_nvme_drives
+
+- name: Shutdown Docker
+  command: systemctl stop docker.service
+
+- name: Get directory stats
+  stat:
+    path: "/var/lib/docker"
+  register: directory_stat
+
+- name: Delete directory
+  file:
+    path: "/var/lib/docker"
+    state: absent
+
+- name: Create directory
+  file:
+    path: "/var/lib/docker"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "711"
+
+- name: Create Partitions
+  shell: echo -e "p\nn\np\n1\n\n\nw" | fdisk /dev/nvme1n1
+
+- name: Create File System
+  command: mkfs.ext4 -F /dev/nvme1n1p1
+
+- name: Mount Drive AS docker FS
+  mount:
+    src: /dev/nvme1n1p1
+    path: /var/lib/docker
+    state: mounted
+    fstype: ext4
+
+- name: Start Docker
+  command: systemctl start docker.service

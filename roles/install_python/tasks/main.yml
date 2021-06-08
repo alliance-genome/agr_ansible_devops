@@ -5,3 +5,9 @@
   script: install_python.sh
   become: true
   become_user: root
+
+- name: Turn off locksmithd
+  service:
+    name: locksmithd
+    state: stopped
+  become: true

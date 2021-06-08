@@ -13,6 +13,7 @@
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first
     - "environments/shared_secrets.yml"
     - "environments/shared_variables.yml"
+    - "environments/shared_aws_instance_variables.yml"
 
   tasks:
     - name: Start Neo, Run Indexer

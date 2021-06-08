@@ -1,4 +1,5 @@
 ---
+
 # tasks file for setup_docker
 - name: Make DockerHub config directory
   file:
@@ -75,6 +76,7 @@
 - name: Create a docker network
   docker_network:
     name: "{{ NET }}"
+    state: present
 
 - name: Set Max open files
   sysctl:
@@ -83,12 +85,6 @@
     sysctl_set: yes
     state: present
     reload: yes
-  become: true
-
-- name: Turn off locksmithd
-  service:
-    name: locksmithd
-    state: stopped
   become: true
 
 - name: Install Docker pruning service file

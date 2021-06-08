@@ -13,7 +13,39 @@
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     network_mode: "{{ NET }}"
-    command: java -jar agr_elasticsearch_util/target/agr_elasticsearch_util-jar-with-dependencies.jar snapshot restorelatest "{{ REPO }}"
+    command: java -jar agr_elasticsearch_util/target/agr_elasticsearch_util-jar-with-dependencies.jar snapshot restorelatest "{{ REPO }}" site_index
+    env:
+      AWS_SECRET_KEY: "{{ AWS_SECRET_KEY }}"
+      AWS_ACCESS_KEY: "{{ AWS_ACCESS_KEY }}"
+      NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
+      CACHE_HOST: "{{ INFINISPAN_SERVER_NAME }}"
+      ES_HOST: "{{ ES_SERVER_NAME }}"
+
+- name: Restore Latest ES Index Snapshot
+  docker_container:
+    name: "agr.{{ NET }}.restore_es.run"
+    image: "{{ JAVA_SOFTWARE_RUN_IMAGE }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    network_mode: "{{ NET }}"
+    command: java -jar agr_elasticsearch_util/target/agr_elasticsearch_util-jar-with-dependencies.jar snapshot restorelatest "{{ REPO }}" mod_variant_index
+    env:
+      AWS_SECRET_KEY: "{{ AWS_SECRET_KEY }}"
+      AWS_ACCESS_KEY: "{{ AWS_ACCESS_KEY }}"
+      NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
+      CACHE_HOST: "{{ INFINISPAN_SERVER_NAME }}"
+      ES_HOST: "{{ ES_SERVER_NAME }}"
+
+- name: Restore Latest ES Index Snapshot
+  docker_container:
+    name: "agr.{{ NET }}.restore_es.run"
+    image: "{{ JAVA_SOFTWARE_RUN_IMAGE }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    network_mode: "{{ NET }}"
+    command: java -jar agr_elasticsearch_util/target/agr_elasticsearch_util-jar-with-dependencies.jar snapshot restorelatest "{{ REPO }}" human_variant_index
     env:
       AWS_SECRET_KEY: "{{ AWS_SECRET_KEY }}"
       AWS_ACCESS_KEY: "{{ AWS_ACCESS_KEY }}"
