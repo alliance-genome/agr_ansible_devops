@@ -5,5 +5,4 @@ THREADED: "{{ lookup('env','THREADED') or 'true' }}"
 NET: "logs"
 NGINX_TAG: "{{ NET }}"
 LOG_SERVER_HOST: "{{ lookup('env','LOG_SERVER_HOST') or 'localhost' }}" # Logging runs outside the docker network
-SKIP_NVME_DRIVES: "{{ lookup('env','SKIP_NVME_DRIVES') or false }}"
 START_GOCD_AGENT: "{{ lookup('env','START_GOCD_AGENT') or false }}"

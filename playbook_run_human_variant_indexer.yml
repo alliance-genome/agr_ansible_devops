@@ -13,12 +13,12 @@
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first
     - "environments/shared_secrets.yml"
     - "environments/shared_variables.yml"
+    - "environments/shared_aws_instance_variables.yml"
 
   tasks:
     - name: Start ES Cluster, Start Neo, Run Variant Indexer
       block:
-        - include_tasks: tasks/start_es_cluster_env.yml
-        - include_tasks: tasks/start_neo_data.yml
+        - include_tasks: tasks/start_es_cluster4_env.yml
 
         - set_fact:
             failed_flag: "passed"
@@ -41,6 +41,7 @@
   tasks:
     - name: Start ES Cluster, Start Neo, Run Variant Indexer
       block:
+        - include_tasks: tasks/start_neo_data.yml
         - include_tasks: tasks/run_human_variant_indexer.yml
 
         - set_fact:

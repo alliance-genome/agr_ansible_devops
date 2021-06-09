@@ -7,16 +7,21 @@
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first
     - "environments/shared_secrets.yml"
     - "environments/shared_variables.yml"
+    - "environments/shared_aws_instance_variables.yml"
 
   roles:
     - role: install_python
       become: true
       become_user: root
     - role: setup_nvme_drives
-      when: not SKIP_NVME_DRIVES
+      when: not SKIP_NVME_DRIVES and not SETUP_NVME_DRIVE
       become: true
       become_user: root
-    - role: setup_docker
+    - role: setup_nvme_drive
+      when: SETUP_NVME_DRIVE and SKIP_NVME_DRIVES
+      become: true
+      become_user: root
+    - role: setup_docker # setup_nvme_drive(s) restarts docker so this needs to come after
       become: true
       become_user: root
     - role: setup_swap

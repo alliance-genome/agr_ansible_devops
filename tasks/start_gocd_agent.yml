@@ -15,7 +15,7 @@
       - "/home/core/.docker:/root/.docker"
       - "/var/run/docker.sock:/var/run/docker.sock:rw"
     env:
-      GO_SERVER_URL: "http://gocd.alliancegenome.internal:8153/go"
+      GO_SERVER_URL: "http://gocd.alliancegenome.org:8153/go"
     network_mode: "{{ NET }}"
     recreate: yes
   when: START_GOCD_AGENT
@@ -31,7 +31,7 @@
       - "/home/core/.docker:/root/.docker"
       - "/var/run/docker.sock:/var/run/docker.sock:rw"
     env:
-      GO_SERVER_URL: "http://gocd.alliancegenome.internal:8153/go"
+      GO_SERVER_URL: "http://gocd.alliancegenome.org:8153/go"
     network_mode: "{{ NET }}"
     recreate: yes
   when: START_GOCD_AGENT
@@ -47,7 +47,7 @@
       - "/home/core/.docker:/root/.docker"
       - "/var/run/docker.sock:/var/run/docker.sock:rw"
     env:
-      GO_SERVER_URL: "http://gocd.alliancegenome.internal:8153/go"
+      GO_SERVER_URL: "http://gocd.alliancegenome.org:8153/go"
     network_mode: "{{ NET }}"
     recreate: yes
   when: START_GOCD_AGENT

@@ -9,6 +9,5 @@ FMSDEV_API_URL: "https://fmsdev.alliancegenome.org"
 GENERATE_REPORTS: "false"
 LOADER_TEST_SET: "true"
 NGINX_TAG: "{{ NET }}"
-LOG_SERVER_HOST: "{{ lookup('env','LOG_SERVER_HOST') or 'logs.alliancegenome.internal' }}" # Logging runs outside the docker network
-SKIP_NVME_DRIVES: "{{ lookup('env','SKIP_NVME_DRIVES') or false }}"
+LOG_SERVER_HOST: "{{ lookup('env','LOG_SERVER_HOST') or 'logs.alliancegenome.org' }}" # Logging runs outside the docker network
 START_GOCD_AGENT: "{{ lookup('env','START_GOCD_AGENT') or false }}"
