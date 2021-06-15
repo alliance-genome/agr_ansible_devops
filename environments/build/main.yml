@@ -30,6 +30,9 @@ CLUSTER_CONFIG:
   NODE05:
     IP: "172.31.30.5"
     NAME: "05"
+  NODE06:
+    IP: "172.31.30.6"
+    NAME: "06"
   NODE07:
     IP: "172.31.30.7"
     NAME: "07"

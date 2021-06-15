@@ -51,7 +51,7 @@ start_build_intermine_app_server:
 start_stage_intermine_app_server:
 	docker run -it -e PLAYBOOK_NAME="Stage Intermine App" -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=false -e START_GOCD_AGENT=true -e WEBSERVER_INSTANCE_TYPE=m4.xlarge agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e env=stage -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
 
-CLUSTER_MACHINE_TYPE := i3en.large
+CLUSTER_MACHINE_TYPE := m4.large
 
 start_node%:
-	docker run -it -e PLAYBOOK_NAME="Build ES Cluster $*" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e SKIP_NVME_DRIVES=true -e CLUSTER_NODE=NODE$* -e SETUP_NVME_DRIVE=true -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node.yml --vault-password-file=.password
+	docker run -it -e PLAYBOOK_NAME="Build ES Cluster $*" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE$* -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e env=build -i hosts playbook_launch_cluster_node.yml --vault-password-file=.password
