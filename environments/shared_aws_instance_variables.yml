@@ -8,7 +8,7 @@ COMPUTE_AMI_IMAGE: ami-0b0b90473c097c55a
 WEBSERVER_INSTANCE_TYPE: "{{ lookup('env','WEBSERVER_INSTANCE_TYPE') or 'r5a.4xlarge' }}"
 WEBSERVER_AMI_IMAGE: "{{ lookup('env','WEBSERVER_AMI_IMAGE') or 'ami-0b0b90473c097c55a' }}"
 
-SKIP_NVME_DRIVES: "{{ lookup('env', 'SKIP_NVME_DRIVES') or false }}" # Both these have to be true to get a single NVME drive
+SKIP_NVME_DRIVES: "{{ lookup('env', 'SKIP_NVME_DRIVES') or true }}" # Both these have to be true to get a single NVME drive
 SETUP_NVME_DRIVE: "{{ lookup('env', 'SETUP_NVME_DRIVE') or false }}" # Or both have to be false to get a RAID0 mirrored NVME drive
 
 # Path Variables
