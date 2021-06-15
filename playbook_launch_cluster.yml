@@ -160,7 +160,7 @@
 
     - name: Add cluster host variables node 1
       add_host:
-        name: "{{ node1.instances[0].public_ip }}"
+        name: "{{ node1.instances[0].private_ip }}"
         node_name: "node1"
         node1_id: "01"
         node2_id: "02"
@@ -170,7 +170,7 @@
 
     - name: Add cluster host variables node 2
       add_host:
-        name: "{{ node2.instances[0].public_ip }}"
+        name: "{{ node2.instances[0].private_ip }}"
         node_name: "node2"
         node1_id: "05"
         node2_id: "06"
@@ -180,7 +180,7 @@
 
     - name: Add cluster host variables node 3
       add_host:
-        name: "{{ node3.instances[0].public_ip }}"
+        name: "{{ node3.instances[0].private_ip }}"
         node_name: "node3"
         node1_id: "09"
         node2_id: "10"
@@ -190,7 +190,7 @@
 
     - name: Add cluster host variables node 4
       add_host:
-        name: "{{ node4.instances[0].public_ip }}"
+        name: "{{ node4.instances[0].private_ip }}"
         node_name: "node4"
         node1_id: "13"
         node2_id: "14"
@@ -208,23 +208,23 @@
       debug:
         msg: "{{ hostvars['all_hosts'] }}"
 
-    - name: Add all instance public IPs to host group
+    - name: Add all instance private IPs to host group
       add_host:
-        hostname: '{{ item.public_ip }}'
+        hostname: '{{ item.private_ip }}'
         groupname: launched
       with_items: "{{ ec2.instances }}"
       register: launched
 
-    - name: Add all cluster instance public IPs to host group
+    - name: Add all cluster instance private IPs to host group
       add_host:
-        hostname: '{{ item.public_ip }}'
+        hostname: '{{ item.private_ip }}'
         groupname: cluster_nodes
       with_items: "{{ node1.instances + node2.instances + node3.instances + node4.instances }}"
       register: cluster_nodes
 
-    - name: Add all variant instance public IPs to host group
+    - name: Add all variant instance private IPs to host group
       add_host:
-        hostname: '{{ item.public_ip }}'
+        hostname: '{{ item.private_ip }}'
         groupname: variant_node
       with_items: "{{ node5.instances }}"
       register: variant_node
