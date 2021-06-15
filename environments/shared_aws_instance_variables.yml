@@ -8,8 +8,8 @@ COMPUTE_AMI_IMAGE: ami-0b0b90473c097c55a
 WEBSERVER_INSTANCE_TYPE: "{{ lookup('env','WEBSERVER_INSTANCE_TYPE') or 'r5a.4xlarge' }}"
 WEBSERVER_AMI_IMAGE: "{{ lookup('env','WEBSERVER_AMI_IMAGE') or 'ami-0b0b90473c097c55a' }}"
 
-SKIP_NVME_DRIVES: "{{ lookup('env', 'SKIP_NVME_DRIVES') or true }}" # Both these have to be true to get a single NVME drive
-SETUP_NVME_DRIVE: "{{ lookup('env', 'SETUP_NVME_DRIVE') or false }}" # Or both have to be false to get a RAID0 mirrored NVME drive
+SKIP_NVME_DRIVES: "{{ lookup('env', 'SKIP_NVME_DRIVES') or false }}" # Both these have to be true to get a single NVME drive
+SETUP_NVME_DRIVE: "{{ lookup('env', 'SETUP_NVME_DRIVE') or false }}" # Or both have to be false to get a RAID0 mirrored NVME drive which is the default for all generated drives
 
 # Path Variables
 node_transport_list: "{{ env }}.cluster01.alliancegenome.org:9300,{{ env }}.cluster02.alliancegenome.org:9300,{{ env }}.cluster03.alliancegenome.org:9300,{{ env }}.cluster04.alliancegenome.org:9300,{{ env }}.cluster05.alliancegenome.org:9300,{{ env }}.cluster06.alliancegenome.org:9300,{{ env }}.cluster07.alliancegenome.org:9300,{{ env }}.cluster08.alliancegenome.org:9300,{{ env }}.cluster09.alliancegenome.org:9300,{{ env }}.cluster10.alliancegenome.org:9300,{{ env }}.cluster11.alliancegenome.org:9300,{{ env }}.cluster12.alliancegenome.org:9300,{{ env }}.cluster13.alliancegenome.org:9300,{{ env }}.cluster14.alliancegenome.org:9300,{{ env }}.cluster15.alliancegenome.org:9300,{{ env }}.cluster16.alliancegenome.org:9300"
