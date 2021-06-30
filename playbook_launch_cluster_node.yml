@@ -152,6 +152,8 @@
         ports:
           - "9200:9200"
           - "9300:9300"
+        volumes:
+          - "es_{{ ES_CLUSTER_NODE_NAME }}_data_volume:/usr/share/elasticsearch/data"
         env:
           node.name: "{{ ES_SERVER_NAME }}{{ ES_CLUSTER_NODE_NAME }}"
           cluster.name: es-cluster
