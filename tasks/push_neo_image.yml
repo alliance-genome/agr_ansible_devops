@@ -1,11 +1,3 @@
 
-- name: Stop Neo4j
-  docker_container:
-    name: "{{ NEO_SERVER_NAME }}"
-    state: stopped
-
-- name: Commit container
-  command: docker commit "{{ NEO_SERVER_NAME }}" "{{ NEO_DATA_BUILD_IMAGE }}"
-
 - name: Push Container
   command: docker push "{{ NEO_DATA_BUILD_IMAGE }}"
