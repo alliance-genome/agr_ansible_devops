@@ -86,13 +86,13 @@
   template:
     src: rules.yml.j2
     dest: "{{ PROMETHEUS_CONFIG_PATH }}/rules.yml"
-#  when: "{{ env }}" != "production"
-#
-#- name: Copy Prometheus for Production Server
-#  template:
-#    src: rules_production.yml.j2
-#    dest: "{{ PROMETHEUS_CONFIG_PATH }}/rules.yml"
-#  when: "{{ env }}" == "production"
+  when: "{{ env }}" != "production"
+
+- name: Copy Prometheus for Production Server
+  template:
+    src: rules_production.yml.j2
+    dest: "{{ PROMETHEUS_CONFIG_PATH }}/rules.yml"
+  when: "{{ env }}" == "production"
 
 - name: Pull Prometheus Image
   docker_image:
