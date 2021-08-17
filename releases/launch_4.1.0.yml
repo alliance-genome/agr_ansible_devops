@@ -42,7 +42,7 @@
         volumes:
           - device_name: /dev/xvda
             volume_type: standard
-            volume_size: 1400
+            volume_size: 1700
             delete_on_termination: yes
         wait: yes
         user_data: "" # Otherwise get weird error on start up
