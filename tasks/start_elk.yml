@@ -18,6 +18,7 @@
       - "9300:9300"
     env:
       discovery.type: single-node
+      ES_JAVA_OPTS: "-Xms8g -Xmx8g"
 
 - name: Run Cerebro
   docker_container:

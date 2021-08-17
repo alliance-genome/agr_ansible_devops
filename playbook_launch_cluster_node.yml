@@ -157,7 +157,7 @@
         env:
           node.name: "{{ ES_SERVER_NAME }}{{ ES_CLUSTER_NODE_NAME }}"
           cluster.name: es-cluster
-          ES_JAVA_OPTS: "-Xms6g -Xmx6g"
+          ES_JAVA_OPTS: "-Xms15g -Xmx15g"
           discovery.seed_hosts: "{{ node_transport_list }}"
           cluster.initial_master_nodes: "{{ ES_CLUSTER_SERVER_FULLLIST }}"
           transport.host: "0.0.0.0"
