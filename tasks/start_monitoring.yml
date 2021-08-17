@@ -92,7 +92,6 @@
   template:
     src: rules_production.yml.j2
     dest: "{{ PROMETHEUS_CONFIG_PATH }}/rules.yml"
-  when: "{{ env }}" == "production"
   when: env == "production"
 
 - name: Pull Prometheus Image
