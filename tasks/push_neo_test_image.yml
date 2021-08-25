@@ -1,0 +1,18 @@
+- name: Stop Neo4j
+  docker_container:
+    name: "{{ NEO_SERVER_NAME }}"
+    state: stopped
+
+- name: Commit container
+  command: docker commit "{{ NEO_SERVER_NAME }}" "{{ NEO_DATA_BUILD_IMAGE }}"
+
+- name: Tag Test Container
+  command: docker tag "{{ NEO_DATA_BUILD_IMAGE }}" "{{ NEO_DATA_BUILD_IMAGE }}_test"
+
+- name: Start Neo4j
+  docker_container:
+    name: "{{ NEO_SERVER_NAME }}"
+    state: started
+
+- name: Push Test Container
+  command: docker push "{{ NEO_DATA_BUILD_IMAGE }}_test"

@@ -10,6 +10,7 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    timeout: 600
     ports:
       - "11222:11222"
     network_mode: "{{ NET }}"
