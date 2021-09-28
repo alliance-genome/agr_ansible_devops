@@ -1,0 +1,16 @@
+---
+
+- name: Running GFF JBrowse processing
+  docker_container:
+    name: "{{ JBROWSE_GFF_PROCESS_RUN_NAME }}"
+    image: "{{ JBROWSE_GFF_PROCESS_IMAGE_NAME }}"
+    detach: no
+    recreate: yes
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    networks:
+      - name: "{{ NET }}"
+    env:
+      AWS_ACCESS_KEY: "{{ AWS_ACCESS_KEY }}"
+      AWS_SECRET_KEY: "{{ AWS_SECRET_KEY }}"
