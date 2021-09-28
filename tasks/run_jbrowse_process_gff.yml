@@ -3,7 +3,7 @@
 - name: Running GFF JBrowse processing
   docker_container:
     name: "{{ JBROWSE_GFF_PROCESS_RUN_NAME }}"
-    image: "{{ JBROWSE_GFF_PROCESS_IMAGE_NAME }}"
+    image: "{{ JBROWSE_GFF_PROCESS_BUILD_IMAGE }}"
     detach: no
     recreate: yes
     log_driver: "gelf"
