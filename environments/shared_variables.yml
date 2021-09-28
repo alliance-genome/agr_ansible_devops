@@ -96,7 +96,8 @@ QC_RUN_IMAGE:                "{{ REGISTRY }}/agr_qc_run:{{ DOCKER_PULL_TAG }}"
 PREPROCESS_RUN_IMAGE:        "{{ REGISTRY }}/agr_preprocess_run:{{ DOCKER_PULL_TAG }}"
 FILE_GENER_RUN_IMAGE:        "{{ REGISTRY }}/agr_file_generator_run:{{ DOCKER_PULL_TAG }}"
 INTERMINE_BUILDER_RUN_IMAGE: "{{ REGISTRY }}/agr_intermine_builder_env:{{ DOCKER_PULL_TAG }}"
-JBROWSE_GFF_PROCESS_IMAGE_NAME: "{{ REGISTRY }}/agr_jbrowse_process_gff_run:{{ DOCKER_PULL_TAG }}"
+
+JBROWSE_GFF_PROCESS_BUILD_IMAGE: "{{ REGISTRY }}/agr_jbrowse_process_gff_run:{{ DOCKER_BUILD_TAG }}"
 
 LOADER_IMAGE_NAME: agr_loader_run
 LOADER_RUN_IMAGE:           "{{ REGISTRY }}/{{ LOADER_IMAGE_NAME }}:{{ DOCKER_PULL_TAG }}"
