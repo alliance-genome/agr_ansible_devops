@@ -20,13 +20,22 @@
     - name: Fetch on-demand pricing
       shell: >-
         aws pricing get-products --service-code AmazonEC2 --region us-east-1
-        --filters "Type=TERM_MATCH,Field=usageType,Value=boxUsage:{{ COMPUTE_INSTANCE_TYPE }}" "Type=TERM_MATCH,Field=location,Value=US East (N. Virginia)" "Type=TERM_MATCH,Field=operatingSystem,Value=Linux" "Type=TERM_MATCH,Field=preInstalledSw,Value=NA"
+        --filters "Type=TERM_MATCH,Field=usageType,Value=boxUsage:{{ COMPUTE_INSTANCE_TYPE }}" "Type=TERM_MATCH,Field=regionCode,Value=us-east-1" "Type=TERM_MATCH,Field=operatingSystem,Value=Linux" "Type=TERM_MATCH,Field=preInstalledSw,Value=NA"
         | jq -rc '.PriceList[]' | jq -r '.terms.OnDemand[].priceDimensions[].pricePerUnit.USD'
       environment:
         AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY }}"
         AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_KEY }}"
       register: ec2_instance_price
       when: not on_demand
+
+    - name: Warn on failure to retrieve on-demand pricing
+      fail:
+        msg: |-
+          Failed to retrieve on-demand pricing.
+          Returned output: {{ ec2_instance_price }}
+          Spot instances will not be used on instance launch.
+      ignore_errors: yes
+      when: not on_demand and (not ec2_instance_price or ec2_instance_price.stdout == "")
 
     - name: Attempt instance launch with multiple configurations (all AZs, spot/on-demand)
       include_tasks: tasks/launch_ec2_instance.yml
