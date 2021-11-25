@@ -1,0 +1,37 @@
+- name: Launch instance in {{ item.name }}
+  ec2:
+    key_name: AGR-ssl2
+    group: ["default", "ES Transport", "SSH", "HTTP/HTTPS"]
+    instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
+    spot_price: "{{ item.on_demand | ternary(omit, ec2_instance_price.stdout) }}"
+    spot_type: "{{ item.on_demand | ternary(omit, 'one-time') }}"
+    spot_wait_timeout: "{{ item.on_demand | ternary(omit, 600) }}"
+    image: "{{ COMPUTE_AMI_IMAGE }}"
+    region: us-east-1
+    vpc_subnet_id: "{{ item.subnet }}"
+    zone: "{{ item.AZ }}"
+    assign_public_ip: yes
+    instance_profile_name: S3DataAccess
+    aws_access_key: "{{ AWS_ACCESS_KEY }}"
+    aws_secret_key: "{{ AWS_SECRET_KEY }}"
+    volumes:
+      - device_name: /dev/xvda
+        volume_type: io1
+        volume_size: 1000
+        iops: 3000
+        delete_on_termination: yes
+    wait: yes
+    wait_timeout: 600
+    user_data: "" # Otherwise get weird error on start up
+    instance_tags:
+      Name: "Ansible Generated - {{ PLAYBOOK_NAME }}"
+    instance_initiated_shutdown_behavior: terminate
+  when: not launch_success
+  register: ec2_result_internal
+  ignore_errors: yes #Single-config launch failures are ignored (and retried with different config)
+
+- name: Flag successful instance launch and save result on launch success
+  set_fact:
+    launch_success: true
+    ec2_result: "{{ ec2_result_internal }}"
+  when: not launch_success and not ec2_result_internal.failed

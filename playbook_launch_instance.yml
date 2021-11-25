@@ -13,57 +13,58 @@
   #Default launch behaviour: spot instances
   vars:
     on_demand: false
+    launch_success: false
+    ec2_result:
 
   tasks:
     - name: Fetch on-demand pricing
       shell: >-
         aws pricing get-products --service-code AmazonEC2 --region us-east-1
-        --filters "Type=TERM_MATCH,Field=usageType,Value=boxUsage:{{ COMPUTE_INSTANCE_TYPE }}" "Type=TERM_MATCH,Field=location,Value=US East (N. Virginia)" "Type=TERM_MATCH,Field=operatingSystem,Value=Linux" "Type=TERM_MATCH,Field=preInstalledSw,Value=NA"
+        --filters "Type=TERM_MATCH,Field=usageType,Value=boxUsage:{{ COMPUTE_INSTANCE_TYPE }}" "Type=TERM_MATCH,Field=regionCode,Value=us-east-1" "Type=TERM_MATCH,Field=operatingSystem,Value=Linux" "Type=TERM_MATCH,Field=preInstalledSw,Value=NA"
         | jq -rc '.PriceList[]' | jq -r '.terms.OnDemand[].priceDimensions[].pricePerUnit.USD'
       environment:
         AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY }}"
         AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_KEY }}"
       register: ec2_instance_price
       when: not on_demand
-    - name: Launch instances
-      ec2:
-        key_name: AGR-ssl2
-        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
-        instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-        spot_price: "{{ on_demand | ternary(omit, ec2_instance_price.stdout) }}"
-        spot_type: "{{ on_demand | ternary(omit, 'one-time') }}"
-        spot_wait_timeout: "{{ on_demand | ternary(omit, 600) }}"
-        image: "{{ COMPUTE_AMI_IMAGE }}"
-        region: us-east-1
-        # zone: us-east-1a
-        # vpc_subnet_id: subnet-3ebf4477
-        zone: us-east-1b
-        vpc_subnet_id: subnet-df7c7487
-        assign_public_ip: yes
-        instance_profile_name: S3DataAccess
-        aws_access_key: "{{ AWS_ACCESS_KEY }}"
-        aws_secret_key: "{{ AWS_SECRET_KEY }}"
-        volumes:
-          - device_name: /dev/xvda
-            volume_type: io1
-            volume_size: 1000
-            iops: 3000
-            delete_on_termination: yes
-        wait: yes
-        wait_timeout: 600
-        user_data: "" # Otherwise get weird error on start up
-        instance_tags:
-          Name: "Ansible Generated - {{ PLAYBOOK_NAME }}"
-      register: ec2
 
-    - pause:
-        seconds: 10
+    - name: Warn on failure to retrieve on-demand pricing
+      fail:
+        msg: |-
+          Failed to retrieve on-demand pricing.
+          Returned output: {{ ec2_instance_price }}
+          Spot instances will not be used on instance launch.
+      ignore_errors: yes
+      when: not on_demand and (not ec2_instance_price or ec2_instance_price.stdout == "")
+
+    - name: Attempt instance launch with multiple configurations (all AZs, spot/on-demand)
+      include_tasks: tasks/launch_ec2_instance.yml
+      loop:
+        #Try different AZs until success, switch to on-demand instance if needed (on spot capacity failure in all AZs)
+        - { name: us-east-1a-pub, AZ: us-east-1a, subnet: subnet-3ebf4477, on_demand: "{{ on_demand }}" }
+        - { name: us-east-1b-pub, AZ: us-east-1b, subnet: subnet-df7c7487, on_demand: "{{ on_demand }}" }
+        - { name: us-east-1c-pub, AZ: us-east-1c, subnet: subnet-81c95ee4, on_demand: "{{ on_demand }}" }
+        - { name: us-east-1d-pub, AZ: us-east-1d, subnet: subnet-ff838bd5, on_demand: "{{ on_demand }}" }
+        - { name: us-east-1f-pub, AZ: us-east-1f, subnet: subnet-af62dca3, on_demand: "{{ on_demand }}" }
+        - { name: us-east-1a-pub-on-demand, AZ: us-east-1a, subnet: subnet-3ebf4477, on_demand: true }
+        - { name: us-east-1b-pub-on-demand, AZ: us-east-1b, subnet: subnet-df7c7487, on_demand: true }
+        - { name: us-east-1c-pub-on-demand, AZ: us-east-1c, subnet: subnet-81c95ee4, on_demand: true }
+        - { name: us-east-1d-pub-on-demand, AZ: us-east-1d, subnet: subnet-ff838bd5, on_demand: true }
+        - { name: us-east-1f-pub-on-demand, AZ: us-east-1f, subnet: subnet-af62dca3, on_demand: true }
+      loop_control:
+        label: "{{ item.name }}"
+      register: launch_results
+
+    - name: Fail on failure to launch any EC2 instance
+      fail:
+        msg: "EC2 instance launch attempts have failed in all AZ with all tried options."
+      when: not launch_success
 
     - name: Add all instance private IPs to host group
       add_host:
         hostname: '{{ item.private_ip }}'
         groupname: launched
-      with_items: "{{ ec2.instances }}"
+      with_items: "{{ ec2_result.instances }}"
       register: launched
 
     - name: Retrieve all volumes for a queried instance
@@ -73,7 +74,7 @@
         state: list
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
-      with_items: "{{ ec2.instance_ids }}"
+      with_items: "{{ ec2_result.instance_ids }}"
       register: ec2_volumes
 
     - name: Ensure all volumes are tagged
@@ -88,4 +89,14 @@
         - "{{ ec2_volumes.results }}"
         - volumes
 
-    - include_tasks: tasks/check_ssh.yml
+    - name: Waiting for SSH to be up
+      wait_for:
+        host: "{{ item.private_ip }}"
+        port: 22
+        delay: 5
+        timeout: 300
+        state: started
+      with_items: "{{ ec2_result.instances }}"
+
+    - pause:
+        seconds: 15
