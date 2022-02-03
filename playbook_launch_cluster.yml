@@ -151,6 +151,51 @@
           Name: "Ansible Generated - {{ PLAYBOOK_NAME }} 5"
       register: node5
 
+    - name: Waiting for SSH to be up Node1
+      wait_for:
+        host: "{{ item.private_ip }}"
+        port: 22
+        delay: 5
+        timeout: 300
+        state: started
+      with_items: "{{ node1.instances }}"
+
+    - name: Waiting for SSH to be up Node2
+      wait_for:
+        host: "{{ item.private_ip }}"
+        port: 22
+        delay: 5
+        timeout: 300
+        state: started
+      with_items: "{{ node2.instances }}"
+
+    - name: Waiting for SSH to be up Node3
+      wait_for:
+        host: "{{ item.private_ip }}"
+        port: 22
+        delay: 5
+        timeout: 300
+        state: started
+      with_items: "{{ node3.instances }}"
+
+    - name: Waiting for SSH to be up Node4
+      wait_for:
+        host: "{{ item.private_ip }}"
+        port: 22
+        delay: 5
+        timeout: 300
+        state: started
+      with_items: "{{ node4.instances }}"
+
+    - name: Waiting for SSH to be up Node5
+      wait_for:
+        host: "{{ item.private_ip }}"
+        port: 22
+        delay: 5
+        timeout: 300
+        state: started
+      with_items: "{{ node5.instances }}"
+
     - name: Setup instance ids
       set_fact:
         ec2: {
@@ -251,4 +296,3 @@
         - "{{ ec2_volumes.results }}"
         - volumes
 
-    - include_tasks: tasks/check_ssh.yml
