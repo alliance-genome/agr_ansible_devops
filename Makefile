@@ -42,6 +42,9 @@ bash:
 5_0_0:
 	docker run -it agrlocal/agr_ansible_run_unlocked:${DOCKER_BUILD_TAG} ansible-playbook -e env=production -e DOCKER_PULL_TAG=5.0.0 -i hosts launch_5.0.0.yml --vault-password-file=.password
 
+5_1_0:
+	docker run -it agrlocal/agr_ansible_run_unlocked:${DOCKER_BUILD_TAG} ansible-playbook -e WEBSERVER_INSTANCE_TYPE=r5a.8xlarge -e env=production -e DOCKER_PULL_TAG=5.1.0 -i hosts launch_5.1.0.yml --vault-password-file=.password
+
 mod_jbrowse_server:
 	docker run -it -e PLAYBOOK_NAME="Mod Jbrowse Server" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e START_GOCD_AGENT=true -e DOCKER_PULL_TAG=build -e SKIP_NVME_DRIVES=true -e WEBSERVER_INSTANCE_TYPE=m4.xlarge -e env=jbrowse -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
 
