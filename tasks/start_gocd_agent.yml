@@ -2,7 +2,7 @@
   docker_image:
     name: "{{ GOCD_IMAGE }}"
     source: pull
-  when: "{{ START_GOCD_AGENT }}"
+  when: START_GOCD_AGENT == "true"
 
 - name: Run GoCD Agent 0
   docker_container:
@@ -18,7 +18,7 @@
       GO_SERVER_URL: "http://gocd.alliancegenome.org:8153/go"
     network_mode: "{{ NET }}"
     recreate: yes
-  when: "{{ START_GOCD_AGENT }}"
+  when: START_GOCD_AGENT == "true"
 
 - name: Run GoCD Agent 1
   docker_container:
@@ -34,7 +34,7 @@
       GO_SERVER_URL: "http://gocd.alliancegenome.org:8153/go"
     network_mode: "{{ NET }}"
     recreate: yes
-  when: "{{ START_GOCD_AGENT }}"
+  when: START_GOCD_AGENT == "true"
 
 - name: Run GoCD Agent 2
   docker_container:
@@ -50,4 +50,4 @@
       GO_SERVER_URL: "http://gocd.alliancegenome.org:8153/go"
     network_mode: "{{ NET }}"
     recreate: yes
-  when: "{{ START_GOCD_AGENT }}"
+  when: START_GOCD_AGENT == "true"
