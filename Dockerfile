@@ -13,6 +13,8 @@ RUN sed -i '/^\[defaults\]/a callback_whitelist=profile_tasks' /etc/ansible/ansi
 
 RUN echo 'interpreter_python = /home/core/pypy/bin/pypy' >> /etc/ansible/ansible.cfg
 RUN echo 'networks_cli_compatible = yes' >> /etc/ansible/ansible.cfg
+RUN echo 'pipelining = True' >> /etc/ansible/ansible.cfg
+RUN echo 'host_key_checking = False' >> /etc/ansible/ansible.cfg
 
 RUN mkdir /root/.ssh
 RUN mkdir /root/.docker
