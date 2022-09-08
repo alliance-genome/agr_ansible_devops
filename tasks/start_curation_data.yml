@@ -19,5 +19,4 @@
 - name: Run Curation Data Server
   docker_container:
     name: "{{ CURATION_POSTGRES_SERVER_NAME }}"
-    image: "{{ CURATION_DATA_IMAGE }}"
     state: started
