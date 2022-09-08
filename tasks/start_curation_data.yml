@@ -1,0 +1,22 @@
+- name: Pull Curation Data Image
+  docker_image:
+    name: "{{ CURATION_DATA_IMAGE }}"
+    source: pull
+
+- name: Run Curation Data Setup
+  docker_container:
+    name: "{{ CURATION_POSTGRES_SERVER_NAME }}"
+    image: "{{ CURATION_DATA_IMAGE }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    interactive: true
+    ports:
+      - "5432:5432"
+    network_mode: "{{ NET }}"
+
+- name: Run Curation Data Server
+  docker_container:
+    name: "{{ CURATION_POSTGRES_SERVER_NAME }}"
+    image: "{{ CURATION_DATA_IMAGE }}"
+    state: started

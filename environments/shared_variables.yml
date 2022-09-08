@@ -49,6 +49,7 @@ CADVISOR_SERVER_NAME: "agr.{{ env }}.cadvisor.server"
 NODEEXPORTER_SERVER_NAME: "agr.{{ env }}.nodeexporter.server"
 GRAFANA_SERVER_NAME: "agr.{{ env }}.grafana.server"
 PORTAINER_SERVER_NAME: "agr.{{ env }}.portainer.server"
+CURATION_POSTGRES_SERVER_NAME: "agr.{{ env }}.curation.postgres.server"
 INTERMINE_POSTGRES_SERVER_NAME: "{{ env }}-intermine-db.alliancegenome.org"
 INTERMINE_SOLR_SERVER_NAME: "{{ env }}-intermine-app.alliancegenome.org"
 INTERMINE_TOMCAT_SERVER_NAME: "{{ env }}-intermine-app.alliancegenome.org"
@@ -113,6 +114,11 @@ INDEXER_TEST_IMAGE:      "{{ REGISTRY }}/{{ JAVA_SOFTWARE_IMAGE_NAME }}:{{ env }
 NEO_DATA_IMAGE_NAME: agr_neo4j_data_image
 NEO_DATA_IMAGE:          "{{ REGISTRY }}/{{ NEO_DATA_IMAGE_NAME }}:{{ DOCKER_PULL_TAG }}"
 NEO_DATA_BUILD_IMAGE:    "{{ REGISTRY }}/{{ NEO_DATA_IMAGE_NAME }}:{{ DOCKER_BUILD_TAG }}"
+
+#Build and push images
+CURATION_DATA_IMAGE_NAME: agr_curation_data_env
+CURATION_DATA_IMAGE:          "{{ REGISTRY }}/{{ CURATION_DATA_IMAGE_NAME }}:{{ DOCKER_PULL_TAG }}"
+CURATION_DATA_BUILD_IMAGE:    "{{ REGISTRY }}/{{ CURATION_DATA_IMAGE_NAME }}:{{ DOCKER_BUILD_TAG }}"
 
 INFINISPAN_DATA_IMAGE_NAME: agr_infinispan_data_image
 CACHER_DATA_IMAGE:       "{{ REGISTRY }}/{{ INFINISPAN_DATA_IMAGE_NAME }}:{{ DOCKER_PULL_TAG }}"
