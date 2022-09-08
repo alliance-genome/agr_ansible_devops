@@ -7,10 +7,10 @@
   docker_container:
     name: "{{ CURATION_POSTGRES_SERVER_NAME }}"
     image: "{{ CURATION_DATA_IMAGE }}"
+    detach: no
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    interactive: true
     ports:
       - "5432:5432"
     network_mode: "{{ NET }}"
