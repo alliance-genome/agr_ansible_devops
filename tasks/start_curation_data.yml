@@ -8,6 +8,7 @@
     name: "{{ CURATION_POSTGRES_SERVER_NAME }}"
     image: "{{ CURATION_DATA_IMAGE }}"
     detach: no
+    ignore_errors: true
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
