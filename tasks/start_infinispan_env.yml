@@ -17,5 +17,5 @@
       #MEM_OPTS: "-Xms{{ INFINISPAN_MEMORY }} -Xmx{{ INFINISPAN_MEMORY }}"
       #JAVA_OPTIONS: "-Xms{{ INFINISPAN_MEMORY }} -Xmx{{ INFINISPAN_MEMORY }}"
       #JAVA_OPTS: "-Xms{{ INFINISPAN_MEMORY }} -Xmx{{ INFINISPAN_MEMORY }}"
-		USER: "admin"
-		PASS: "admin"
+      USER: "admin"
+      PASS: "admin"
