@@ -18,7 +18,7 @@
     - name: Start ES, Start Neo, Run Indexer
       block:
         - include_tasks: tasks/start_infinispan_env.yml
-        - include_tasks: tasks/start_curation_data.yml
+        #- include_tasks: tasks/start_curation_data.yml
         - include_tasks: tasks/start_neo_data.yml
         - include_tasks: tasks/run_cacher.yml
         - include_tasks: tasks/push_cacher_image.yml
