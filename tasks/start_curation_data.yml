@@ -39,6 +39,9 @@
       discovery.type: "single-node"
       DISABLE_SECURITY_PLUGIN: "true"
 
+- pause:
+    seconds: 120
+
 - name: Start Curation API
   docker_container:
     name: "{{ CURATION_API_SERVER_NAME }}"
