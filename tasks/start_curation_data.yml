@@ -3,6 +3,16 @@
     name: "{{ CURATION_DATA_IMAGE }}"
     source: pull
 
+- name: Pull Curation OpenSearch Image
+  docker_image:
+    name: "{{ OPENSEARCH_IMAGE_NAME }}"
+    source: pull
+
+- name: Pull Curation API Image
+  docker_image:
+    name: "{{ CURATION_API_IMAGE }}"
+    source: pull
+
 - name: Run Curation Data Setup
   docker_container:
     name: "{{ CURATION_POSTGRES_SERVER_NAME }}"
@@ -11,10 +21,36 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    ports:
-      - "5432:5432"
     network_mode: "{{ NET }}"
   ignore_errors: true
 
 - name: Run Curation Data Server
   command: docker start "{{ CURATION_POSTGRES_SERVER_NAME }}"
+
+- name: Start ES container
+  docker_container:
+    name: "{{ CURATION_OPENSEARCH_SERVER_NAME }}"
+    image: "{{ OPENSEARCH_IMAGE_NAME }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    network_mode: "{{ NET }}"
+    env:
+      discovery.type: "single-node"
+      DISABLE_SECURITY_PLUGIN: "true"
+
+- name: Start Curation API
+  docker_container:
+    name: "{{ CURATION_API_SERVER_NAME }}"
+    image: "{{ CURATION_API_IMAGE }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    network_mode: "{{ NET }}"
+    env:
+      AGR_CURATION_RELEASE: "{{ CURATION_RELEASE_VERSION }}"
+      NET: "{{ NET }}"
+      OKTA_AUTHENTICATION: "false"
+      QUARKUS_DATASOURCE_JDBC_URL: "jdbc:postgresql://{{ CURATION_POSTGRES_SERVER_NAME }}:5432/curation"
+      QUARKUS_ELASTICSEARCH_HOSTS: "{{ CURATION_OPENSEARCH_SERVER_NAME }}:9200"
+      QUARKUS_HIBERNATE_SEARCH_ORM_ELASTICSEARCH_HOSTS: "{{ CURATION_OPENSEARCH_SERVER_NAME }}:9200"

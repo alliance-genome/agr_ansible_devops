@@ -50,6 +50,8 @@ NODEEXPORTER_SERVER_NAME: "agr.{{ env }}.nodeexporter.server"
 GRAFANA_SERVER_NAME: "agr.{{ env }}.grafana.server"
 PORTAINER_SERVER_NAME: "agr.{{ env }}.portainer.server"
 CURATION_POSTGRES_SERVER_NAME: "agr.{{ env }}.curation.postgres.server"
+CURATION_OPENSEARCH_SERVER_NAME: "agr.{{ env }}.curation.opensearch.server"
+CURATION_API_SERVER_NAME: "agr.{{ env }}.curation.api.server"
 INTERMINE_POSTGRES_SERVER_NAME: "{{ env }}-intermine-db.alliancegenome.org"
 INTERMINE_SOLR_SERVER_NAME: "{{ env }}-intermine-app.alliancegenome.org"
 INTERMINE_TOMCAT_SERVER_NAME: "{{ env }}-intermine-app.alliancegenome.org"
@@ -121,6 +123,9 @@ CURATION_DATA_IMAGE_NAME: agr_curation_data_env
 CURATION_DATA_IMAGE:          "{{ REGISTRY }}/{{ CURATION_DATA_IMAGE_NAME }}:{{ DOCKER_PULL_TAG }}"
 CURATION_DATA_BUILD_IMAGE:    "{{ REGISTRY }}/{{ CURATION_DATA_IMAGE_NAME }}:{{ DOCKER_BUILD_TAG }}"
 
+CURATION_API_IMAGE_NAME: agr_curation
+CURATION_API_IMAGE:          "{{ REGISTRY }}/{{ CURATION_API_IMAGE_NAME }}:{{ CURATION_RELEASE_VERSION }}"
+
 INFINISPAN_DATA_IMAGE_NAME: agr_infinispan_data_image
 CACHER_DATA_IMAGE:       "{{ REGISTRY }}/{{ INFINISPAN_DATA_IMAGE_NAME }}:{{ DOCKER_PULL_TAG }}"
 CACHER_DATA_BUILD_IMAGE: "{{ REGISTRY }}/{{ INFINISPAN_DATA_IMAGE_NAME }}:{{ DOCKER_BUILD_TAG }}"
@@ -128,6 +133,7 @@ CACHER_DATA_BUILD_IMAGE: "{{ REGISTRY }}/{{ INFINISPAN_DATA_IMAGE_NAME }}:{{ DOC
 # External Docker images
 STATUS_NGINX_IMAGE_NAME: "nginx:latest"
 LOG_IMAGE_NAME: "docker.elastic.co/logstash/logstash:7.7.0"
+OPENSEARCH_IMAGE_NAME: "opensearchproject/opensearch:1.2.4"
 
 # Server Images
 INTERMINE_POSTGRES_ENV_NAME: "intermine/postgres"
