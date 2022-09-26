@@ -1,6 +1,6 @@
 global:
   resolve_timeout: 1m
-  slack_api_url: '{{ SLACK_ALERT_WEBHOOK_TEST }}'
+  slack_api_url: '{{ SLACK_ALERT_WEBHOOK }}'
 
 route:
   receiver: 'slack-notifications'
@@ -8,7 +8,7 @@ route:
 receivers:
 - name: 'slack-notifications'
   slack_configs:
-  - channel: '#system-alerts-tests'
+  - channel: '#system-alerts'
     send_resolved: true
     icon_url: https://avatars3.githubusercontent.com/u/3380462
 #    text: "summary: {% raw %}{{ .CommonAnnotations.summary }}\ndescription: {{ .CommonAnnotations.description }}{% endraw %}"

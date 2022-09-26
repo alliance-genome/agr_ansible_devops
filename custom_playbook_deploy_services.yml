@@ -3,7 +3,7 @@
 - import_playbook: playbook_launch_pre_tasks.yml
 
 - name: Deploy Services
-  hosts: "{{ env }}"
+  hosts: launched
   user: core
   gather_facts: false
 

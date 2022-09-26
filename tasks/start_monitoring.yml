@@ -7,6 +7,7 @@
     - "{{ GRAFANA_CONFIG_PATH }}/datasources"
     - "{{ GRAFANA_CONFIG_PATH }}/dashboards"
     - "{{ ALERTMANAGER_CONFIG_PATH}}"
+    - "{{ BLACKBOX_CONFIG_PATH }}"
 
 - name: Pull Node Exporter Image
   docker_image:
@@ -51,10 +52,16 @@
     memory: 0
     memory_reservation: 0
 
-- name: Copy Alert Manager Config
+- name: Copy Alertmanager Config for Non-Production Server
   template:
     src: alertmanager.yml.j2
     dest: "{{ ALERTMANAGER_CONFIG_PATH }}/alertmanager.yml"
+
+- name: Copy Alertmanager Config for Production Server
+  template:
+    src: alertmanager_production.yml.j2
+    dest: "{{ ALERTMANAGER_CONFIG_PATH }}/alertmanager.yml"
+  when: env == "production"
 
 - name: Pull Alertmanager Image
   docker_image:
@@ -77,10 +84,42 @@
       - "9093:9093"
     recreate: yes
 
-- name: Copy Prometheus Config
+- name: Copy Blackbox Config
+  template:
+    src: blackbox.yml.j2
+    dest: "{{ BLACKBOX_CONFIG_PATH }}/blackbox.yml"
+
+- name: Pull Blackbox Image
+  docker_image:
+    name: prom/blackbox-exporter:latest
+    source: pull
+
+- name: Run Blackbox Exporter
+  docker_container:
+    name: "{{ BLACKBOX_SERVER_NAME }}"
+    image: "prom/blackbox-exporter:latest"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    volumes:
+      - "{{ BLACKBOX_CONFIG_PATH }}:/etc/blackbox"
+    command:
+      - '--config.file=/etc/blackbox/blackbox.yml'
+    network_mode: "{{ NET }}"
+    ports:
+      - "9115:9115"
+    recreate: yes
+
+- name: Copy Prometheus Config for Non-Production Server
   template:
     src: prometheus.yml.j2
     dest: "{{ PROMETHEUS_CONFIG_PATH }}/prometheus.yml"
+
+- name: Copy Prometheus Config for Production Server
+  template:
+    src: prometheus_production.yml.j2
+    dest: "{{ PROMETHEUS_CONFIG_PATH }}/prometheus.yml"
+  when: env == "production"
 
 - name: Copy Prometheus Rules for Non-Production Server
   template:
