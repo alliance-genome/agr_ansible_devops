@@ -72,9 +72,9 @@
   docker_container:
     name: "{{ ALERTMANAGER_SERVER_NAME }}"
     image: "prom/alertmanager:v0.24.0"
-    # log_driver: "gelf"
-    # log_options:
-    #   gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     volumes:
       - "{{ ALERTMANAGER_CONFIG_PATH }}:/etc/alertmanager"
     command:
