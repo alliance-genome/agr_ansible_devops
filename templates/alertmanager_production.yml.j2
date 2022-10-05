@@ -1,14 +1,20 @@
 global:
   resolve_timeout: 1m
-  slack_api_url: '{{ SLACK_ALERT_WEBHOOK }}'
+  slack_api_url: '{{ SLACK_ALERT_WEBHOOK_TEST }}'
 
 route:
   receiver: 'slack-notifications'
+  routes:
+  - receiver: 'slack-notifications'
+    continue: true
+  - receiver: 'sns-notifications'
+    matchers:
+      - alertname = EndpointDown
 
 receivers:
 - name: 'slack-notifications'
   slack_configs:
-  - channel: '#system-alerts'
+  - channel: '#system-alerts-tests'
     send_resolved: true
     icon_url: https://avatars3.githubusercontent.com/u/3380462
 #    text: "summary: {% raw %}{{ .CommonAnnotations.summary }}\ndescription: {{ .CommonAnnotations.description }}{% endraw %}"
@@ -36,3 +42,15 @@ receivers:
        {{ end }}
      {{ end }}
      {% endraw %}
+
+- name: 'sns-notifications' 
+  sns_configs:
+    - send_resolved: false
+      topic_arn: {{ SNS_TOPIC_ARN }}
+      subject: ES_EndPoint_Down
+      sigv4:
+        region: us-east-1
+        access_key: {{ AWS_ACCESS_KEY}}
+        secret_key: {{ AWS_SECRET_KEY }}
+      api_url: https://sns.us-east-1.amazonaws.com
+    
