@@ -1,20 +1,58 @@
 global:
   resolve_timeout: 1m
-  slack_api_url: '{{ SLACK_ALERT_WEBHOOK_TEST }}'
+  slack_api_url: '{{ SLACK_ALERT_WEBHOOK }}'
 
 route:
-  receiver: 'slack-notifications'
+  # Default receiver
+  receiver: 'slack-warnings'
   routes:
-  - receiver: 'slack-notifications'
+  - receiver: 'slack-warnings'
     continue: true
+    match_re:
+      severity: warning
+  - receiver: 'slack-alerts'
+    continue: true
+    match_re:
+      severity: critical
   - receiver: 'sns-notifications'
     matchers:
       - alertname = EndpointDown
 
 receivers:
-- name: 'slack-notifications'
+- name: 'slack-warnings'
   slack_configs:
-  - channel: '#system-alerts-tests'
+  - channel: '#system-warnings'
+    send_resolved: true
+    icon_url: https://avatars3.githubusercontent.com/u/3380462
+#    text: "summary: {% raw %}{{ .CommonAnnotations.summary }}\ndescription: {{ .CommonAnnotations.description }}{% endraw %}"
+    {% raw %}
+    title: |-
+     [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }} for {{ .CommonLabels.job }}
+     {{- if gt (len .CommonLabels) (len .GroupLabels) -}}
+       {{" "}}(
+       {{- with .CommonLabels.Remove .GroupLabels.Names }}
+         {{- range $index, $label := .SortedPairs -}}
+           {{ if $index }}, {{ end }}
+           {{- $label.Name }}="{{ $label.Value -}}"
+         {{- end }}
+       {{- end -}}
+       )
+     {{- end }}
+    text: >-
+     {{ range .Alerts -}}
+     *Alert:* {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+
+     *Description:* {{ .Annotations.description }}
+
+     *Details:*
+       {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+       {{ end }}
+     {{ end }}
+     {% endraw %}
+
+- name: 'slack-alerts'
+  slack_configs:
+  - channel: '#system-alerts'
     send_resolved: true
     icon_url: https://avatars3.githubusercontent.com/u/3380462
 #    text: "summary: {% raw %}{{ .CommonAnnotations.summary }}\ndescription: {{ .CommonAnnotations.description }}{% endraw %}"

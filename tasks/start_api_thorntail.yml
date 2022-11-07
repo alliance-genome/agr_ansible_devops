@@ -16,6 +16,7 @@
       - "8082:8080"
     network_mode: "{{ NET }}"
     command: java -jar agr_api/target/agr_api-thorntail.jar
+    timeout: 180
     env:
       NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
       CACHE_HOST: "{{ INFINISPAN_SERVER_NAME }}"
