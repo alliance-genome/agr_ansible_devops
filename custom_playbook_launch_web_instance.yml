@@ -3,7 +3,6 @@
 - import_playbook: playbook_launch_pre_tasks.yml
 - import_playbook: playbook_launch_web_instance.yml
 - import_playbook: playbook_launch_post_tasks.yml
-- import_playbook: playbook_launch_monitoring.yml
 
 - name: configure servers
   hosts: launched
@@ -20,5 +19,3 @@
     - name: Start Elk
       block:
         - include_tasks: tasks/start_gocd_agent.yml
-        - include_tasks: tasks/start_es_env.yml
-        - include_tasks: tasks/start_status_nginx.yml

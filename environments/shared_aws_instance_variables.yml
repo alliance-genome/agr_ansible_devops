@@ -6,7 +6,7 @@
 COMPUTE_INSTANCE_TYPE: "{{ lookup('env','COMPUTE_INSTANCE_TYPE') or 'r5d.8xlarge' }}"
 COMPUTE_AMI_IMAGE: ami-0b0b90473c097c55a
 WEBSERVER_INSTANCE_TYPE: "{{ lookup('env','WEBSERVER_INSTANCE_TYPE') or 'r5a.4xlarge' }}"
-WEBSERVER_AMI_IMAGE: "{{ lookup('env','WEBSERVER_AMI_IMAGE') or 'ami-0b0b90473c097c55a' }}"
+WEBSERVER_AMI_IMAGE: "{{ lookup('env','WEBSERVER_AMI_IMAGE') or 'ami-05668c1bb69ebd078' }}"
 
 SKIP_NVME_DRIVES: "{{ lookup('env', 'SKIP_NVME_DRIVES') or false }}" # Both these have to be true to get a single NVME drive
 SETUP_NVME_DRIVE: "{{ lookup('env', 'SETUP_NVME_DRIVE') or false }}" # Or both have to be false to get a RAID0 mirrored NVME drive which is the default for all generated drives
@@ -23,4 +23,7 @@ ES_CLUSTER_MEMORY: "30g"
 # ARM Vars
 #WEBSERVER_INSTANCE_TYPE: "{{ lookup('env','WEBSERVER_INSTANCE_TYPE') or 'r6g.4xlarge' }}"
 #WEBSERVER_AMI_IMAGE: "{{ lookup('env','WEBSERVER_AMI_IMAGE') or 'ami-0ca95d4becfa1367b' }}"
+
+# Old version
+#WEBSERVER_AMI_IMAGE: "{{ lookup('env','WEBSERVER_AMI_IMAGE') or 'ami-0b0b90473c097c55a' }}"
 
