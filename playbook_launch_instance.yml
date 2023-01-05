@@ -60,10 +60,6 @@
         msg: "EC2 instance launch attempts have failed in all AZ with all tried options."
       when: not launch_success
 
-    - name: Debug
-      debug:
-        msg: "{{ ec2_result }}"
-
     - name: Add all instance private IPs to host group
       add_host:
         hostname: '{{ item.private_ip_address }}'
