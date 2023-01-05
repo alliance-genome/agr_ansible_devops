@@ -11,11 +11,11 @@
 
   tasks:
     - name: Launch instances
-      ec2:
+      ec2_instance:
         key_name: AGR-ssl2
         group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ WEBSERVER_INSTANCE_TYPE }}"
-        image: "{{ WEBSERVER_AMI_IMAGE }}"
+        image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
         vpc_subnet_id: subnet-3ebf4477
         assign_public_ip: yes
