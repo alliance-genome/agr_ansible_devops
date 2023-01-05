@@ -1,16 +1,17 @@
 - name: Launch instance in {{ item.name }}
   ec2_instance:
     key_name: AGR-ssl2
-    group: ["default", "ES Transport", "SSH", "HTTP/HTTPS"]
+    security_groups: ["default", "ES Transport", "SSH", "HTTP/HTTPS"]
     instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
     image_id: "{{ COMPUTE_AMI_IMAGE }}"
     region: us-east-1
     vpc_subnet_id: "{{ item.subnet }}"
-    zone: "{{ item.AZ }}"
-    assign_public_ip: yes
-    instance_profile_name: S3DataAccess
+    availability_zone: "{{ item.AZ }}"
+    iam_instance_profile: S3DataAccess
     aws_access_key: "{{ AWS_ACCESS_KEY }}"
     aws_secret_key: "{{ AWS_SECRET_KEY }}"
+    network:
+      assign_public_ip: true
     volumes:
       - device_name: /dev/xvda
         volume_type: io1
@@ -20,7 +21,7 @@
     wait: yes
     wait_timeout: 600
     user_data: "" # Otherwise get weird error on start up
-    instance_tags:
+    tags:
       Name: "Ansible Generated - {{ PLAYBOOK_NAME }}"
     instance_initiated_shutdown_behavior: terminate
   when: not launch_success
