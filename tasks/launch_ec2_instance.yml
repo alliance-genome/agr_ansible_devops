@@ -3,9 +3,6 @@
     key_name: AGR-ssl2
     group: ["default", "ES Transport", "SSH", "HTTP/HTTPS"]
     instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-    spot_price: "{{ item.on_demand | ternary(omit, ec2_instance_price.stdout) }}"
-    spot_type: "{{ item.on_demand | ternary(omit, 'one-time') }}"
-    spot_wait_timeout: "{{ item.on_demand | ternary(omit, 600) }}"
     image_id: "{{ COMPUTE_AMI_IMAGE }}"
     region: us-east-1
     vpc_subnet_id: "{{ item.subnet }}"
