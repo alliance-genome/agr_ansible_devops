@@ -1,5 +1,5 @@
 - name: Launch instance in {{ item.name }}
-  ec2:
+  ec2_instance:
     key_name: AGR-ssl2
     group: ["default", "ES Transport", "SSH", "HTTP/HTTPS"]
     instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
