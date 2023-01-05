@@ -5,7 +5,6 @@
     instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
     image_id: "{{ COMPUTE_AMI_IMAGE }}"
     region: us-east-1
-    vpc_subnet_id: "{{ item.subnet }}"
     availability_zone: "{{ item.AZ }}"
     iam_instance_profile: S3DataAccess
     aws_access_key: "{{ AWS_ACCESS_KEY }}"
