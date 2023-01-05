@@ -10,7 +10,7 @@
 
   tasks:
     - name: Terminate instances
-      ec2_instance:
+      ec2:
         state: 'absent'
         region: us-east-1
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
