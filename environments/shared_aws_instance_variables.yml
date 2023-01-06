@@ -4,7 +4,7 @@
 
 # AWS Variables
 COMPUTE_INSTANCE_TYPE: "{{ lookup('env','COMPUTE_INSTANCE_TYPE') or 'r5d.8xlarge' }}"
-COMPUTE_AMI_IMAGE: ami-0b0b90473c097c55a
+COMPUTE_AMI_IMAGE: ami-05668c1bb69ebd078
 WEBSERVER_INSTANCE_TYPE: "{{ lookup('env','WEBSERVER_INSTANCE_TYPE') or 'r5a.4xlarge' }}"
 WEBSERVER_AMI_IMAGE: "{{ lookup('env','WEBSERVER_AMI_IMAGE') or 'ami-05668c1bb69ebd078' }}"
 
