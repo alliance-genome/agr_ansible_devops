@@ -3,14 +3,11 @@
     name: "{{ PREPROCESS_RUN_IMAGE }}"
     source: pull
 
-- name: Sleep to see if the server will die 900
-  pause:
-    seconds: 900
-
 - name: Run Preprocess
   docker_container:
     name: "{{ PREPROCESS_RUN_NAME }}"
     image: "{{ PREPROCESS_RUN_IMAGE }}"
+    timeout: 900
     detach: no
     log_driver: "gelf"
     log_options:
