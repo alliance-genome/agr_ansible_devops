@@ -19,6 +19,7 @@
     image: "{{ CURATION_DATA_IMAGE }}"
     detach: no
     log_driver: "gelf"
+    timeout: 1800
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     network_mode: "{{ NET }}"
