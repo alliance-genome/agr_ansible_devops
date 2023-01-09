@@ -3,6 +3,10 @@
     name: "{{ PREPROCESS_RUN_IMAGE }}"
     source: pull
 
+- name: Sleep to see if the server will die 900
+  pause:
+    seconds: 900
+
 - name: Run Preprocess
   docker_container:
     name: "{{ PREPROCESS_RUN_NAME }}"
