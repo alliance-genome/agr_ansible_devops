@@ -30,7 +30,7 @@
         - set_fact:
             failed_flag: "failed"
 
-#- import_playbook: playbook_terminate_instance.yml
+- import_playbook: playbook_terminate_instance.yml
 
 - name: Check Failures
   hosts: launched
