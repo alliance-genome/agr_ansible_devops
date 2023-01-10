@@ -21,4 +21,6 @@ ADD . .
 
 ADD ./ansible.cfg /etc/ansible/ansible.cfg
 
-ENV DOCKER_TIMEOUT=1800
+# We need at least 5 hours in the case of the human indexer
+# 60 * 60 * 7
+ENV DOCKER_TIMEOUT=25200
