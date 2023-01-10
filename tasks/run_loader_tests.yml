@@ -4,6 +4,7 @@
     image: "{{ LOADER_RUN_IMAGE }}"
     command: pytest --verbose --workers 8
     detach: no
+    timeout: 25000
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
