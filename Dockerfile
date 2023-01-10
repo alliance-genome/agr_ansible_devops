@@ -20,3 +20,5 @@ RUN mkdir /root/.docker
 ADD . .
 
 ADD ./ansible.cfg /etc/ansible/ansible.cfg
+
+ENV DOCKER_TIMEOUT=1800
