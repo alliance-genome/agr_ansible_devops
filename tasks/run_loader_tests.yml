@@ -2,7 +2,7 @@
   docker_container:
     name: "{{ LOADER_RUN_NAME }}"
     image: "{{ LOADER_RUN_IMAGE }}"
-    command: pytest --verbose --workers 8
+    command: conda run -n agr_loader --no-capture-output pytest --verbose --workers 8
     detach: no
     timeout: 25000
     log_driver: "gelf"
