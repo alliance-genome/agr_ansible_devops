@@ -8,6 +8,7 @@
     name: "{{ INDEXER_RUN_NAME }}"
     image: "{{ JAVA_SOFTWARE_RUN_IMAGE }}"
     detach: no
+    timeout: 25000
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
