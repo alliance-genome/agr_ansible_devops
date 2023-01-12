@@ -8,6 +8,7 @@
     name: "{{ FILE_GENER_TEST_RUN_NAME }}"
     image: "{{ FILE_GENER_TEST_RUN_IMAGE }}"
     detach: no
+    timeout: 25000
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
