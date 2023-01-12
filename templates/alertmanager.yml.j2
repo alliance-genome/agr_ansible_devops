@@ -14,9 +14,6 @@ route:
     continue: true
     match_re:
       severity: critical
-  - receiver: 'sns-notifications'
-    matchers:
-      - alertname = EndpointDown
 
 receivers:
 - name: 'slack-warnings'
