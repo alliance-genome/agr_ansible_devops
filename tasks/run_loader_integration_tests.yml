@@ -8,6 +8,7 @@
     name: "{{ LOADER_TEST_NAME }}"
     image: "{{ LOADER_TEST_RUN_IMAGE }}"
     detach: no
+    timeout: 25000
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
@@ -30,8 +31,9 @@
   docker_container:
     name: "{{ LOADER_TEST_NAME }}"
     image: "{{ LOADER_TEST_RUN_IMAGE }}"
-    command: pytest --verbose
+    command: conda run -n agr_loader --no-capture-output pytest --verbose --workers 8
     detach: no
+    timeout: 25000
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
