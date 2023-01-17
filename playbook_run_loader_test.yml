@@ -20,9 +20,9 @@
   tasks:
     - name: Setup Neo, Run Loader, Push Images
       block:
-        - include_tasks: tasks/start_neo_env.yml
-        - include_tasks: tasks/run_loader.yml
-        - include_tasks: tasks/push_neo_test_image.yml
+        - include_tasks: tasks/start_neo_test_image.yml
+        - include_tasks: tasks/run_loader_tests.yml
+        - include_tasks: tasks/push_neo_image.yml
         - set_fact:
             failed_flag: "passed"
 
