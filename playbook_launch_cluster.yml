@@ -271,7 +271,6 @@
 
     - name: Retrieve all volumes for a queried instance
       ec2_vol_info:
-        instance: '{{ item }}'
         region: us-east-1
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
