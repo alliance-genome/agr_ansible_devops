@@ -1,6 +1,6 @@
 - name: Run Loader Tests against Neo
   docker_container:
-    name: "{{ LOADER_RUN_NAME }}"
+    name: "{{ LOADER_TEST_NAME }}"
     image: "{{ LOADER_RUN_IMAGE }}"
     command: conda run -n agr_loader --no-capture-output pytest --verbose --workers 8
     detach: no
