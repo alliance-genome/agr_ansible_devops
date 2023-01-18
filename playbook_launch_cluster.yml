@@ -17,15 +17,12 @@
   tasks:
 
     - name: Launch instance 1
-      ec2:
+      ec2_instance:
         key_name: AGR-ssl2
         group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-        image: "{{ COMPUTE_AMI_IMAGE }}"
+        image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
-        # zone: us-east-1a
-        # vpc_subnet_id: subnet-3ebf4477
-        zone: us-east-1b
         vpc_subnet_id: subnet-df7c7487
         assign_public_ip: yes
         instance_profile_name: S3DataAccess
@@ -44,15 +41,12 @@
       register: node1
 
     - name: Launch instance 2
-      ec2:
+      ec2_instance:
         key_name: AGR-ssl2
         group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-        image: "{{ COMPUTE_AMI_IMAGE }}"
+        image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
-        # zone: us-east-1a
-        # vpc_subnet_id: subnet-3ebf4477
-        zone: us-east-1b
         vpc_subnet_id: subnet-df7c7487
         assign_public_ip: yes
         instance_profile_name: S3DataAccess
@@ -71,15 +65,12 @@
       register: node2
 
     - name: Launch instance 3
-      ec2:
+      ec2_instance:
         key_name: AGR-ssl2
         group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-        image: "{{ COMPUTE_AMI_IMAGE }}"
+        image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
-        # zone: us-east-1a
-        # vpc_subnet_id: subnet-3ebf4477
-        zone: us-east-1b
         vpc_subnet_id: subnet-df7c7487
         assign_public_ip: yes
         instance_profile_name: S3DataAccess
@@ -98,15 +89,12 @@
       register: node3
 
     - name: Launch instance 4
-      ec2:
+      ec2_instance:
         key_name: AGR-ssl2
         group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-        image: "{{ COMPUTE_AMI_IMAGE }}"
+        image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
-        # zone: us-east-1a
-        # vpc_subnet_id: subnet-3ebf4477
-        zone: us-east-1b
         vpc_subnet_id: subnet-df7c7487
         assign_public_ip: yes
         instance_profile_name: S3DataAccess
@@ -125,15 +113,12 @@
       register: node4
 
     - name: Launch instance 5
-      ec2:
+      ec2_instance:
         key_name: AGR-ssl2
         group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-        image: "{{ COMPUTE_AMI_IMAGE }}"
+        image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
-        # zone: us-east-1a
-        # vpc_subnet_id: subnet-3ebf4477
-        zone: us-east-1b
         vpc_subnet_id: subnet-df7c7487
         assign_public_ip: yes
         instance_profile_name: S3DataAccess
