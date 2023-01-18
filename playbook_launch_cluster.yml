@@ -270,12 +270,13 @@
       register: variant_node
 
     - name: Retrieve all volumes for a queried instance
-      ec2_vol:
+      ec2_vol_info:
         instance: '{{ item }}'
         region: us-east-1
-        state: list
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        filters:                                                                                                                                             |      add_host:                                                                                                                                             
+          attachment.instance-id: '{{ item }}' 
       with_items: "{{ ec2_result.instance_ids }}"
       register: ec2_volumes
 
@@ -290,4 +291,3 @@
       with_subelements:
         - "{{ ec2_volumes.results }}"
         - volumes
-
