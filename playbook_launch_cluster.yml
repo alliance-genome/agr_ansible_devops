@@ -19,13 +19,14 @@
     - name: Launch instance 1
       ec2_instance:
         key_name: AGR-ssl2
-        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        security_groups: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
         image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
         vpc_subnet_id: subnet-df7c7487
-        assign_public_ip: yes
-        instance_profile_name: S3DataAccess
+        network:
+          assign_public_ip: true
+        iam_instance_profile: S3DataAccess
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         volumes:
@@ -36,20 +37,21 @@
             delete_on_termination: yes
         wait: yes
         user_data: "" # Otherwise get weird error on start up
-        instance_tags:
+        tags:
           Name: "Ansible Generated - {{ PLAYBOOK_NAME }} 1"
       register: node1
 
     - name: Launch instance 2
       ec2_instance:
         key_name: AGR-ssl2
-        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        security_groups: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
         image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
         vpc_subnet_id: subnet-df7c7487
-        assign_public_ip: yes
-        instance_profile_name: S3DataAccess
+        network:
+          assign_public_ip: true
+        iam_instance_profile: S3DataAccess
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         volumes:
@@ -60,20 +62,21 @@
             delete_on_termination: yes
         wait: yes
         user_data: "" # Otherwise get weird error on start up
-        instance_tags:
+        tags:
           Name: "Ansible Generated - {{ PLAYBOOK_NAME }} 2"
       register: node2
 
     - name: Launch instance 3
       ec2_instance:
         key_name: AGR-ssl2
-        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        security_groups: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
         image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
         vpc_subnet_id: subnet-df7c7487
-        assign_public_ip: yes
-        instance_profile_name: S3DataAccess
+        network:
+          assign_public_ip: true
+        iam_instance_profile: S3DataAccess
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         volumes:
@@ -84,22 +87,23 @@
             delete_on_termination: yes
         wait: yes
         user_data: "" # Otherwise get weird error on start up
-        instance_tags:
+        tags:
           Name: "Ansible Generated - {{ PLAYBOOK_NAME }} 3"
       register: node3
 
     - name: Launch instance 4
       ec2_instance:
         key_name: AGR-ssl2
-        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        security_groups: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
         image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
         vpc_subnet_id: subnet-df7c7487
-        assign_public_ip: yes
-        instance_profile_name: S3DataAccess
+        iam_instance_profile: S3DataAccess
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        network:
+          assign_public_ip: true
         volumes:
           - device_name: /dev/xvda
             volume_type: gp3
@@ -108,20 +112,21 @@
             delete_on_termination: yes
         wait: yes
         user_data: "" # Otherwise get weird error on start up
-        instance_tags:
+        tags:
           Name: "Ansible Generated - {{ PLAYBOOK_NAME }} 4"
       register: node4
 
     - name: Launch instance 5
       ec2_instance:
         key_name: AGR-ssl2
-        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        security_groups: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
         image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
         vpc_subnet_id: subnet-df7c7487
-        assign_public_ip: yes
-        instance_profile_name: S3DataAccess
+        network:
+          assign_public_ip: true
+        iam_instance_profile: S3DataAccess
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         volumes:
@@ -132,7 +137,7 @@
             delete_on_termination: yes
         wait: yes
         user_data: "" # Otherwise get weird error on start up
-        instance_tags:
+        tags:
           Name: "Ansible Generated - {{ PLAYBOOK_NAME }} 5"
       register: node5
 
