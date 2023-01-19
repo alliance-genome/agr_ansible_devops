@@ -22,6 +22,7 @@
     env:
       node.name: "{{ ES_SERVER_NAME }}{{ hostvars[ansible_host]['node1_id'] }}"
       cluster.name: es-cluster
+      xpack.security.enabled: false
       discovery.seed_hosts: "{{ hostvars['all_hosts']['node_transport_list'] }}"
       cluster.initial_master_nodes: "{{ ES_CLUSTER_SERVER_FULLLIST }}"
       transport.host: "0.0.0.0"
@@ -42,6 +43,7 @@
     env:
       node.name: "{{ ES_SERVER_NAME }}{{ hostvars[ansible_host]['node2_id'] }}"
       cluster.name: es-cluster
+      xpack.security.enabled: false
       discovery.seed_hosts: "{{ hostvars['all_hosts']['node_transport_list'] }}"
       cluster.initial_master_nodes: "{{ ES_CLUSTER_SERVER_FULLLIST }}"
       transport.host: "0.0.0.0"
@@ -62,6 +64,7 @@
     env:
       node.name: "{{ ES_SERVER_NAME }}{{ hostvars[ansible_host]['node3_id'] }}"
       cluster.name: es-cluster
+      xpack.security.enabled: false
       discovery.seed_hosts: "{{ hostvars['all_hosts']['node_transport_list'] }}"
       cluster.initial_master_nodes: "{{ ES_CLUSTER_SERVER_FULLLIST }}"
       transport.host: "0.0.0.0"
@@ -82,6 +85,7 @@
     env:
       node.name: "{{ ES_SERVER_NAME }}{{ hostvars[ansible_host]['node4_id'] }}"
       cluster.name: es-cluster
+      xpack.security.enabled: false
       discovery.seed_hosts: "{{ hostvars['all_hosts']['node_transport_list'] }}"
       cluster.initial_master_nodes: "{{ ES_CLUSTER_SERVER_FULLLIST }}"
       transport.host: "0.0.0.0"
