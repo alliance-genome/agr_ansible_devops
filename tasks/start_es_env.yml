@@ -21,7 +21,7 @@
       - "9300:9300"
     env:
       discovery.type: single-node
-      "xpack.security.enabled": false
+      xpack.security.enabled: "false"
       ES_JAVA_OPTS: "-Xms{{ ES_CLUSTER_MEMORY }} -Xmx{{ ES_CLUSTER_MEMORY }}"
 
 - name: Run Cerebro
