@@ -30,45 +30,47 @@
 
   tasks:
     - name: Launch instance
-      ec2:
+      ec2_instance:
         key_name: AGR-ssl2
-        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        security_groups: ["default", "ES Transport", "SSH", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-        image: "{{ COMPUTE_AMI_IMAGE }}"
+        image_id: "{{ COMPUTE_AMI_IMAGE }}"
         region: us-east-1
-        zone: us-east-1b
         vpc_subnet_id: subnet-df7c7487
-        assign_public_ip: yes
-        instance_profile_name: S3DataAccess
-        private_ip: "{{ ES_CLUSTER_NODE_IP }}"
+        iam_instance_profile: S3DataAccess
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        network:
+          assign_public_ip: true
+          private_ip_address: "{{ ES_CLUSTER_NODE_IP }}"
         volumes:
           - device_name: /dev/xvda
-            volume_type: gp3
-            volume_size: 1000
-            iops: 3000
-            delete_on_termination: yes
+            ebs:
+              volume_type: gp3
+              volume_size: 1000
+              iops: 3000
+              delete_on_termination: yes
         wait: yes
         user_data: "" # Otherwise get weird error on start up
-        instance_tags:
+        tags:
           Name: "Ansible Generated - {{ PLAYBOOK_NAME }}"
+        instance_initiated_shutdown_behavior: terminate
       register: ec2
 
     - name: Add all instance public IPs to host group
       add_host:
-        hostname: '{{ item.private_ip }}'
+        hostname: '{{ item.private_ip_address }}'
         groupname: launched
       with_items: "{{ ec2.instances }}"
       register: launched
 
     - name: Retrieve all volumes for a queried instance
-      ec2_vol:
-        instance: '{{ item }}'
+      ec2_vol_info:
         region: us-east-1
-        state: list
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        filters:
+          attachment.instance-id: '{{ item }}'
       with_items: "{{ ec2.instance_ids }}"
       register: ec2_volumes
 
@@ -86,7 +88,7 @@
 
     - name: Waiting for SSH to be up
       wait_for:
-        host: "{{ item.private_ip }}"
+        host: "{{ item.private_ip_address }}"
         port: 22
         delay: 5
         timeout: 300
@@ -143,10 +145,12 @@
     - name: Pull ES Env Image
       docker_image:
         name: "{{ ES_ENV_IMAGE }}"
+        source: pull
   
     - name: Pull Cerebro Image
       docker_image:
         name: "yannart/cerebro:latest"
+        source: pull
     
     - name: Run ES Cluster Node "{{ ES_CLUSTER_NODE_NAME }}"
       docker_container:
@@ -165,6 +169,8 @@
           node.name: "{{ ES_SERVER_NAME }}{{ ES_CLUSTER_NODE_NAME }}"
           cluster.name: es-cluster
           ES_JAVA_OPTS: "-Xms15g -Xmx15g"
+          xpack.security.enabled: "false"
+          ingest.geoip.downloader.enabled: "false"
           discovery.seed_hosts: "{{ node_transport_list }}"
           cluster.initial_master_nodes: "{{ ES_CLUSTER_SERVER_FULLLIST }}"
           transport.host: "0.0.0.0"
