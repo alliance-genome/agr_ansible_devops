@@ -7,6 +7,7 @@
   docker_container:
     name: "{{ HUMAN_VARIANT_INDEXER_RUN_NAME }}"
     image: "{{ JAVA_SOFTWARE_RUN_IMAGE }}"
+    timeout: 43200
     detach: no
     log_driver: "gelf"
     log_options:

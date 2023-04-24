@@ -1,0 +1,79 @@
+---
+
+- name: Setup SSH Keys
+  hosts: local
+  connection: local
+  gather_facts: False
+
+  pre_tasks:
+    - name: Import Secret Variable file
+      include_vars: "environments/shared_secrets.yml"
+  
+    - name: Copy SSH private key file
+      copy:
+        content: "{{ AGRSSL2_content }}"
+        dest: "/root/.ssh/id_rsa"
+        mode: 0600
+
+    - name: Import Env Variable file
+      include_vars: "environments/{{ env }}/main.yml" # ENV must always be loaded first
+
+    - name: Add IPs to host group "{{ ES_CLUSTER_NODE_IP }}"
+      add_host:
+        hostname: '{{ item }}'
+        groupname: launched
+      with_items: "{{ ES_CLUSTER_NODE_IP }}"
+      register: launched
+
+- name: Setup Docker Server
+  hosts: launched
+  user: core
+  gather_facts: False
+
+  vars_files:
+    - "environments/{{ env }}/main.yml" # ENV must always be loaded first
+    - "environments/shared_secrets.yml"
+    - "environments/shared_variables.yml"
+    - "environments/shared_aws_instance_variables.yml"
+
+  tasks:
+
+    - name: Stop and Remove ES Cluster Node "{{ ES_CLUSTER_NODE_NAME }}"
+      docker_container:
+        name: "{{ ES_SERVER_NAME }}{{ ES_CLUSTER_NODE_NAME }}"
+        state: absent
+
+    - name: Remove data volume
+      docker_volume:
+        name: "es_{{ ES_CLUSTER_NODE_NAME }}_data_volume"
+        state: absent
+
+    - name: Pull ES Env Image
+      docker_image:
+        name: "{{ ES_ENV_IMAGE }}"
+        source: pull
+ 
+    - name: Run ES Cluster Node "{{ ES_CLUSTER_NODE_NAME }}"
+      docker_container:
+        name: "{{ ES_SERVER_NAME }}{{ ES_CLUSTER_NODE_NAME }}"
+        image: "{{ ES_ENV_IMAGE }}"
+        log_driver: "gelf"
+        log_options:
+          gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+        network_mode: "{{ NET }}"
+        ports:
+          - "9200:9200"
+          - "9300:9300"
+        volumes:
+          - "es_{{ ES_CLUSTER_NODE_NAME }}_data_volume:/usr/share/elasticsearch/data"
+        env:
+          node.name: "{{ ES_SERVER_NAME }}{{ ES_CLUSTER_NODE_NAME }}"
+          cluster.name: es-cluster
+          ES_JAVA_OPTS: "-Xms15g -Xmx15g"
+          xpack.security.enabled: "false"
+          ingest.geoip.downloader.enabled: "false"
+          discovery.seed_hosts: "{{ node_transport_list }}"
+          cluster.initial_master_nodes: "{{ ES_CLUSTER_SERVER_FULLLIST }}"
+          transport.host: "0.0.0.0"
+          transport.publish_host: "{{ ES_CLUSTER_NODE_IP }}"
+          transport.publish_port: "9300"

@@ -11,42 +11,44 @@
 
   tasks:
     - name: Launch instances
-      ec2:
+      ec2_instance:
         key_name: AGR-ssl2
-        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        security_groups: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ WEBSERVER_INSTANCE_TYPE }}"
-        image: "{{ WEBSERVER_AMI_IMAGE }}"
+        image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
         vpc_subnet_id: subnet-3ebf4477
-        assign_public_ip: yes
-        instance_profile_name: S3DataAccess
+        iam_instance_profile: S3DataAccess
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        network:
+          assign_public_ip: yes
         volumes:
           - device_name: /dev/xvda
-            volume_type: standard
-            volume_size: 750
-            delete_on_termination: yes
+            ebs:
+              volume_type: gp3
+              volume_size: 750
+              delete_on_termination: yes
         wait: yes
         user_data: "" # Otherwise get weird error on start up
-        instance_tags:
+        tags:
           Name: "Ansible Generated - {{ PLAYBOOK_NAME }}"
       register: ec2
 
     - name: Add all instance private IPs to host group
       add_host:
-        hostname: '{{ item.private_ip }}'
+        hostname: '{{ item.private_ip_address }}'
         groupname: launched
       with_items: "{{ ec2.instances }}"
       register: launched
 
     - name: Retrieve all volumes for a queried instance
-      ec2_vol:
-        instance: '{{ item }}'
+      ec2_vol_info:
         region: us-east-1
-        state: list
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        filters:
+          attachment.instance-id: '{{ item }}'
       with_items: "{{ ec2.instance_ids }}"
       register: ec2_volumes
 
@@ -64,7 +66,7 @@
 
     - name: Waiting for SSH to be up
       wait_for:
-        host: "{{ item.private_ip }}"
+        host: "{{ item.private_ip_address }}"
         port: 22
         delay: 5
         timeout: 300

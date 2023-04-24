@@ -11,7 +11,8 @@ NGINX_TAG: "{{ NET }}"
 LOG_SERVER_HOST: "{{ lookup('env','LOG_SERVER_HOST') or 'logs.alliancegenome.org' }}" # Logging runs outside the docker network
 START_GOCD_AGENT: "{{ lookup('env','START_GOCD_AGENT') or false }}"
 
-
+CURATION_API_URL: "http://{{ CURATION_API_SERVER_NAME }}:8080/api"
+CURATION_API_TOKEN: ""
 
 CLUSTER_CONFIG:
   NODE01:

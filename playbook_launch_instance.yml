@@ -62,19 +62,19 @@
 
     - name: Add all instance private IPs to host group
       add_host:
-        hostname: '{{ item.private_ip }}'
+        hostname: '{{ item.private_ip_address }}'
         groupname: launched
       with_items: "{{ ec2_result.instances }}"
       register: launched
 
     - name: Retrieve all volumes for a queried instance
-      ec2_vol:
-        instance: '{{ item }}'
+      ec2_vol_info:
         region: us-east-1
-        state: list
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
-      with_items: "{{ ec2_result.instance_ids }}"
+        filters:
+          attachment.instance-id: '{{ item.instance_id }}'
+      with_items: "{{ ec2_result.instances }}"
       register: ec2_volumes
 
     - name: Ensure all volumes are tagged
@@ -91,7 +91,7 @@
 
     - name: Waiting for SSH to be up
       wait_for:
-        host: "{{ item.private_ip }}"
+        host: "{{ item.private_ip_address }}"
         port: 22
         delay: 5
         timeout: 300

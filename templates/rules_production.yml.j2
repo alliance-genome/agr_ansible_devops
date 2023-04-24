@@ -20,6 +20,16 @@ groups:
       summary: Prometheus too many restarts (instance {{ $labels.instance }})
       description: Prometheus has restarted more than twice in the last 15 minutes. It might be crash-looping. VALUE = {{ $value }} LABELS = { { $labels } }
 
+- name: Endpoints
+  rules:
+    - alert: EndpointDown
+      expr: probe_success == 0
+      for: 10s
+      labels:
+        severity: "critical"
+      annotations:
+        summary: "Endpoint {{ $labels.instance }} down"
+
 - name: Hardware
   rules:
     - alert: HostOutOfMemory

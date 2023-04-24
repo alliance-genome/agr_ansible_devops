@@ -5,6 +5,7 @@
     name: "{{ JBROWSE_GFF_PROCESS_RUN_NAME }}"
     image: "{{ JBROWSE_GFF_PROCESS_BUILD_IMAGE }}"
     detach: no
+    timeout: 25000
     recreate: yes
     log_driver: "gelf"
     log_options:

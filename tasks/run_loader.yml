@@ -8,6 +8,7 @@
     name: "{{ LOADER_RUN_NAME }}"
     image: "{{ LOADER_RUN_IMAGE }}"
     detach: no
+    timeout: 25000
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
@@ -21,7 +22,5 @@
       TEST_SET: "{{ LOADER_TEST_SET }}"
       ALLIANCE_RELEASE: "{{ ALLIANCE_RELEASE }}"
       FMS_API_URL: "{{ FMS_API_URL }}"
-      AWS_ACCESS_KEY: "{{ AWS_ACCESS_KEY }}"
-      AWS_SECRET_KEY: "{{ AWS_SECRET_KEY }}"
       GENERATE_REPORTS: "{{ GENERATE_REPORTS }}"
       NEO4J_HOST: "{{ NEO_SERVER_NAME }}"

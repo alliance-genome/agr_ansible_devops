@@ -1,3 +1,5 @@
+- name: Tag Container
+  command: docker tag "{{ NEO_DATA_BUILD_IMAGE }}_test" "{{ NEO_DATA_BUILD_IMAGE }}"
 
 - name: Push Container
   command: docker push "{{ NEO_DATA_BUILD_IMAGE }}"

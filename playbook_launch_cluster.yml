@@ -17,143 +17,138 @@
   tasks:
 
     - name: Launch instance 1
-      ec2:
+      ec2_instance:
         key_name: AGR-ssl2
-        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        security_groups: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-        image: "{{ COMPUTE_AMI_IMAGE }}"
+        image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
-        # zone: us-east-1a
-        # vpc_subnet_id: subnet-3ebf4477
-        zone: us-east-1b
         vpc_subnet_id: subnet-df7c7487
-        assign_public_ip: yes
-        instance_profile_name: S3DataAccess
+        network:
+          assign_public_ip: true
+        iam_instance_profile: S3DataAccess
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         volumes:
           - device_name: /dev/xvda
-            volume_type: gp3
-            volume_size: 1000
-            iops: 3000
-            delete_on_termination: yes
+            ebs:
+              volume_type: gp3
+              volume_size: 1000
+              iops: 3000
+              delete_on_termination: yes
         wait: yes
         user_data: "" # Otherwise get weird error on start up
-        instance_tags:
+        tags:
           Name: "Ansible Generated - {{ PLAYBOOK_NAME }} 1"
       register: node1
 
     - name: Launch instance 2
-      ec2:
+      ec2_instance:
         key_name: AGR-ssl2
-        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        security_groups: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-        image: "{{ COMPUTE_AMI_IMAGE }}"
+        image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
-        # zone: us-east-1a
-        # vpc_subnet_id: subnet-3ebf4477
-        zone: us-east-1b
         vpc_subnet_id: subnet-df7c7487
-        assign_public_ip: yes
-        instance_profile_name: S3DataAccess
+        network:
+          assign_public_ip: true
+        iam_instance_profile: S3DataAccess
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         volumes:
           - device_name: /dev/xvda
-            volume_type: gp3
-            volume_size: 1000
-            iops: 3000
-            delete_on_termination: yes
+            ebs:
+              volume_type: gp3
+              volume_size: 1000
+              iops: 3000
+              delete_on_termination: yes
         wait: yes
         user_data: "" # Otherwise get weird error on start up
-        instance_tags:
+        tags:
           Name: "Ansible Generated - {{ PLAYBOOK_NAME }} 2"
       register: node2
 
     - name: Launch instance 3
-      ec2:
+      ec2_instance:
         key_name: AGR-ssl2
-        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        security_groups: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-        image: "{{ COMPUTE_AMI_IMAGE }}"
+        image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
-        # zone: us-east-1a
-        # vpc_subnet_id: subnet-3ebf4477
-        zone: us-east-1b
         vpc_subnet_id: subnet-df7c7487
-        assign_public_ip: yes
-        instance_profile_name: S3DataAccess
+        network:
+          assign_public_ip: true
+        iam_instance_profile: S3DataAccess
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         volumes:
           - device_name: /dev/xvda
-            volume_type: gp3
-            volume_size: 1000
-            iops: 3000
-            delete_on_termination: yes
+            ebs:
+              volume_type: gp3
+              volume_size: 1000
+              iops: 3000
+              delete_on_termination: yes
         wait: yes
         user_data: "" # Otherwise get weird error on start up
-        instance_tags:
+        tags:
           Name: "Ansible Generated - {{ PLAYBOOK_NAME }} 3"
       register: node3
 
     - name: Launch instance 4
-      ec2:
+      ec2_instance:
         key_name: AGR-ssl2
-        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        security_groups: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-        image: "{{ COMPUTE_AMI_IMAGE }}"
+        image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
-        # zone: us-east-1a
-        # vpc_subnet_id: subnet-3ebf4477
-        zone: us-east-1b
         vpc_subnet_id: subnet-df7c7487
-        assign_public_ip: yes
-        instance_profile_name: S3DataAccess
+        iam_instance_profile: S3DataAccess
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        network:
+          assign_public_ip: true
         volumes:
           - device_name: /dev/xvda
-            volume_type: gp3
-            volume_size: 1000
-            iops: 3000
-            delete_on_termination: yes
+            ebs:
+              volume_type: gp3
+              volume_size: 1000
+              iops: 3000
+              delete_on_termination: yes
         wait: yes
         user_data: "" # Otherwise get weird error on start up
-        instance_tags:
+        tags:
           Name: "Ansible Generated - {{ PLAYBOOK_NAME }} 4"
       register: node4
 
     - name: Launch instance 5
-      ec2:
+      ec2_instance:
         key_name: AGR-ssl2
-        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        security_groups: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
-        image: "{{ COMPUTE_AMI_IMAGE }}"
+        image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
-        # zone: us-east-1a
-        # vpc_subnet_id: subnet-3ebf4477
-        zone: us-east-1b
         vpc_subnet_id: subnet-df7c7487
-        assign_public_ip: yes
-        instance_profile_name: S3DataAccess
+        network:
+          assign_public_ip: true
+        iam_instance_profile: S3DataAccess
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         volumes:
           - device_name: /dev/xvda
-            volume_type: gp3
-            volume_size: 1000
-            iops: 3000
-            delete_on_termination: yes
+            ebs:
+              volume_type: gp3
+              volume_size: 1000
+              iops: 3000
+              delete_on_termination: yes
         wait: yes
         user_data: "" # Otherwise get weird error on start up
-        instance_tags:
+        tags:
           Name: "Ansible Generated - {{ PLAYBOOK_NAME }} 5"
       register: node5
 
     - name: Waiting for SSH to be up Node1
       wait_for:
-        host: "{{ item.private_ip }}"
+        host: "{{ item.private_ip_address }}"
         port: 22
         delay: 5
         timeout: 300
@@ -162,7 +157,7 @@
 
     - name: Waiting for SSH to be up Node2
       wait_for:
-        host: "{{ item.private_ip }}"
+        host: "{{ item.private_ip_address }}"
         port: 22
         delay: 5
         timeout: 300
@@ -171,7 +166,7 @@
 
     - name: Waiting for SSH to be up Node3
       wait_for:
-        host: "{{ item.private_ip }}"
+        host: "{{ item.private_ip_address }}"
         port: 22
         delay: 5
         timeout: 300
@@ -180,7 +175,7 @@
 
     - name: Waiting for SSH to be up Node4
       wait_for:
-        host: "{{ item.private_ip }}"
+        host: "{{ item.private_ip_address }}"
         port: 22
         delay: 5
         timeout: 300
@@ -189,7 +184,7 @@
 
     - name: Waiting for SSH to be up Node5
       wait_for:
-        host: "{{ item.private_ip }}"
+        host: "{{ item.private_ip_address }}"
         port: 22
         delay: 5
         timeout: 300
@@ -205,49 +200,49 @@
 
     - name: Add cluster host variables node 1
       add_host:
-        name: "{{ node1.instances[0].private_ip }}"
+        name: "{{ node1.instances[0].private_ip_address }}"
         node_name: "node1"
         node1_id: "01"
         node2_id: "02"
         node3_id: "03"
         node4_id: "04"
-        local_address: "{{ node1.instances[0].private_ip }}"
+        local_address: "{{ node1.instances[0].private_ip_address }}"
 
     - name: Add cluster host variables node 2
       add_host:
-        name: "{{ node2.instances[0].private_ip }}"
+        name: "{{ node2.instances[0].private_ip_address }}"
         node_name: "node2"
         node1_id: "05"
         node2_id: "06"
         node3_id: "07"
         node4_id: "08"
-        local_address: "{{ node2.instances[0].private_ip }}"
+        local_address: "{{ node2.instances[0].private_ip_address }}"
 
     - name: Add cluster host variables node 3
       add_host:
-        name: "{{ node3.instances[0].private_ip }}"
+        name: "{{ node3.instances[0].private_ip_address }}"
         node_name: "node3"
         node1_id: "09"
         node2_id: "10"
         node3_id: "11"
         node4_id: "12"
-        local_address: "{{ node3.instances[0].private_ip }}"
+        local_address: "{{ node3.instances[0].private_ip_address }}"
 
     - name: Add cluster host variables node 4
       add_host:
-        name: "{{ node4.instances[0].private_ip }}"
+        name: "{{ node4.instances[0].private_ip_address }}"
         node_name: "node4"
         node1_id: "13"
         node2_id: "14"
         node3_id: "15"
         node4_id: "16"
-        local_address: "{{ node4.instances[0].private_ip }}"
+        local_address: "{{ node4.instances[0].private_ip_address }}"
 
     - name: Add all hosts to list
       add_host:
         name: "all_hosts"
-        node_transport_list: "{{ node1.instances[0].private_ip }}:9301,{{ node1.instances[0].private_ip }}:9302,{{ node1.instances[0].private_ip }}:9303,{{ node1.instances[0].private_ip }}:9304,{{ node2.instances[0].private_ip }}:9305,{{ node2.instances[0].private_ip }}:9306,{{ node2.instances[0].private_ip }}:9307,{{ node2.instances[0].private_ip }}:9308,{{ node3.instances[0].private_ip }}:9309,{{ node3.instances[0].private_ip }}:9310,{{ node3.instances[0].private_ip }}:9311,{{ node3.instances[0].private_ip }}:9312,{{ node4.instances[0].private_ip }}:9313,{{ node4.instances[0].private_ip }}:9314,{{ node4.instances[0].private_ip }}:9315,{{ node4.instances[0].private_ip }}:9316"
-        node_http_list:      "{{ node1.instances[0].private_ip }}:9201,{{ node1.instances[0].private_ip }}:9202,{{ node1.instances[0].private_ip }}:9203,{{ node1.instances[0].private_ip }}:9204,{{ node2.instances[0].private_ip }}:9205,{{ node2.instances[0].private_ip }}:9206,{{ node2.instances[0].private_ip }}:9207,{{ node2.instances[0].private_ip }}:9208,{{ node3.instances[0].private_ip }}:9209,{{ node3.instances[0].private_ip }}:9210,{{ node3.instances[0].private_ip }}:9211,{{ node3.instances[0].private_ip }}:9212,{{ node4.instances[0].private_ip }}:9213,{{ node4.instances[0].private_ip }}:9214,{{ node4.instances[0].private_ip }}:9215,{{ node4.instances[0].private_ip }}:9216"
+        node_transport_list: "{{ node1.instances[0].private_ip_address }}:9301,{{ node1.instances[0].private_ip_address }}:9302,{{ node1.instances[0].private_ip_address }}:9303,{{ node1.instances[0].private_ip_address }}:9304,{{ node2.instances[0].private_ip_address }}:9305,{{ node2.instances[0].private_ip_address }}:9306,{{ node2.instances[0].private_ip_address }}:9307,{{ node2.instances[0].private_ip_address }}:9308,{{ node3.instances[0].private_ip_address }}:9309,{{ node3.instances[0].private_ip_address }}:9310,{{ node3.instances[0].private_ip_address }}:9311,{{ node3.instances[0].private_ip_address }}:9312,{{ node4.instances[0].private_ip_address }}:9313,{{ node4.instances[0].private_ip_address }}:9314,{{ node4.instances[0].private_ip_address }}:9315,{{ node4.instances[0].private_ip_address }}:9316"
+        node_http_list:      "{{ node1.instances[0].private_ip_address }}:9201,{{ node1.instances[0].private_ip_address }}:9202,{{ node1.instances[0].private_ip_address }}:9203,{{ node1.instances[0].private_ip_address }}:9204,{{ node2.instances[0].private_ip_address }}:9205,{{ node2.instances[0].private_ip_address }}:9206,{{ node2.instances[0].private_ip_address }}:9207,{{ node2.instances[0].private_ip_address }}:9208,{{ node3.instances[0].private_ip_address }}:9209,{{ node3.instances[0].private_ip_address }}:9210,{{ node3.instances[0].private_ip_address }}:9211,{{ node3.instances[0].private_ip_address }}:9212,{{ node4.instances[0].private_ip_address }}:9213,{{ node4.instances[0].private_ip_address }}:9214,{{ node4.instances[0].private_ip_address }}:9215,{{ node4.instances[0].private_ip_address }}:9216"
 
     - name: Debug
       debug:
@@ -255,32 +250,32 @@
 
     - name: Add all instance private IPs to host group
       add_host:
-        hostname: '{{ item.private_ip }}'
+        hostname: '{{ item.private_ip_address }}'
         groupname: launched
       with_items: "{{ ec2_result.instances }}"
       register: launched
 
     - name: Add all cluster instance private IPs to host group
       add_host:
-        hostname: '{{ item.private_ip }}'
+        hostname: '{{ item.private_ip_address }}'
         groupname: cluster_nodes
       with_items: "{{ node1.instances + node2.instances + node3.instances + node4.instances }}"
       register: cluster_nodes
 
     - name: Add all variant instance private IPs to host group
       add_host:
-        hostname: '{{ item.private_ip }}'
+        hostname: '{{ item.private_ip_address }}'
         groupname: variant_node
       with_items: "{{ node5.instances }}"
       register: variant_node
 
     - name: Retrieve all volumes for a queried instance
-      ec2_vol:
-        instance: '{{ item }}'
+      ec2_vol_info:
         region: us-east-1
-        state: list
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        filters:
+          attachment.instance-id: '{{ item }}' 
       with_items: "{{ ec2_result.instance_ids }}"
       register: ec2_volumes
 
@@ -295,4 +290,3 @@
       with_subelements:
         - "{{ ec2_volumes.results }}"
         - volumes
-

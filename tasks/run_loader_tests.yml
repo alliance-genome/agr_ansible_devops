@@ -1,14 +1,13 @@
 - name: Run Loader Tests against Neo
   docker_container:
-    name: "{{ LOADER_RUN_NAME }}"
+    name: "{{ LOADER_TEST_NAME }}"
     image: "{{ LOADER_RUN_IMAGE }}"
-    command: pytest --verbose --workers 8
+    command: conda run -n agr_loader --no-capture-output pytest --verbose --workers 8
     detach: no
+    timeout: 25000
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    volumes:
-      - "{{ NEO_VOLUME_NAME }}:/usr/src/app/tmp"
     network_mode: "{{ NET }}"
     env:
       DOWNLOAD_HOST: "{{ DOWNLOAD_HOST }}"
