@@ -34,7 +34,7 @@
 - name: Run cAdvisor Image
   docker_container:
     name: "{{ CADVISOR_SERVER_NAME }}"
-    image: "google/cadvisor:latest"
+    image: "gcr.io/cadvisor/cadvisor"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
