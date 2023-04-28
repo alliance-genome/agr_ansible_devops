@@ -10,13 +10,16 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    ports:
+      - "7474:7474"
+      - "7687:7687"
     volumes:
       - "{{ NEO_VOLUME_NAME }}:/var/lib/neo4j/import"
     network_mode: "{{ NET }}"
     env:
-      NEO4J_server_memory_heap_max__size: "{{ NEO_MAX_HEAP }}"
-      NEO4J_server_memory_heap_initial__size: "{{ NEO_MAX_HEAP }}"
-      NEO4J_server_memory_off__heap_max__size: "{{ NEO_MAX_HEAP }}"
-      NEO4J_server_memory_pagecache_size: "{{ NEO_PAGE_CACHE }}"
-      NEO4J_db_tx__state_memory__allocation: "OFF_HEAP"
+      # NEO4J_server_memory_heap_max__size: "{{ NEO_MAX_HEAP }}"
+      # NEO4J_server_memory_heap_initial__size: "{{ NEO_MAX_HEAP }}"
+      # NEO4J_server_memory_off__heap_max__size: "{{ NEO_MAX_HEAP }}"
+      # NEO4J_server_memory_pagecache_size: "{{ NEO_PAGE_CACHE }}"
+      # NEO4J_db_tx__state_memory__allocation: "OFF_HEAP"
       NEO4J_AUTH: "none"

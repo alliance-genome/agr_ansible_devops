@@ -92,7 +92,8 @@ JBROWSE_SERVER_IMAGE:        "{{ REGISTRY }}/agr_jbrowse_run:{{ DOCKER_PULL_TAG 
 APOLLO_SERVER_IMAGE:         "{{ REGISTRY }}/agr_apollo_run:{{ DOCKER_PULL_TAG }}"
 
 # Server Base Images
-NEO_ENV_IMAGE:               "{{ REGISTRY }}/agr_neo4j_env:{{ DOCKER_PULL_TAG }}"
+# NEO_ENV_IMAGE:               "{{ REGISTRY }}/agr_neo4j_env:{{ DOCKER_PULL_TAG }}"
+NEO_ENV_IMAGE:               "{{ REGISTRY }}/agr_neo4j_env:5.5.0-enterprise"
 #INFINISPAN_ENV_IMAGE:        "{{ REGISTRY }}/agr_infinispan_env:{{ DOCKER_PULL_TAG }}"
 INFINISPAN_ENV_IMAGE:        "infinispan/server:13.0.10.Final"
 
