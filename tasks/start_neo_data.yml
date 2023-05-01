@@ -15,8 +15,14 @@
       - "7687:7687"
     network_mode: "{{ NET }}"
     env:
-      #NEO4J_dbms_memory_pagecache_size: "{{ NEO_PAGE_CACHE }}"
-      #NEO4J_dbms_memory_heap_maxSize: "{{ NEO_MAX_HEAP }}"
+      NEO4J_server_memory_heap_max__size: "{{ NEO_MAX_HEAP }}"
+      NEO4J_server_memory_heap_initial__size: "{{ NEO_MAX_HEAP }}"
+      NEO4J_server_memory_off__heap_max__size: "{{ NEO_OFF_HEAP_MAX }}"
+      NEO4J_server_memory_pagecache_size: "{{ NEO_PAGE_CACHE }}"
+      NEO4J_db_tx__state_memory__allocation: "{{ NEO_ON_OFF_HEAP }}"
+      NEO4J_dbms_memory_transaction_total_max: "{{ NEO_TRANSACTION}}"
+      NEO4J_db_memory_transaction_total_max: "{{ NEO_TRANSACTION}}"
+      NEO4J_db_memory_transaction_max: "{{ NEO_TRANSACTION}}"
       NEO4J_AUTH: "none"
 
 - pause:

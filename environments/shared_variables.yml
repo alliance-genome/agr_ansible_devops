@@ -20,13 +20,18 @@ CACHE_TESTING_SERVER_NAME: "build.alliancegenome.org"
 
 # Config Options
 LOG_SERVER_ADDRESS: "udp://{{ LOG_SERVER_HOST }}:12201"
-NEO_VOLUME_NAME: "/data"
 INTERMINE_DATA_VOLUME_NAME: "/data"
 INFINISPAN_MEMORY: "31g"
 INDEXER_MEMORY: "31g"
-NEO_PAGE_CACHE: "148g"
-NEO_MAX_HEAP: "31g"
 CACHER_MEMORY: "31g"
+NEO_VOLUME_NAME: "/data"
+
+# Neo4j Config
+NEO_ON_OFF_HEAP: "OFF_HEAP"
+NEO_MAX_HEAP: "31GB"
+NEO_PAGE_CACHE: "148GB"
+NEO_OFF_HEAP_MAX: "0GB"
+NEO_TRANSACTION: "0"
 
 PROMETHEUS_CONFIG_PATH: "/home/core/config/prometheus"
 GRAFANA_CONFIG_PATH: "/home/core/config/grafana"
@@ -92,8 +97,7 @@ JBROWSE_SERVER_IMAGE:        "{{ REGISTRY }}/agr_jbrowse_run:{{ DOCKER_PULL_TAG 
 APOLLO_SERVER_IMAGE:         "{{ REGISTRY }}/agr_apollo_run:{{ DOCKER_PULL_TAG }}"
 
 # Server Base Images
-# NEO_ENV_IMAGE:               "{{ REGISTRY }}/agr_neo4j_env:{{ DOCKER_PULL_TAG }}"
-NEO_ENV_IMAGE:               "{{ REGISTRY }}/agr_neo4j_env:5.5.0-enterprise"
+NEO_ENV_IMAGE:               "{{ REGISTRY }}/agr_neo4j_env:{{ DOCKER_PULL_TAG }}"
 #INFINISPAN_ENV_IMAGE:        "{{ REGISTRY }}/agr_infinispan_env:{{ DOCKER_PULL_TAG }}"
 INFINISPAN_ENV_IMAGE:        "infinispan/server:13.0.10.Final"
 
