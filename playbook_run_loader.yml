@@ -29,6 +29,7 @@
       rescue:
         - debug:
             msg: "Error Detected Failing Build"
+        - include_tasks: tasks/push_neo_test_image.yml
         - set_fact:
             failed_flag: "failed"
 
