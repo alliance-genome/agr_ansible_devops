@@ -28,13 +28,13 @@
 
 - name: Pull cAdvisor
   docker_image:
-    name: gcr.io/cadvisor/cadvisor:v0.38.6
+    name: gcr.io/cadvisor/cadvisor:v0.47.0
     source: pull
 
 - name: Run cAdvisor Image
   docker_container:
     name: "{{ CADVISOR_SERVER_NAME }}"
-    image: "gcr.io/cadvisor/cadvisor:v0.38.6"
+    image: "gcr.io/cadvisor/cadvisor:v0.47.0"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
