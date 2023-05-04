@@ -2,15 +2,6 @@
 groups:
 - name: Prometheus and Targets
   rules:
-  - alert: PrometheusTargetMissing
-    expr: up == 0
-    for: 0m
-    labels:
-      severity: critical
-    annotations:
-      summary: Prometheus target missing (instance {{ $labels.instance }})
-      description: A Prometheus target has disappeared. An exporter might be crashed. VALUE = {{ $value }}  LABELS = { { $labels } }
-
   - alert: PrometheusTooManyRestarts
     expr: changes(process_start_time_seconds{job=~"prometheus|pushgateway|alertmanager"}[15m]) > 2
     for: 0m
@@ -184,15 +175,6 @@ groups:
 
 - name: Docker
   rules:
-  - alert: ContainerKilled
-    expr: time() - container_last_seen > 60
-    for: 0m
-    labels:
-      severity: critical
-    annotations:
-      summary: Container killed (instance {{ $labels.instance }})
-      description: A container has disappeared. VALUE = {{ $value }} LABELS = {{ $labels }}
-
   # cAdvisor can sometimes consume a lot of CPU, so this alert will fire constantly.
   # If you want to exclude it from this alert, exclude the series having an empty name:
   # container_cpu_usage_seconds_total{name!=""}
