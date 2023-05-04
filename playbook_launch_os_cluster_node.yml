@@ -47,7 +47,7 @@
           - device_name: /dev/xvda
             ebs:
               volume_type: gp3
-              volume_size: 400
+              volume_size: 1000
               iops: 3000
               delete_on_termination: yes
         wait: yes
@@ -147,11 +147,6 @@
         name: "{{ ES_ENV_IMAGE }}"
         source: pull
   
-    - name: Pull Cerebro Image
-      docker_image:
-        name: "yannart/cerebro:latest"
-        source: pull
-    
     - name: Run ES Cluster Node "{{ ES_CLUSTER_NODE_NAME }}"
       docker_container:
         name: "{{ ES_SERVER_NAME }}{{ ES_CLUSTER_NODE_NAME }}"
@@ -176,11 +171,3 @@
           transport.host: "0.0.0.0"
           transport.publish_host: "{{ ES_CLUSTER_NODE_IP }}"
           transport.publish_port: "9300"
-    
-    - name: Run Cerebro
-      docker_container:
-        name: "agr.{{ env }}.cerebro.server"
-        image: "yannart/cerebro:latest"
-        network_mode: "{{ NET }}"
-        ports:
-          - "9000:9000"

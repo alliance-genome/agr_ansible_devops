@@ -1,0 +1,23 @@
+---
+
+- name: Pull Java Run Image
+  docker_image:
+    name: "{{ JAVA_SOFTWARE_RUN_IMAGE }}"
+    source: pull
+
+- name: Run API
+  docker_container:
+    name: "{{ API_SERVER_NAME }}"
+    image: "{{ JAVA_SOFTWARE_RUN_IMAGE }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    ports:
+      - "8082:8080"
+    network_mode: "{{ NET }}"
+    command: java -jar agr_api/target/agr_api.jar
+    timeout: 180
+    env:
+      CACHE_HOST: "{{ INFINISPAN_SERVER_NAME }}"
+      NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
+      ES_HOST: "{{ ES_SERVER_NAME }}"
