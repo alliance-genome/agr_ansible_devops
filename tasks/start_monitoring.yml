@@ -97,7 +97,7 @@
 - name: Run Blackbox Exporter
   docker_container:
     name: "{{ BLACKBOX_SERVER_NAME }}"
-    image: "prom/blackbox-exporter::v0.23.0"
+    image: "prom/blackbox-exporter:v0.23.0"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
