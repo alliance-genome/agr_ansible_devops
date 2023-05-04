@@ -11,13 +11,13 @@
 
 - name: Pull Node Exporter Image
   docker_image:
-    name: prom/node-exporter
+    name: prom/node-exporter:v1.5.0
     source: pull
 
 - name: Run Node Exporter Image
   docker_container:
     name: "{{ NODEEXPORTER_SERVER_NAME }}"
-    image: "prom/node-exporter"
+    image: "prom/node-exporter:v1.5.0"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
@@ -28,13 +28,13 @@
 
 - name: Pull cAdvisor
   docker_image:
-    name: google/cadvisor:latest
+    name: gcr.io/cadvisor/cadvisor:v0.47.0
     source: pull
 
 - name: Run cAdvisor Image
   docker_container:
     name: "{{ CADVISOR_SERVER_NAME }}"
-    image: "google/cadvisor:latest"
+    image: "gcr.io/cadvisor/cadvisor:v0.47.0"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
@@ -91,13 +91,13 @@
 
 - name: Pull Blackbox Image
   docker_image:
-    name: prom/blackbox-exporter:latest
+    name: prom/blackbox-exporter:v0.23.0
     source: pull
 
 - name: Run Blackbox Exporter
   docker_container:
     name: "{{ BLACKBOX_SERVER_NAME }}"
-    image: "prom/blackbox-exporter:latest"
+    image: "prom/blackbox-exporter:v0.23.0"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
@@ -135,13 +135,13 @@
 
 - name: Pull Prometheus Image
   docker_image:
-    name: prom/prometheus:latest
+    name: prom/prometheus:v2.43.0
     source: pull
 
 - name: Run Prometheus
   docker_container:
     name: "{{ PROMETHEUS_SERVER_NAME }}"
-    image: "prom/prometheus:latest"
+    image: "prom/prometheus:v2.43.0"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
@@ -170,13 +170,13 @@
 
 - name: Pull Grafana Image
   docker_image:
-    name: grafana/grafana:latest
+    name: grafana/grafana:9.4.0
     source: pull
 
 - name: Run Grafana Image
   docker_container:
     name: "{{ GRAFANA_SERVER_NAME }}"
-    image: "grafana/grafana:latest"
+    image: "grafana/grafana:9.4.0"
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
@@ -197,11 +197,10 @@
     name: portainer/portainer-ce:latest
     source: pull
 
-#- name: Create Portainer Volume
-#  docker_volume:
-#    name: portainer_data
-#    state: present
-#    force: yes
+- name: Create Portainer Volume
+  docker_volume:
+    name: portainer_data
+    state: present
 
 - name: Run Portainer Image
   docker_container:
