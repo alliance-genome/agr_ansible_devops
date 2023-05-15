@@ -17,16 +17,20 @@
   docker_container:
     name: "{{ CURATION_POSTGRES_SERVER_NAME }}"
     image: "{{ CURATION_DATA_IMAGE }}"
-    detach: no
     log_driver: "gelf"
-    timeout: 25000
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     network_mode: "{{ NET }}"
-  ignore_errors: true
 
-- name: Run Curation Data Server
-  command: docker start "{{ CURATION_POSTGRES_SERVER_NAME }}"
+- name: Waiting for Database to load and startup
+  wait_for:
+    port: 22
+    sleep: 10
+    timeout: 3600
+    state: started
+
+#- name: Run Curation Data Server
+#  command: docker start "{{ CURATION_POSTGRES_SERVER_NAME }}"
 
 - name: Start ES container
   docker_container:
