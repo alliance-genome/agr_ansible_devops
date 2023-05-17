@@ -21,6 +21,8 @@
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     network_mode: "{{ NET }}"
+    env:
+      PGDATA: /pgdata
 
 - name: Start ES container
   docker_container:
