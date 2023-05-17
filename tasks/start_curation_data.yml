@@ -22,16 +22,6 @@
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     network_mode: "{{ NET }}"
 
-- name: Waiting for Database to load and startup
-  wait_for:
-    port: 22
-    sleep: 10
-    timeout: 3600
-    state: started
-
-#- name: Run Curation Data Server
-#  command: docker start "{{ CURATION_POSTGRES_SERVER_NAME }}"
-
 - name: Start ES container
   docker_container:
     name: "{{ CURATION_OPENSEARCH_SERVER_NAME }}"
