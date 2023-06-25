@@ -17,16 +17,12 @@
   docker_container:
     name: "{{ CURATION_POSTGRES_SERVER_NAME }}"
     image: "{{ CURATION_DATA_IMAGE }}"
-    detach: no
     log_driver: "gelf"
-    timeout: 25000
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     network_mode: "{{ NET }}"
-  ignore_errors: true
-
-- name: Run Curation Data Server
-  command: docker start "{{ CURATION_POSTGRES_SERVER_NAME }}"
+    env:
+      PGDATA: /pgdata
 
 - name: Start ES container
   docker_container:
