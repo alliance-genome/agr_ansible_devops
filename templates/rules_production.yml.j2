@@ -81,19 +81,19 @@ groups:
     # "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|run)($|/)".
     # Same rule using "node_filesystem_free_bytes" will fire when disk fills for non-root users.
     - alert: HostOutOfDiskSpace
-      expr: (node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes < 10 and ON (instance, device, mountpoint) node_filesystem_readonly == 0
+      expr: (node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes < 8 and ON (instance, device, mountpoint) node_filesystem_readonly == 0
       for: 2m
       labels:
         severity: critical
       annotations:
         summary: Host out of disk space (instance {{ $labels.instance }})
-        description: Disk is almost full (< 10% left). VALUE = {{ $value }} LABELS = { { $labels } }
+        description: Disk is almost full (< 8% left). VALUE = {{ $value }} LABELS = { { $labels } }
 
     # Please add ignored mountpoints in node_exporter parameters like
     # "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|run)($|/)".
     # Same rule using "node_filesystem_free_bytes" will fire when disk fills for non-root users.
     - alert: HostDiskWillFillIn24Hours
-      expr: (node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes < 10 and ON (instance, device, mountpoint) predict_linear(node_filesystem_avail_bytes{fstype!~"tmpfs"}[1h], 24 * 3600) < 0 and ON (instance, device, mountpoint) node_filesystem_readonly == 0
+      expr: (node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes < 8 and ON (instance, device, mountpoint) predict_linear(node_filesystem_avail_bytes{fstype!~"tmpfs"}[1h], 24 * 3600) < 0 and ON (instance, device, mountpoint) node_filesystem_readonly == 0
       for: 2m
       labels:
         severity: warning
@@ -102,16 +102,16 @@ groups:
         description: Filesystem is predicted to run out of space within the next 24 hours at current write rate. VALUE = {{ $value }} LABELS = { { $labels } }
 
     - alert: HostOutOfInodes
-      expr: node_filesystem_files_free{mountpoint ="/rootfs"} / node_filesystem_files{mountpoint="/rootfs"} * 100 < 10 and ON (instance, device, mountpoint) node_filesystem_readonly{mountpoint="/rootfs"} == 0
+      expr: node_filesystem_files_free{mountpoint ="/rootfs"} / node_filesystem_files{mountpoint="/rootfs"} * 100 < 8 and ON (instance, device, mountpoint) node_filesystem_readonly{mountpoint="/rootfs"} == 0
       for: 2m
       labels:
         severity: critical
       annotations:
         summary: Host out of inodes (instance {{ $labels.instance }})
-        description: Disk is almost running out of available inodes (< 10% left). VALUE = {{ $value }} LABELS = { { $labels } }
+        description: Disk is almost running out of available inodes (< 8% left). VALUE = {{ $value }} LABELS = { { $labels } }
 
     - alert: HostInodesWillFillIn24Hours
-      expr: node_filesystem_files_free{mountpoint ="/rootfs"} / node_filesystem_files{mountpoint="/rootfs"} * 100 < 10 and predict_linear(node_filesystem_files_free{mountpoint="/rootfs"}[1h], 24 * 3600) < 0 and ON (instance, device, mountpoint) node_filesystem_readonly{mountpoint="/rootfs"} == 0
+      expr: node_filesystem_files_free{mountpoint ="/rootfs"} / node_filesystem_files{mountpoint="/rootfs"} * 100 < 8 and predict_linear(node_filesystem_files_free{mountpoint="/rootfs"}[1h], 24 * 3600) < 0 and ON (instance, device, mountpoint) node_filesystem_readonly{mountpoint="/rootfs"} == 0
       for: 2m
       labels:
         severity: critical
