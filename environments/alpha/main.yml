@@ -1,0 +1,69 @@
+---
+
+PLAYBOOK_NAME: "{{ lookup('env', 'PLAYBOOK_NAME') or 'No Name Specified' }}"
+THREADED: "{{ lookup('env', 'THREADED') or 'true' }}"
+NET: "alpha"
+DOWNLOAD_HOST: "download.alliancegenome.org"
+FMS_API_URL: "https://fms.alliancegenome.org"
+GENERATE_REPORTS: "false"
+LOADER_TEST_SET: "false"
+NGINX_TAG: "{{ NET }}"
+LOG_SERVER_HOST: "{{ lookup('env', 'LOG_SERVER_HOST') or 'logs.alliancegenome.org' }}" # Logging runs outside the docker network
+START_GOCD_AGENT: "{{ lookup('env', 'START_GOCD_AGENT') or false }}"
+
+INTERMINE_PGUSER: "{{ INTERMINE_BUILD_PGUSER }}"
+INTERMINE_PGPASSWORD: "{{ INTERMINE_BUILD_PGPASSWORD }}"
+
+CLUSTER_CONFIG:
+  NODE01:
+    IP: "172.31.30.101"
+    NAME: "01"
+  NODE02:
+    IP: "172.31.30.102"
+    NAME: "02"
+  NODE03:
+    IP: "172.31.30.103"
+    NAME: "03"
+  NODE04:
+    IP: "172.31.30.104"
+    NAME: "04"
+  NODE05:
+    IP: "172.31.30.105"
+    NAME: "05"
+  NODE06:
+    IP: "172.31.30.106"
+    NAME: "06"
+  NODE07:
+    IP: "172.31.30.107"
+    NAME: "07"
+  NODE08:
+    IP: "172.31.30.108"
+    NAME: "08"
+  NODE09:
+    IP: "172.31.30.109"
+    NAME: "09"
+  NODE10:
+    IP: "172.31.30.110"
+    NAME: "10"
+  NODE11:
+    IP: "172.31.30.111"
+    NAME: "11"
+  NODE12:
+    IP: "172.31.30.112"
+    NAME: "12"
+  NODE13:
+    IP: "172.31.30.113"
+    NAME: "13"
+  NODE14:
+    IP: "172.31.30.114"
+    NAME: "14"
+  NODE15:
+    IP: "172.31.30.115"
+    NAME: "15"
+  NODE16:
+    IP: "172.31.30.116"
+    NAME: "16"
+
+CLUSTER_NODE: "{{ lookup('env', 'CLUSTER_NODE') }}"
+OS_CLUSTER_NODE_IP: "{{ CLUSTER_CONFIG[CLUSTER_NODE].IP }}"
+OS_CLUSTER_NODE_NAME: "{{ CLUSTER_CONFIG[CLUSTER_NODE].NAME }}"

@@ -62,6 +62,7 @@ INTERMINE_POSTGRES_SERVER_NAME: "{{ env }}-intermine-db.alliancegenome.org"
 INTERMINE_SOLR_SERVER_NAME: "{{ env }}-intermine-app.alliancegenome.org"
 INTERMINE_TOMCAT_SERVER_NAME: "{{ env }}-intermine-app.alliancegenome.org"
 ES_SERVER_NAME: "agr.{{ env }}.elasticsearch.server"
+OS_SERVER_NAME: "agr.{{ env }}.opensearch.server"
 GOCD_AGENT_NAME: "agr.{{ env }}.gocd.agent"
 KIBANA_SERVER_NAME: "agr.{{ env }}.kibana.server"
 LOG_SERVER_NAME: "agr.{{ env }}.log.server" # Logging runs outside the docker network
@@ -90,6 +91,7 @@ JBROWSE_GFF_PROCESS_RUN_NAME: "agr.{{ env }}.{{ jbrowse_env }}.gff.process"
 
 # Running Server Images 
 ES_ENV_IMAGE:                "{{ REGISTRY }}/agr_elasticsearch_env:{{ DOCKER_PULL_TAG }}"
+OS_ENV_IMAGE:                "opensearchproject/opensearch:1.2.4"
 KIBANA_IMAGE:                "{{ REGISTRY }}/agr_kibana_env:{{ DOCKER_PULL_TAG }}"
 UI_SERVER_IMAGE:             "{{ REGISTRY }}/agr_ui_server:{{ DOCKER_PULL_TAG }}"
 JBROWSE_SERVER_IMAGE:        "{{ REGISTRY }}/agr_jbrowse_run:{{ DOCKER_PULL_TAG }}"
@@ -98,7 +100,7 @@ APOLLO_SERVER_IMAGE:         "{{ REGISTRY }}/agr_apollo_run:{{ DOCKER_PULL_TAG }
 # Server Base Images
 NEO_ENV_IMAGE:               "{{ REGISTRY }}/agr_neo4j_env:{{ DOCKER_PULL_TAG }}"
 #INFINISPAN_ENV_IMAGE:        "{{ REGISTRY }}/agr_infinispan_env:{{ DOCKER_PULL_TAG }}"
-INFINISPAN_ENV_IMAGE:        "infinispan/server:13.0.10.Final"
+INFINISPAN_ENV_IMAGE:        "infinispan/server:13.0.18.Final"
 
 # ETL run Images
 GOCD_IMAGE:                  "{{ REGISTRY }}/agr_gocd_env:latest"

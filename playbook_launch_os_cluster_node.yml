@@ -42,12 +42,12 @@
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         network:
           assign_public_ip: true
-          private_ip_address: "{{ ES_CLUSTER_NODE_IP }}"
+          private_ip_address: "{{ OS_CLUSTER_NODE_IP }}"
         volumes:
           - device_name: /dev/xvda
             ebs:
               volume_type: gp3
-              volume_size: 1000
+              volume_size: 400
               iops: 3000
               delete_on_termination: yes
         wait: yes
@@ -142,15 +142,20 @@
 
   tasks:
 
-    - name: Pull ES Env Image
+    - name: Pull OS Env Image
       docker_image:
-        name: "{{ ES_ENV_IMAGE }}"
+        name: "{{ OS_ENV_IMAGE }}"
         source: pull
   
-    - name: Run ES Cluster Node "{{ ES_CLUSTER_NODE_NAME }}"
+    - name: Pull Cerebro Image
+      docker_image:
+        name: "yannart/cerebro:latest"
+        source: pull
+    
+    - name: Run OS Cluster Node "{{ OS_CLUSTER_NODE_NAME }}"
       docker_container:
-        name: "{{ ES_SERVER_NAME }}{{ ES_CLUSTER_NODE_NAME }}"
-        image: "{{ ES_ENV_IMAGE }}"
+        name: "{{ OS_SERVER_NAME }}{{ OS_CLUSTER_NODE_NAME }}"
+        image: "{{ OS_ENV_IMAGE }}"
         log_driver: "gelf"
         log_options:
           gelf-address: "{{ LOG_SERVER_ADDRESS }}"
@@ -159,15 +164,25 @@
           - "9200:9200"
           - "9300:9300"
         volumes:
-          - "es_{{ ES_CLUSTER_NODE_NAME }}_data_volume:/usr/share/elasticsearch/data"
+          - "os_{{ OS_CLUSTER_NODE_NAME }}_data_volume:/usr/share/elasticsearch/data"
         env:
-          node.name: "{{ ES_SERVER_NAME }}{{ ES_CLUSTER_NODE_NAME }}"
-          cluster.name: es-cluster
-          ES_JAVA_OPTS: "-Xms15g -Xmx15g"
-          xpack.security.enabled: "false"
-          ingest.geoip.downloader.enabled: "false"
+          node.name: "{{ OS_SERVER_NAME }}{{ OS_CLUSTER_NODE_NAME }}"
+          cluster.name: os-cluster
+          OPENSEARCH_JAVA_OPTS: "-Xms8g -Xmx8g"
+          #xpack.security.enabled: "false"
+          #ingest.geoip.downloader.enabled: "false"
+          plugins.security.disabled: "true"
           discovery.seed_hosts: "{{ node_transport_list }}"
-          cluster.initial_master_nodes: "{{ ES_CLUSTER_SERVER_FULLLIST }}"
+          cluster.initial_master_nodes: "{{ OS_CLUSTER_SERVER_FULLLIST }}"
+          network.host: "0.0.0.0"
           transport.host: "0.0.0.0"
-          transport.publish_host: "{{ ES_CLUSTER_NODE_IP }}"
+          transport.publish_host: "{{ OS_CLUSTER_NODE_IP }}"
           transport.publish_port: "9300"
+    
+    - name: Run Cerebro
+      docker_container:
+        name: "agr.{{ env }}.cerebro.server"
+        image: "yannart/cerebro:latest"
+        network_mode: "{{ NET }}"
+        ports:
+          - "9000:9000"
