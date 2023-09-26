@@ -1,0 +1,128 @@
+---
+
+- name: Setup SSH Keys
+  hosts: local
+  connection: local
+  gather_facts: False
+
+  pre_tasks:
+    - name: Import Secret Variable file
+      include_vars: "environments/shared_secrets.yml"
+    
+    - name: Copy SSH private key file
+      copy:
+        content: "{{ AGRSSL2_content }}"
+        dest: "/root/.ssh/id_rsa"
+        mode: 0600
+
+- name: Setup Docker Server
+  hosts: local
+  connection: local
+  gather_facts: False
+
+  vars_files:
+    - "environments/{{ env }}/main.yml" # ENV must always be loaded first
+    - "environments/shared_secrets.yml"
+    - "environments/shared_aws_instance_variables.yml"
+
+  tasks:
+    - name: Launch instances
+      ec2_instance:
+        key_name: AGR-ssl2
+        security_groups: ["default", "SSH"]
+        instance_type: "{{ WEBSERVER_INSTANCE_TYPE }}"
+        image_id: ami-05668c1bb69ebd078
+        region: us-east-1
+        availability_zone: us-east-1a
+        iam_instance_profile: S3DataAccess
+        aws_access_key: "{{ AWS_ACCESS_KEY }}"
+        aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        volumes:
+          - device_name: /dev/xvda
+            ebs:
+              volume_type: gp3
+              volume_size: 1700
+              delete_on_termination: yes
+        wait: yes
+        wait_timeout: 600
+        user_data: "" # Otherwise get weird error on start up
+        tags:
+          Name: "AGR Release 6.0.0"
+      register: ec2
+
+    - name: Add all instance public IPs to host group
+      add_host:
+        hostname: '{{ item.private_ip_address }}'
+        groupname: launched
+      with_items: "{{ ec2.instances }}"
+      register: launched
+
+    - name: Retrieve all volumes for a queried instance
+      ec2_vol_info:
+        region: us-east-1
+        aws_access_key: "{{ AWS_ACCESS_KEY }}"
+        aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        filters:
+          attachment.instance-id: '{{ item.instance_id }}'
+      with_items: "{{ ec2.instances }}"
+      register: ec2_volumes
+
+    - name: Ensure all volumes are tagged
+      ec2_tag:
+        region: us-east-1
+        resource: '{{ item.1.id }}'
+        aws_access_key: "{{ AWS_ACCESS_KEY }}"
+        aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        tags:
+          Name: "Ansible Generated Volume - AGR Release 6.0.0"
+      with_subelements:
+        - "{{ ec2_volumes.results }}"
+        - volumes
+
+    - name: Waiting for SSH to be up
+      wait_for:
+        host: "{{ item.private_ip_address }}"
+        port: 22
+        delay: 5
+        timeout: 300
+        state: started
+      with_items: "{{ ec2.instances }}"
+
+- name: Configure Servers
+  hosts: launched
+  user: core
+  gather_facts: False
+
+  roles:
+    - install_python
+    - setup_docker
+    - setup_swap
+
+  vars:
+    NEO_PAGE_CACHE: "8g"
+    NEO_MAX_HEAP: "6g"
+    REPO: "stage"
+
+  vars_files:
+    - "environments/{{ env }}/main.yml" # ENV must always be loaded first
+    - "environments/shared_secrets.yml"
+    - "environments/shared_variables.yml"
+    - "environments/shared_aws_instance_variables.yml"
+
+  tasks: 
+    - name: Setup Neo, Run Loader, Run Loader Tests
+      block:
+        - include_tasks: tasks/start_monitoring.yml
+        - include_tasks: tasks/start_es_env.yml
+        - include_tasks: tasks/start_neo_data.yml
+        - include_tasks: tasks/start_infinispan_data.yml
+        - include_tasks: tasks/start_api_quarkus.yml
+        - include_tasks: tasks/start_jbrowse.yml
+        - include_tasks: tasks/start_apollo.yml
+        - include_tasks: tasks/run_restore_index.yml
+        - include_tasks: tasks/start_status_nginx.yml
+        - include_tasks: tasks/start_nginx.yml
+
+      rescue:
+        - fail:
+            msg: 'Tasked Failed Terminating instances'
