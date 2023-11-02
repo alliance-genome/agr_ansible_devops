@@ -56,6 +56,7 @@
   template:
     src: alertmanager.yml.j2
     dest: "{{ ALERTMANAGER_CONFIG_PATH }}/alertmanager.yml"
+  when: env != "production"
 
 - name: Copy Alertmanager Config for Production Server
   template:
@@ -114,6 +115,7 @@
   template:
     src: prometheus.yml.j2
     dest: "{{ PROMETHEUS_CONFIG_PATH }}/prometheus.yml"
+  when: env != "production"
 
 - name: Copy Prometheus Config for Production Server
   template:
