@@ -17,13 +17,6 @@ RUN echo "    ServerAliveInterval 120" >> /etc/ssh/ssh_config
 RUN mkdir /root/.ssh
 RUN mkdir /root/.docker
 
-RUN python3.11 -m venv /root/eb_venv
-
-# Setup aws eb cli
-RUN . /root/eb_venv/bin/activate
-RUN pip install awsebcli
-RUN deactivate
-
 ADD . .
 
 ADD ./ansible.cfg /etc/ansible/ansible.cfg
