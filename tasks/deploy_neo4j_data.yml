@@ -2,7 +2,7 @@
   git:
     repo: 'https://github.com/alliance-genome/agr_neo4j_ebdeploy.git'
     dest: /tmp/agr_neo4j_ebdeploy
-    version: master
+    version: main
 
 - name: Deploy Neo4j to EBS
   command: eb deploy stage-neo4j --timeout 30
