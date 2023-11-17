@@ -15,7 +15,7 @@ groups:
   rules:
     - alert: EndpointDown
       expr: probe_success == 0
-      for: 60s
+      for: 5m
       labels:
         severity: "critical"
       annotations:
