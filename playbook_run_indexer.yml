@@ -19,7 +19,7 @@
     - name: Start ES, Start Neo, Run Indexer
       block:
         - include_tasks: tasks/start_es_env.yml
-        - include_tasks: tasks/start_curation_data.yml
+        #- include_tasks: tasks/start_curation_data.yml
         #- include_tasks: tasks/start_neo_data.yml
         - include_tasks: tasks/run_indexer.yml
         - set_fact:
