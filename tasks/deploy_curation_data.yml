@@ -1,0 +1,15 @@
+- name: Download Curation Deploy Repo
+  git:
+    repo: 'https://github.com/alliance-genome/agr_stage_curation_ebdeploy.git'
+    dest: /tmp/agr_stage_curation_ebdeploy
+    version: main
+
+- name: Deploy Curation to EBS
+  command: eb deploy stage-curation --timeout 30
+  args:
+    chdir: /tmp/agr_stage_curation_ebdeploy
+
+- name: Remove agr_stage_curation_ebdeploy directory
+  shell:
+    cmd: rm -fr agr_stage_curation_ebdeploy
+    chdir: /tmp

@@ -1,27 +1,28 @@
 ---
 
 - import_playbook: playbook_launch_pre_tasks.yml
-- import_playbook: playbook_launch_instance.yml
-- import_playbook: playbook_launch_post_tasks.yml
 
-- name: Configure Servers
-  hosts: launched
-  user: core
+- name: Deploy Resources
+  hosts: local
+  connection: local
   gather_facts: False
 
   vars_files:
     - "environments/{{ env }}/main.yml" # ENV must always be loaded first
     - "environments/shared_secrets.yml"
-    - "environments/shared_variables.yml"
     - "environments/shared_aws_instance_variables.yml"
 
+  vars:
+    ansible_python_interpreter: /root/venv/bin/python
+
+  environment:
+    AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY }}"
+    AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_KEY }}"
+
   tasks:
-    - name: Start ES, Start Neo, Run Indexer
+    - name: Deploy Curation to EBS
       block:
-        - include_tasks: tasks/start_es_env.yml
-        - include_tasks: tasks/start_curation_data.yml
-        #- include_tasks: tasks/start_neo_data.yml
-        - include_tasks: tasks/run_indexer.yml
+        - include_tasks: tasks/deploy_curation_data.yml
         - set_fact:
             failed_flag: "passed"
       rescue:
@@ -30,13 +31,11 @@
         - set_fact:
             failed_flag: "failed"
 
-- import_playbook: playbook_terminate_instance.yml
-
 - name: Check Failures
-  hosts: launched
+  hosts: local
+  connection: local
   gather_facts: False
   tasks:
     - fail:
         msg: "The execution has failed because of errors."
       when: failed_flag == "failed"
-

@@ -1,15 +1,15 @@
 - name: Download Neo4j Env Repo
   git:
-    repo: 'https://github.com/alliance-genome/agr_neo4j_ebdeploy.git'
-    dest: /tmp/agr_neo4j_ebdeploy
+    repo: 'https://github.com/alliance-genome/agr_stage_neo4j_ebdeploy.git'
+    dest: /tmp/agr_stage_neo4j_ebdeploy
     version: main
 
 - name: Deploy Neo4j to EBS
   command: eb deploy stage-neo4j --timeout 30
   args:
-    chdir: /tmp/agr_neo4j_ebdeploy
+    chdir: /tmp/agr_stage_neo4j_ebdeploy
 
-- name: Remove agr_neo4j_ebdeploy directory
+- name: Remove agr_stage_neo4j_ebdeploy directory
   shell:
-    cmd: rm -fr agr_neo4j_ebdeploy
+    cmd: rm -fr agr_stage_neo4j_ebdeploy
     chdir: /tmp
