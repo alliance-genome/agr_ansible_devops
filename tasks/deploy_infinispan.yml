@@ -1,10 +1,10 @@
-- name: Download Neo4j Env Repo
+- name: Download Infinispan Env Repo
   git:
     repo: 'https://github.com/alliance-genome/agr_stage_infinispan_ebdeploy.git'
     dest: /tmp/agr_stage_infinispan_ebdeploy
     version: main
 
-- name: Deploy Neo4j to EBS
+- name: Deploy Infinispan to EBS
   command: eb deploy stage-infinispan --timeout 30
   args:
     chdir: /tmp/agr_stage_infinispan_ebdeploy
