@@ -20,7 +20,7 @@
   tasks:
     - name: Start Neo, Run File Generator
       block:
-        - include_tasks: tasks/start_neo_data.yml
+        #- include_tasks: tasks/start_neo_data.yml
         - include_tasks: tasks/run_file_gener.yml
         - set_fact:
             failed_flag: "passed"
