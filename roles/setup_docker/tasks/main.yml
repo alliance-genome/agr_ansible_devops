@@ -87,6 +87,15 @@
     reload: yes
   become: true
 
+- name: Set TCP Keep Alive
+  sysctl:
+    name: net.ipv4.tcp_keepalive_time
+    value: '295'
+    sysctl_set: yes
+    state: present
+    reload: yes
+  become: true
+
 - name: Install Docker pruning service file
   template: src=docker-prune.service.j2 dest=/etc/systemd/system/docker-prune.service
   become: true
