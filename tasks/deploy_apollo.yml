@@ -1,0 +1,15 @@
+- name: Download Apollo Deploy Repo
+  git:
+    repo: 'https://github.com/alliance-genome/agr_stage_apollo_ebdeploy.git'
+    dest: /tmp/agr_stage_apollo_ebdeploy
+    version: main
+
+- name: Deploy Apollo to EBS
+  command: eb deploy stage-apollo --timeout 30
+  args:
+    chdir: /tmp/agr_stage_apollo_ebdeploy
+
+- name: Remove agr_stage_apollo_ebdeploy directory
+  shell:
+    cmd: rm -fr agr_stage_apollo_ebdeploy
+    chdir: /tmp
