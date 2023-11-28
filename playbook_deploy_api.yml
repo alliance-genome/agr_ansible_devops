@@ -20,7 +20,7 @@
     AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_KEY }}"
 
   tasks:
-    - name: Deploy Curation to EBS
+    - name: Deploy API to EBS
       block:
         - include_tasks: tasks/deploy_api.yml
         - set_fact:

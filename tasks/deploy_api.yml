@@ -1,10 +1,10 @@
-- name: Download Curation Deploy Repo
+- name: Download API Deploy Repo
   git:
     repo: 'https://github.com/alliance-genome/agr_stage_api_ebdeploy.git'
     dest: /tmp/agr_stage_api_ebdeploy
     version: main
 
-- name: Deploy Curation to EBS
+- name: Deploy API to EBS
   command: eb deploy stage-quarkus-api --timeout 30
   args:
     chdir: /tmp/agr_stage_api_ebdeploy
