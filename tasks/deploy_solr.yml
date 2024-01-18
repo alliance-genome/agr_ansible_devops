@@ -1,0 +1,15 @@
+- name: Download Solr Deploy Repo
+  git:
+    repo: 'https://github.com/alliance-genome/agr_intermine_solr_ebdeploy.git'
+    dest: /tmp/agr_intermine_solr_ebdeploy
+    version: main
+
+- name: Deploy Solr to EBS
+  command: eb deploy stage-intermine-solr --timeout 30
+  args:
+    chdir: /tmp/agr_intermine_solr_ebdeploy
+
+- name: Remove agr_intermine_solr_ebdeploy directory
+  shell:
+    cmd: rm -fr agr_intermine_solr_ebdeploy
+    chdir: /tmp
