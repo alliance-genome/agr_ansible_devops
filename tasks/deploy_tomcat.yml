@@ -5,7 +5,7 @@
     version: main
 
 - name: Deploy Tomcat to EBS
-  command: eb deploy stage-tomcat --timeout 30
+  command: eb deploy stage-intermine-tomcat --timeout 30
   args:
     chdir: /tmp/agr_intermine_tomcat_ebdeploy
 
