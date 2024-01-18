@@ -51,3 +51,35 @@
     network_mode: "{{ NET }}"
     recreate: yes
   when: START_GOCD_AGENT == "true"
+
+- name: Run GoCD Agent 3
+  docker_container:
+    name: "{{ GOCD_AGENT_NAME }}3"
+    image: "{{GOCD_IMAGE }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    volumes:
+      - "/home/core/.docker:/root/.docker"
+      - "/var/run/docker.sock:/var/run/docker.sock:rw"
+    env:
+      GO_SERVER_URL: "http://gocd.alliancegenome.org:8153/go"
+    network_mode: "{{ NET }}"
+    recreate: yes
+  when: START_GOCD_AGENT == "true"
+
+- name: Run GoCD Agent 4
+  docker_container:
+    name: "{{ GOCD_AGENT_NAME }}4"
+    image: "{{GOCD_IMAGE }}"
+    log_driver: "gelf"
+    log_options:
+      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+    volumes:
+      - "/home/core/.docker:/root/.docker"
+      - "/var/run/docker.sock:/var/run/docker.sock:rw"
+    env:
+      GO_SERVER_URL: "http://gocd.alliancegenome.org:8153/go"
+    network_mode: "{{ NET }}"
+    recreate: yes
+  when: START_GOCD_AGENT == "true"
