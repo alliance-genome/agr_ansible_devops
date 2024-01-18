@@ -1,15 +1,15 @@
 - name: Download Bluegenes Deploy Repo
   git:
-    repo: 'https://github.com/alliance-genome/agr_stage_bluegenes_ebdeploy.git'
-    dest: /tmp/agr_stage_bluegenes_ebdeploy
+    repo: 'https://github.com/alliance-genome/agr_intermine_bluegenes_ebdeploy.git'
+    dest: /tmp/agr_intermine_bluegenes_ebdeploy
     version: main
 
 - name: Deploy Bluegenes to EBS
   command: eb deploy stage-bluegenes --timeout 30
   args:
-    chdir: /tmp/agr_stage_bluegenes_ebdeploy
+    chdir: /tmp/agr_intermine_bluegenes_ebdeploy
 
-- name: Remove agr_stage_bluegenes_ebdeploy directory
+- name: Remove agr_intermine_bluegenes_ebdeploy directory
   shell:
-    cmd: rm -fr agr_stage_bluegenes_ebdeploy
+    cmd: rm -fr agr_intermine_bluegenes_ebdeploy
     chdir: /tmp
