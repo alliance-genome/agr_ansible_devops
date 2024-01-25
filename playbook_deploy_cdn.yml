@@ -1,0 +1,41 @@
+---
+
+- import_playbook: playbook_launch_pre_tasks.yml
+
+- name: Deploy Resources
+  hosts: local
+  connection: local
+  gather_facts: False
+
+  vars_files:
+    - "environments/{{ env }}/main.yml" # ENV must always be loaded first
+    - "environments/shared_secrets.yml"
+    - "environments/shared_aws_instance_variables.yml"
+
+  vars:
+    ansible_python_interpreter: /root/venv/bin/python
+
+  environment:
+    AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY }}"
+    AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_KEY }}"
+
+  tasks:
+    - name: Deploy Intermine CDN to EBS
+      block:
+        - include_tasks: tasks/deploy_cdn.yml
+        - set_fact:
+            failed_flag: "passed"
+      rescue:
+        - debug:
+            msg: "Error Detected Failing Build"
+        - set_fact:
+            failed_flag: "failed"
+
+- name: Check Failures
+  hosts: local
+  connection: local
+  gather_facts: False
+  tasks:
+    - fail:
+        msg: "The execution has failed because of errors."
+      when: failed_flag == "failed"

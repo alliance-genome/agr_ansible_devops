@@ -1,0 +1,15 @@
+- name: Download CDN Deploy Repo
+  git:
+    repo: 'https://github.com/alliance-genome/agr_intermine_cdn_ebdeploy.git'
+    dest: /tmp/agr_intermine_cdn_ebdeploy
+    version: main
+
+- name: Deploy CDN to EBS
+  command: eb deploy intermine-cdn --timeout 30
+  args:
+    chdir: /tmp/agr_intermine_cdn_ebdeploy
+
+- name: Remove agr_intermine_cdn_ebdeploy directory
+  shell:
+    cmd: rm -fr agr_intermine_cdn_ebdeploy
+    chdir: /tmp
