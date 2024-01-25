@@ -36,4 +36,4 @@
     volumes:
       - "{{ INTERMINE_DATA_VOLUME_NAME }}:/root/data"
     network_mode: "{{ NET }}"
-    command: ./project_build -b -T localhost /root/dump/dump
+    command: ./project_build -b -T localhost /root/dump
