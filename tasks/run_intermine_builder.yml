@@ -36,12 +36,4 @@
     volumes:
       - "{{ INTERMINE_DATA_VOLUME_NAME }}:/root/data"
     network_mode: "{{ NET }}"
-    env:
-      MINE_NAME: "alliancemine"
-      MINE_REPO_URL: "https://github.com/alliance-genome/alliancemine.git"
-      BIOSOURCES_REPO_URL: "https://github.com/alliance-genome/alliancemine-bio-sources.git"
-      INTERMINE_PGHOST: "{{ INTERMINE_POSTGRES_SERVER_NAME }}"
-      INTERMINE_PGUSER: "{{ INTERMINE_PGUSER }}"
-      INTERMINE_PGPASSWORD: "{{ INTERMINE_PGPASSWORD }}"
-      SOLR_HOST: "{{ INTERMINE_SOLR_SERVER_NAME }}"
-      TOMCAT_HOST: "{{ INTERMINE_TOMCAT_SERVER_NAME }}"
+    command: ./project_build -b -T localhost /root/dump/dump
