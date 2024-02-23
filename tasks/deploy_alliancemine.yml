@@ -1,0 +1,15 @@
+- name: Download Alliancemine Deploy Repo
+  git:
+    repo: 'https://github.com/alliance-genome/agr_alliancemine_ebdeploy.git'
+    dest: /tmp/agr_alliancemine_ebdeploy
+    version: main
+
+- name: Deploy Alliancemine to EBS
+  command: eb deploy stage-alliancemine --timeout 30
+  args:
+    chdir: /tmp/agr_alliancemine_ebdeploy
+
+- name: Remove agr_alliancemine_ebdeploy directory
+  shell:
+    cmd: rm -fr agr_alliancemine_ebdeploy
+    chdir: /tmp
