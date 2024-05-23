@@ -64,6 +64,12 @@ bash:
 6_0_0:
 	docker run -it ${REPO} ansible-playbook -e WEBSERVER_INSTANCE_TYPE=r5a.4xlarge -e env=production -e DOCKER_PULL_TAG=6.0.0 -i hosts launch_6.0.0.yml --vault-password-file=.password
 
+7_0_0:
+	docker run -it ${REPO} ansible-playbook -e WEBSERVER_INSTANCE_TYPE=r5a.4xlarge -e env=production -e DOCKER_PULL_TAG=7.0.0 -i hosts launch_7.0.0.yml --vault-password-file=.password
+
+7_1_0:
+	docker run -it ${REPO} ansible-playbook -e WEBSERVER_INSTANCE_TYPE=r5a.4xlarge -e env=production -e DOCKER_PULL_TAG=7.1.0 -i hosts launch_7.1.0.yml --vault-password-file=.password
+
 mod_jbrowse_server:
 	docker run -it -e PLAYBOOK_NAME="Mod Jbrowse Server" ${REPO} ansible-playbook -e START_GOCD_AGENT=true -e DOCKER_PULL_TAG=build -e SKIP_NVME_DRIVES=true -e WEBSERVER_INSTANCE_TYPE=m4.xlarge -e env=jbrowse -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
 
@@ -88,10 +94,11 @@ start_build_intermine_app_server:
 start_production_intermine_app_server:
 	docker run -it -e PLAYBOOK_NAME="Production Intermine App Server" -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=true -e START_GOCD_AGENT=true -e WEBSERVER_INSTANCE_TYPE=i3.xlarge ${REPO} ansible-playbook -e SETUP_NVME_DRIVE=true -e SKIP_NVME_DRIVES=true -e env=intermineproduction -i hosts custom_playbook_launch_intermine_instance.yml --vault-password-file=.password
 
-CLUSTER_MACHINE_TYPE := i3.large
+CLUSTER_MACHINE_TYPE := r5a.large
+COMPUTE_AMI_IMAGE := ami-03a679ef6af2cc2ed
 
 start_node%:
-	docker run --rm -it -e PLAYBOOK_NAME="Build ES Cluster $*" ${REPO} ansible-playbook -e CLUSTER_NODE=NODE$* -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SETUP_NVME_DRIVE=true -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_launch_cluster_node.yml --vault-password-file=.password
+	docker run --rm -it -e PLAYBOOK_NAME="Stage ES Cluster $*" ${REPO} ansible-playbook -e CLUSTER_NODE=NODE$* -e COMPUTE_AMI_IMAGE=${COMPUTE_AMI_IMAGE} -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_launch_cluster_node.yml --vault-password-file=.password
 
 start_alpha_node%:
 	docker run --rm -it -e PLAYBOOK_NAME="Alpha OS Cluster $*" ${REPO} ansible-playbook -e CLUSTER_NODE=NODE$* -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SETUP_NVME_DRIVE=true -e SKIP_NVME_DRIVES=true -e env=alpha -i hosts playbook_launch_os_cluster_node.yml --vault-password-file=.password

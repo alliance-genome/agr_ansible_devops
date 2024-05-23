@@ -32,7 +32,7 @@
     - name: Launch instance
       ec2_instance:
         key_name: AGR-ssl2
-        security_groups: ["default", "ES Transport", "SSH", "HTTP/HTTPS"]
+        security_groups: ["default", "SSH", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
         image_id: "{{ COMPUTE_AMI_IMAGE }}"
         region: us-east-1
@@ -47,7 +47,7 @@
           - device_name: /dev/xvda
             ebs:
               volume_type: gp3
-              volume_size: 400
+              volume_size: 300
               iops: 3000
               delete_on_termination: yes
         wait: yes

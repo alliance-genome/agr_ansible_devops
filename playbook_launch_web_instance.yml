@@ -13,7 +13,7 @@
     - name: Launch instances
       ec2_instance:
         key_name: AGR-ssl2
-        security_groups: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        security_groups: ["default", "SSH", "HTTP/HTTPS"]
         instance_type: "{{ WEBSERVER_INSTANCE_TYPE }}"
         image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
