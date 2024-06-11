@@ -29,7 +29,7 @@
       ec2:
         key_name: AGR-ssl2
         keypair: AGR-ssl2
-        group: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        group: ["default", "SSH", "HTTP/HTTPS"]
         instance_type: "{{ WEBSERVER_INSTANCE_TYPE }}"
         image: ami-0b0b90473c097c55a
         region: us-east-1

@@ -19,7 +19,7 @@
     - name: Launch instance 1
       ec2_instance:
         key_name: AGR-ssl2
-        security_groups: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        security_groups: ["default", "SSH", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
         image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
@@ -45,7 +45,7 @@
     - name: Launch instance 2
       ec2_instance:
         key_name: AGR-ssl2
-        security_groups: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        security_groups: ["default", "SSH", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
         image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
@@ -71,7 +71,7 @@
     - name: Launch instance 3
       ec2_instance:
         key_name: AGR-ssl2
-        security_groups: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        security_groups: ["default", "SSH", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
         image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
@@ -97,7 +97,7 @@
     - name: Launch instance 4
       ec2_instance:
         key_name: AGR-ssl2
-        security_groups: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        security_groups: ["default", "SSH", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
         image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
@@ -123,7 +123,7 @@
     - name: Launch instance 5
       ec2_instance:
         key_name: AGR-ssl2
-        security_groups: ["default", "SSH", "ES Transport", "HTTP/HTTPS"]
+        security_groups: ["default", "SSH", "HTTP/HTTPS"]
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
         image_id: "{{ WEBSERVER_AMI_IMAGE }}"
         region: us-east-1
