@@ -36,4 +36,4 @@
     volumes:
       - "{{ INTERMINE_DATA_VOLUME_NAME }}:/root/data"
     network_mode: "{{ NET }}"
-    command: ./build_db_all postgres postgres
+    command: ./build_db_all_build_solr postgres postgres
