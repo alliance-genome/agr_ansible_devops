@@ -1,8 +1,8 @@
 
-# - name: Stop Tomcat
-#   docker_container:
-#     name: "{{ INTERMINE_TOMCAT_SERVER_NAME }}"
-#     state: stopped
+- name: Stop Tomcat
+  docker_container:
+    name: "{{ INTERMINE_TOMCAT_SERVER_NAME }}"
+    state: stopped
 
 - name: Stop Solr
   docker_container:
@@ -14,10 +14,10 @@
     name: "{{ INTERMINE_POSTGRES_SERVER_NAME }}"
     state: stopped
 
-# - name: Commit Tomcat container
-#   command: docker commit "{{ INTERMINE_TOMCAT_SERVER_NAME }}" "{{ INTERMINE_TOMCAT_SERVER_BUILD_IMAGE }}"
-# - name: Push Tomcat Container
-#   command: docker push "{{ INTERMINE_TOMCAT_SERVER_BUILD_IMAGE }}"
+- name: Commit Tomcat container
+  command: docker commit "{{ INTERMINE_TOMCAT_SERVER_NAME }}" "{{ INTERMINE_TOMCAT_SERVER_BUILD_IMAGE }}"
+- name: Push Tomcat Container
+  command: docker push "{{ INTERMINE_TOMCAT_SERVER_BUILD_IMAGE }}"
 
 - name: Commit Solr container
   command: docker commit "{{ INTERMINE_SOLR_SERVER_NAME }}" "{{ INTERMINE_SOLR_SERVER_BUILD_IMAGE }}"
