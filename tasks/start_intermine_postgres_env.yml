@@ -5,7 +5,7 @@
 
 - name: Run Postgres
   docker_container:
-    name: "postgres"
+    name: "{{ INTERMINE_POSTGRES_SERVER_NAME }}"
     image: "{{ INTERMINE_POSTGRES_ENV_NAME }}"
     log_driver: "gelf"
     log_options:
