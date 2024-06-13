@@ -3,6 +3,11 @@
     name: "{{ INTERMINE_POSTGRES_ENV_NAME }}"
     source: pull
 
+- name: Ensure custom network exists
+  docker_network:
+    name: "{{ NET }}"
+    state: present
+
 - name: Run Postgres
   docker_container:
     name: "{{ INTERMINE_POSTGRES_SERVER_NAME }}"
@@ -10,6 +15,9 @@
     log_driver: "gelf"
     log_options:
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    network_mode: "{{ NET }}"
+    networks:
+      - name: "{{ NET }}"
+        aliases:
+          - postgres
     env:
       PGDATA: /var/lib/postgresql/alliancedata

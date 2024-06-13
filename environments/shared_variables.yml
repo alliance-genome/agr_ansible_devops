@@ -59,7 +59,8 @@ PORTAINER_SERVER_NAME: "agr.{{ env }}.portainer.server"
 CURATION_POSTGRES_SERVER_NAME: "agr.{{ env }}.curation.postgres.server"
 CURATION_OPENSEARCH_SERVER_NAME: "agr.{{ env }}.curation.opensearch.server"
 CURATION_API_SERVER_NAME: "agr.{{ env }}.curation.api.server"
-INTERMINE_POSTGRES_SERVER_NAME: "postgres" # Because hardcoded Intermine code needs this...
+# INTERMINE_POSTGRES_SERVER_NAME: "postgres" # Because hardcoded Intermine code needs this...
+INTERMINE_POSTGRES_SERVER_NAME: agr.{{ env }}.alliancemine.postgres.server
 INTERMINE_SOLR_SERVER_NAME: agr.{{ env }}.alliancemine.solr.server
 INTERMINE_TOMCAT_SERVER_NAME: "agr.{{ env }}.alliancemine.tomcat.server"
 ES_SERVER_NAME: "agr.{{ env }}.elasticsearch.server"
