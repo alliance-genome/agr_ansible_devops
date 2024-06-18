@@ -5,7 +5,7 @@
     version: main
 
 - name: Deploy Alliancemine to EBS
-  command: eb deploy stage-alliancemine --timeout 30
+  command: eb deploy stage-alliancemine --timeout 60
   args:
     chdir: /tmp/agr_alliancemine_ebdeploy
 
