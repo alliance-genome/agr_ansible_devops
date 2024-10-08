@@ -25,7 +25,7 @@ INFINISPAN_MEMORY: "31G"
 INDEXER_MEMORY: "31G"
 CACHER_MEMORY: "31G"
 NEO_VOLUME_NAME: "/data"
-SWAP_SIZE: "128G"
+SWAP_SIZE: "{{ lookup('env','SWAP_SIZE') | default('128G', True) }}"
 
 # Neo4j Config
 NEO_ON_OFF_HEAP: "OFF_HEAP"
@@ -93,7 +93,7 @@ JBROWSE_GFF_PROCESS_RUN_NAME: "agr.{{ env }}.{{ jbrowse_env }}.gff.process"
 
 # Running Server Images 
 ES_ENV_IMAGE:                "{{ REGISTRY }}/agr_elasticsearch_env:{{ DOCKER_PULL_TAG }}"
-OS_ENV_IMAGE:                "opensearchproject/opensearch:1.2.4"
+OS_ENV_IMAGE:                "opensearchproject/opensearch:2.16.0"
 KIBANA_IMAGE:                "{{ REGISTRY }}/agr_kibana_env:{{ DOCKER_PULL_TAG }}"
 UI_SERVER_IMAGE:             "{{ REGISTRY }}/agr_ui_server:{{ DOCKER_PULL_TAG }}"
 JBROWSE_SERVER_IMAGE:        "{{ REGISTRY }}/agr_jbrowse_run:{{ DOCKER_PULL_TAG }}"

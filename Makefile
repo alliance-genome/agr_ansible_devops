@@ -107,9 +107,16 @@ SWAP_SIZE := 16G
 start_node%:
 	docker run --rm -it -e PLAYBOOK_NAME="Stage ES Cluster $*" ${REPO} ansible-playbook -e CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_AMI_IMAGE=${COMPUTE_AMI_IMAGE} -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_launch_cluster_node.yml --vault-password-file=.password
 
+ALPHA_CLUSTER_MACHINE_TYPE := r5a.xlarge
+
 start_alpha_node%:
-	docker run --rm -it -e PLAYBOOK_NAME="Alpha OS Cluster $*" ${REPO} ansible-playbook -e CLUSTER_NODE=NODE$* -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SETUP_NVME_DRIVE=true -e SKIP_NVME_DRIVES=true -e env=alpha -i hosts playbook_launch_os_cluster_node.yml --vault-password-file=.password
-	#docker run --rm -it -e PLAYBOOK_NAME="Build ES Cluster $*" ${REPO} ansible-playbook -e CLUSTER_NODE=NODE$* -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_launch_cluster_node.yml --vault-password-file=.password
+	docker run --rm -it -e PLAYBOOK_NAME="Alpha OS Cluster $*" ${REPO} ansible-playbook -e ALPHA_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${ALPHA_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=alpha -i hosts playbook_launch_alpha_cluster_node.yml --vault-password-file=.password
+
+BETA_CLUSTER_MACHINE_TYPE := r5a.xlarge
+
+start_beta_node%:
+	docker run --rm -it -e PLAYBOOK_NAME="Beta OS Cluster $*" ${REPO} ansible-playbook -e BETA_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${BETA_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=beta -i hosts playbook_launch_beta_cluster_node.yml --vault-password-file=.password
+
 
 restart_cluster:
 	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 01" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE01 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
