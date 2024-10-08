@@ -15,56 +15,20 @@ START_GOCD_AGENT: "{{ lookup('env','START_GOCD_AGENT') or false }}"
 CURATION_API_URL: "https://stage-curation.alliancegenome.org/api"
 CURATION_API_TOKEN: ""
 
-CLUSTER_CONFIG:
+STAGE_CLUSTER_CONFIG:
   NODE01:
-    IP: "172.31.30.17"
+    IP: "172.31.30.1"
     NAME: "01"
   NODE02:
-    IP: "172.31.30.18"
+    IP: "172.31.30.2"
     NAME: "02"
   NODE03:
-    IP: "172.31.30.19"
+    IP: "172.31.30.3"
     NAME: "03"
   NODE04:
-    IP: "172.31.30.20"
+    IP: "172.31.30.4"
     NAME: "04"
-  NODE05:
-    IP: "172.31.30.21"
-    NAME: "05"
-  NODE06:
-    IP: "172.31.30.22"
-    NAME: "06"
-  NODE07:
-    IP: "172.31.30.23"
-    NAME: "07"
-  NODE08:
-    IP: "172.31.30.24"
-    NAME: "08"
-  NODE09:
-    IP: "172.31.30.25"
-    NAME: "09"
-  NODE10:
-    IP: "172.31.30.26"
-    NAME: "10"
-  NODE11:
-    IP: "172.31.30.27"
-    NAME: "11"
-  NODE12:
-    IP: "172.31.30.28"
-    NAME: "12"
-  NODE13:
-    IP: "172.31.30.29"
-    NAME: "13"
-  NODE14:
-    IP: "172.31.30.30"
-    NAME: "14"
-  NODE15:
-    IP: "172.31.30.31"
-    NAME: "15"
-  NODE16:
-    IP: "172.31.30.32"
-    NAME: "16"
 
-CLUSTER_NODE: "{{ lookup('env', 'CLUSTER_NODE') }}"
-ES_CLUSTER_NODE_IP: "{{ CLUSTER_CONFIG[CLUSTER_NODE].IP }}"
-ES_CLUSTER_NODE_NAME: "{{ CLUSTER_CONFIG[CLUSTER_NODE].NAME }}"
+STAGE_CLUSTER_NODE: "{{ lookup('env', 'STAGE_CLUSTER_NODE') }}"
+STAGE_ES_CLUSTER_NODE_IP: "{{ STAGE_CLUSTER_CONFIG[STAGE_CLUSTER_NODE].IP }}"
+STAGE_ES_CLUSTER_NODE_NAME: "{{ STAGE_CLUSTER_CONFIG[STAGE_CLUSTER_NODE].NAME }}"

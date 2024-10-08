@@ -42,12 +42,12 @@
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         network:
           assign_public_ip: true
-          private_ip_address: "{{ ES_CLUSTER_NODE_IP }}"
+          private_ip_address: "{{ STAGE_ES_CLUSTER_NODE_IP }}"
         volumes:
           - device_name: /dev/xvda
             ebs:
               volume_type: gp3
-              volume_size: 200
+              volume_size: 100
               iops: 3000
               delete_on_termination: yes
         wait: yes
@@ -57,7 +57,7 @@
         instance_initiated_shutdown_behavior: terminate
       register: ec2
 
-    - name: Add all instance public IPs to host group
+    - name: Add all instance private IPs to host group
       add_host:
         hostname: '{{ item.private_ip_address }}'
         groupname: launched
@@ -147,9 +147,9 @@
         name: "{{ ES_ENV_IMAGE }}"
         source: pull
   
-    - name: Run ES Cluster Node "{{ ES_CLUSTER_NODE_NAME }}"
+    - name: Run ES Cluster Node "{{ STAGE_ES_CLUSTER_NODE_NAME }}"
       docker_container:
-        name: "{{ ES_SERVER_NAME }}{{ ES_CLUSTER_NODE_NAME }}"
+        name: "{{ ES_SERVER_NAME }}{{ STAGE_ES_CLUSTER_NODE_NAME }}"
         image: "{{ ES_ENV_IMAGE }}"
         log_driver: "gelf"
         log_options:
@@ -159,15 +159,15 @@
           - "9200:9200"
           - "9300:9300"
         volumes:
-          - "es_{{ ES_CLUSTER_NODE_NAME }}_data_volume:/usr/share/elasticsearch/data"
+          - "es_{{ STAGE_ES_CLUSTER_NODE_NAME }}_data_volume:/usr/share/elasticsearch/data"
         env:
-          node.name: "{{ ES_SERVER_NAME }}{{ ES_CLUSTER_NODE_NAME }}"
+          node.name: "{{ ES_SERVER_NAME }}{{ STAGE_ES_CLUSTER_NODE_NAME }}"
           cluster.name: es-cluster
-          ES_JAVA_OPTS: "-Xms15g -Xmx15g"
+          ES_JAVA_OPTS: "-Xms7g -Xmx7g"
           xpack.security.enabled: "false"
           ingest.geoip.downloader.enabled: "false"
-          discovery.seed_hosts: "{{ node_transport_list }}"
-          cluster.initial_master_nodes: "{{ ES_CLUSTER_SERVER_FULLLIST }}"
+          discovery.seed_hosts: "{{ stage_node_transport_list }}"
+          cluster.initial_master_nodes: "{{ STAGE_ES_CLUSTER_SERVER_FULLLIST }}"
           transport.host: "0.0.0.0"
-          transport.publish_host: "{{ ES_CLUSTER_NODE_IP }}"
+          transport.publish_host: "{{ STAGE_ES_CLUSTER_NODE_IP }}"
           transport.publish_port: "9300"
