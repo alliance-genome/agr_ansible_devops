@@ -76,6 +76,9 @@ bash:
 7_3_0:
 	docker run -it ${REPO} ansible-playbook -e WEBSERVER_INSTANCE_TYPE=r5a.4xlarge -e env=production -e DOCKER_PULL_TAG=7.3.0 -i hosts launch_7.3.0.yml --vault-password-file=.password
 
+run_human_variant_indexer:
+	docker run -it ${REPO} ansible-playbook -e env=stage -e ALLIANCE_RELEASE=7.4.0 -e DOCKER_PULL_TAG=7.3.0 -i hosts playbook_run_human_variant_indexer.yml --vault-password-file=.password
+
 mod_jbrowse_server:
 	docker run -it -e PLAYBOOK_NAME="Mod Jbrowse Server" ${REPO} ansible-playbook -e START_GOCD_AGENT=true -e DOCKER_PULL_TAG=build -e SKIP_NVME_DRIVES=true -e WEBSERVER_INSTANCE_TYPE=m4.xlarge -e env=jbrowse -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
 

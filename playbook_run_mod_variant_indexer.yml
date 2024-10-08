@@ -16,7 +16,7 @@
     - "environments/shared_aws_instance_variables.yml"
 
   tasks:
-    - name: Start Neo, Run Indexer
+    - name: Start ES, Run Indexer
       block:
         #- include_tasks: tasks/start_neo_data.yml
         - include_tasks: tasks/start_es_env.yml
