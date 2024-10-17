@@ -29,7 +29,7 @@ SWAP_SIZE: "{{ lookup('env','SWAP_SIZE') | default('128G', True) }}"
 
 # Neo4j Config
 NEO_ON_OFF_HEAP: "OFF_HEAP"
-NEO_MAX_HEAP: "31GB"
+NEO_MAX_HEAP: "15GB"
 NEO_OFF_HEAP_MAX: "0GB"
 NEO_TRANSACTION: "0"
 
