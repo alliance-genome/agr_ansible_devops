@@ -107,7 +107,7 @@ start_production_intermine_app_server:
 	docker run -it -e PLAYBOOK_NAME="Production Intermine App Server" -e SKIP_NVME_DRIVES=true -e SETUP_NVME_DRIVE=true -e START_GOCD_AGENT=true -e WEBSERVER_INSTANCE_TYPE=i3.xlarge ${REPO} ansible-playbook -e SETUP_NVME_DRIVE=true -e SKIP_NVME_DRIVES=true -e env=intermineproduction -i hosts custom_playbook_launch_intermine_instance.yml --vault-password-file=.password
 
 
-STAGE_CLUSTER_MACHINE_TYPE := r5a.large
+STAGE_CLUSTER_MACHINE_TYPE := t3a.large
 SWAP_SIZE := 8G
 
 start_stage_node%:
@@ -124,6 +124,13 @@ SWAP_SIZE := 16G
 
 start_beta_node%:
 	docker run --rm -it -e PLAYBOOK_NAME="Beta OS Cluster $*" ${REPO} ansible-playbook -e BETA_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${BETA_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=beta -i hosts playbook_launch_beta_cluster_node.yml --vault-password-file=.password
+
+PRODUCTION_CLUSTER_MACHINE_TYPE := r5a.xlarge
+SWAP_SIZE := 16G
+
+start_production_node%:
+	docker run --rm -it -e PLAYBOOK_NAME="Production OS Cluster $*" ${REPO} ansible-playbook -e PRODUCTION_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${PRODUCTION_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=production -i hosts playbook_launch_production_cluster_node.yml --vault-password-file=.password
+
 
 restart_cluster:
 	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 01" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE01 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
