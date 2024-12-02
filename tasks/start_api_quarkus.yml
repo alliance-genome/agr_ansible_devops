@@ -1,11 +1,10 @@
 ---
-
 - name: Pull Java Run Image
   docker_image:
     name: "{{ JAVA_SOFTWARE_RUN_IMAGE }}"
     source: pull
 
-- name: Run API
+- name: Run API with Health Check
   docker_container:
     name: "{{ API_SERVER_NAME }}"
     image: "{{ JAVA_SOFTWARE_RUN_IMAGE }}"
@@ -21,3 +20,9 @@
       CACHE_HOST: "{{ INFINISPAN_SERVER_NAME }}"
       NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
       ES_HOST: "{{ ES_SERVER_NAME }}"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "https://www.alliancegenome.org/api/search_autocomplete?q=p"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
