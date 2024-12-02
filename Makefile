@@ -88,6 +88,9 @@ mod_jbrowse_server:
 zfin_jbrowse_process:
 	docker run -it -e PLAYBOOK_NAME="Zfin Jbrowse Processor" ${REPO} ansible-playbook -e START_GOCD_AGENT=false -e DOCKER_PULL_TAG=zfin_latest -e SKIP_NVME_DRIVES=true -e WEBSERVER_INSTANCE_TYPE=m4.xlarge -e env=jbrowse -e jbrowse_env=zfin -i hosts playbook_run_jbrowse_process_gff.yml --vault-password-file=.password
 
+stage_curation_server:
+	docker run -it -e PLAYBOOK_NAME="Stage Curation" ${REPO} ansible-playbook -e env=stage -e SWAP_SIZE=32G -e WEBSERVER_INSTANCE_TYPE=r5a.xlarge -e SKIP_NVME_DRIVES=true -e START_GOCD_AGENT=true -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
+
 stage_web_server:
 	docker run -it -e PLAYBOOK_NAME="Stage Web Server" ${REPO} ansible-playbook -e env=stage -e SKIP_NVME_DRIVES=true -e START_GOCD_AGENT=true -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
 
