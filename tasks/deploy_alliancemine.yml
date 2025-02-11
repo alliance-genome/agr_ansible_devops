@@ -4,6 +4,22 @@
     dest: /tmp/agr_alliancemine_ebdeploy
     version: main
 
+- name: Check if stage-alliancemine environment exists
+  command: eb status stage-alliancemine
+  args:
+    chdir: /tmp/agr_alliancemine_ebdeploy
+  register: eb_status
+  # We don't want this task to fail the play if the env doesn't exist,
+  # so we avoid typical Ansible failure conditions
+  failed_when: false
+  changed_when: false
+
+- name: Create stage-alliancemine environment if missing
+  command: eb create stage-alliancemine --region=us-east-1 --cname="stage-alliancemine" --elb-type classic --timeout 60
+  args:
+    chdir: /tmp/agr_alliancemine_ebdeploy
+  when: "'NotFoundError' in eb_status.stdout"
+
 - name: Deploy Alliancemine to EBS
   command: eb deploy stage-alliancemine --timeout 30
   args:
