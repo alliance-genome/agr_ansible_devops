@@ -19,10 +19,10 @@
   args:
     chdir: /tmp/agr_stage_api_ebdeploy
 
-#- name: Deploy API to EBS
-#  command: eb deploy stage-quarkus-api --timeout 30
-#  args:
-#    chdir: /tmp/agr_stage_api_ebdeploy
+- name: Deploy API to EBS
+  command: echo eb deploy stage-quarkus-api --timeout 30
+  args:
+    chdir: /tmp/agr_stage_api_ebdeploy
 
 - name: Remove agr_stage_api_ebdeploy directory
   shell:
