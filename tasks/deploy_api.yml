@@ -4,23 +4,13 @@
     dest: /tmp/agr_stage_api_ebdeploy
     version: main
 
-- name: Inspect ENV File
-  command: cat .ebextensions/env.config
-  args:
-    chdir: /tmp/agr_stage_api_ebdeploy
-
 - name: Set Alliance Release Version "{{ ALLIANCE_RELEASE }}"
   command: sed -i.bak "s/0.0.0/{{ ALLIANCE_RELEASE }}/g" .ebextensions/env.config
   args:
     chdir: /tmp/agr_stage_api_ebdeploy
 
-- name: Inspect ENV File
-  command: cat .ebextensions/env.config
-  args:
-    chdir: /tmp/agr_stage_api_ebdeploy
-
 - name: Deploy API to EBS
-  command: echo eb deploy stage-quarkus-api --timeout 30
+  command: eb deploy stage-quarkus-api --timeout 30
   args:
     chdir: /tmp/agr_stage_api_ebdeploy
 
