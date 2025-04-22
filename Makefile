@@ -16,6 +16,15 @@ endif
 	${DOCKER_LOGIN_CMD}
 endif
 
+registry-docker-login-ci:
+ifeq ($(shell test -t 0 && echo interactive || echo ci),ci)
+	@echo "[CI] logging in to ECR without a TTY …"
+	@aws ecr get-login-password --region $(or $(AWS_REGION),us-east-1) \
+	    | docker login --username AWS --password-stdin $(REG)
+else
+	@$(MAKE) registry-docker-login
+endif
+
 pull:
 	docker pull ${REG}/agr_base_linux_env:${DOCKER_PULL_TAG}
 
