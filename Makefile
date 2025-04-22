@@ -86,6 +86,8 @@ bash:
 	docker run -it ${REPO} ansible-playbook -e WEBSERVER_INSTANCE_TYPE=r5a.2xlarge -e env=production -e DOCKER_PULL_TAG=8.0.0 -i hosts launch_8.0.0.yml --vault-password-file=.password
 
 8_1_0:
+8_2_0:
+	docker run -it ${REPO} ansible-playbook -e env=production -e DOCKER_PULL_TAG=8.2.0 -i hosts launch_8.2.0.yml --vault-password-file=.password
 	docker run -it ${REPO} ansible-playbook -e WEBSERVER_INSTANCE_TYPE=r5a.2xlarge -e env=production -e DOCKER_PULL_TAG=8.0.0 -i hosts launch_8.1.0.yml --vault-password-file=.password
 
 run_human_variant_indexer:
