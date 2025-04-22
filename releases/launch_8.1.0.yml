@@ -118,7 +118,7 @@
         - include_tasks: tasks/start_infinispan_data.yml
         - include_tasks: tasks/start_api_quarkus.yml
         - include_tasks: tasks/start_jbrowse.yml
-        - include_tasks: tasks/start_apollo.yml
+      # - include_tasks: tasks/start_apollo.yml
         - include_tasks: tasks/run_restore_index.yml
         - include_tasks: tasks/start_nginx.yml
 
