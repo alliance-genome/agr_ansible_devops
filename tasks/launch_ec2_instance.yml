@@ -23,6 +23,8 @@
     user_data: "" # Otherwise get weird error on start up
     tags:
       Name: "Ansible Generated - {{ PLAYBOOK_NAME }}"
+      Product: "{{ AWS_PRODUCT_TAG }}"
+      DeploymentEnvironment: "{{ AWS_ENV_TAG }}"
     instance_initiated_shutdown_behavior: terminate
   when: not launch_success
   register: ec2_result_internal
