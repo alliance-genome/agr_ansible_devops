@@ -9,6 +9,8 @@ ansible_python_interpreter: /home/core/pypy/bin/pypy
 ALLIANCE_RELEASE: "{{ lookup('env','ALLIANCE_RELEASE') }}"
 DOCKER_PULL_TAG: "{{ lookup('env','DOCKER_PULL_TAG') | default(env,True) }}"
 DOCKER_BUILD_TAG: "{{ lookup('env','DOCKER_BUILD_TAG') | default(env,True) }}"
+AWS_PRODUCT_TAG: "{{ lookup('env','AWS_PRODUCT_TAG') | default('Ansible - untagged: PLAYBOOK_NAME',True) }}"
+AWS_ENV_TAG: "{{ lookup('env','AWS_ENV_TAG') | default('Ansible - untagged: PLAYBOOK_NAME',True) }}"
 
 REGISTRY: 100225593120.dkr.ecr.us-east-1.amazonaws.com
 

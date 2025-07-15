@@ -96,10 +96,10 @@ bash:
 
 
 8_1_0:
-	docker run ${REPO} ansible-playbook -e WEBSERVER_INSTANCE_TYPE=r5a.2xlarge -e env=production -e DOCKER_PULL_TAG=8.1.0 -i hosts launch_8.1.0.yml --vault-password-file=.password
+	docker run ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=public-website -e AWS_ENV_TAG=production -e WEBSERVER_INSTANCE_TYPE=r5a.2xlarge -e env=production -e DOCKER_PULL_TAG=8.1.0 -i hosts launch_8.1.0.yml --vault-password-file=.password
 
 run_human_variant_indexer:
-	docker run -it ${REPO} ansible-playbook -e env=stage -e ALLIANCE_RELEASE=7.4.0 -e DOCKER_PULL_TAG=7.3.0 -i hosts playbook_run_human_variant_indexer.yml --vault-password-file=.password
+	docker run -it ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=public-website -e AWS_ENV_TAG=stage -e env=stage -e ALLIANCE_RELEASE=7.4.0 -e DOCKER_PULL_TAG=7.3.0 -i hosts playbook_run_human_variant_indexer.yml --vault-password-file=.password
 
 mod_jbrowse_server:
 	docker run -it -e PLAYBOOK_NAME="Mod Jbrowse Server" ${REPO} ansible-playbook -e START_GOCD_AGENT=true -e DOCKER_PULL_TAG=build -e SKIP_NVME_DRIVES=true -e WEBSERVER_INSTANCE_TYPE=m4.xlarge -e env=jbrowse -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
@@ -108,16 +108,16 @@ zfin_jbrowse_process:
 	docker run -it -e PLAYBOOK_NAME="Zfin Jbrowse Processor" ${REPO} ansible-playbook -e START_GOCD_AGENT=false -e DOCKER_PULL_TAG=zfin_latest -e SKIP_NVME_DRIVES=true -e WEBSERVER_INSTANCE_TYPE=m4.xlarge -e env=jbrowse -e jbrowse_env=zfin -i hosts playbook_run_jbrowse_process_gff.yml --vault-password-file=.password
 
 stage_curation_server:
-	docker run -it -e PLAYBOOK_NAME="Stage Curation" ${REPO} ansible-playbook -e env=stage -e SWAP_SIZE=32G -e WEBSERVER_INSTANCE_TYPE=r5a.xlarge -e SKIP_NVME_DRIVES=true -e START_GOCD_AGENT=true -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
+	docker run -it -e PLAYBOOK_NAME="Stage Curation" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=public-website  -e AWS_ENV_TAG=stage -e env=stage -e SWAP_SIZE=32G -e WEBSERVER_INSTANCE_TYPE=r5a.xlarge -e SKIP_NVME_DRIVES=true -e START_GOCD_AGENT=true -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
 
 stage_web_server:
-	docker run -it -e PLAYBOOK_NAME="Stage Web Server" ${REPO} ansible-playbook -e env=stage -e SKIP_NVME_DRIVES=true -e START_GOCD_AGENT=true -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
+	docker run -it -e PLAYBOOK_NAME="Stage Web Server" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=public-website -e AWS_ENV_TAG=stage -e env=stage -e SKIP_NVME_DRIVES=true -e START_GOCD_AGENT=true -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
 
 build_web_server:
-	docker run -it -e PLAYBOOK_NAME="Build Web Server" ${REPO} ansible-playbook -e env=build -e SKIP_NVME_DRIVES=true -e START_GOCD_AGENT=true -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
+	docker run -it -e PLAYBOOK_NAME="Build Web Server" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=public-website -e AWS_ENV_TAG=build -e env=build -e SKIP_NVME_DRIVES=true -e START_GOCD_AGENT=true -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
 
 openvpn_server:
-	docker run -it -e PLAYBOOK_NAME="OpenVPN Server" ${REPO} ansible-playbook -e env=build -e WEBSERVER_INSTANCE_TYPE=t3.small -e SKIP_NVME_DRIVES=true -i hosts custom_playbook_launch_instance_bare.yml --vault-password-file=.password
+	docker run -it -e PLAYBOOK_NAME="OpenVPN Server" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=open-vpn  -e AWS_ENV_TAG=build -e env=build -e WEBSERVER_INSTANCE_TYPE=t3.small -e SKIP_NVME_DRIVES=true -i hosts custom_playbook_launch_instance_bare.yml --vault-password-file=.password
 
 start_dev_intermine_build_server:
 	docker run -it -e PLAYBOOK_NAME="Dev Intermine Build Server" ${REPO} ansible-playbook -e WEBSERVER_INSTANCE_TYPE=r5a.2xlarge -e env=build -e SKIP_NVME_DRIVES=true -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
@@ -133,26 +133,25 @@ STAGE_CLUSTER_MACHINE_TYPE := t3a.large
 SWAP_SIZE := 8G
 
 start_stage_node%:
-	docker run --rm -it -e PLAYBOOK_NAME="Stage ES Cluster $*" ${REPO} ansible-playbook -e STAGE_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${STAGE_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=stage -i hosts playbook_launch_stage_cluster_node.yml --vault-password-file=.password
+	docker run --rm -it -e PLAYBOOK_NAME="Stage ES Cluster $*" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=public-website -e AWS_ENV_TAG=stage -e STAGE_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${STAGE_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=stage -i hosts playbook_launch_stage_cluster_node.yml --vault-password-file=.password
 
 ALPHA_CLUSTER_MACHINE_TYPE := r5a.xlarge
 SWAP_SIZE := 16G
 
 start_alpha_node%:
-	docker run --rm -it -e PLAYBOOK_NAME="Alpha OS Cluster $*" ${REPO} ansible-playbook -e ALPHA_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${ALPHA_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=alpha -i hosts playbook_launch_alpha_cluster_node.yml --vault-password-file=.password
+	docker run --rm -it -e PLAYBOOK_NAME="Alpha OS Cluster $*" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=curation-app -e AWS_ENV_TAG=alpha -e ALPHA_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${ALPHA_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=alpha -i hosts playbook_launch_alpha_cluster_node.yml --vault-password-file=.password
 
 BETA_CLUSTER_MACHINE_TYPE := r5a.xlarge
 SWAP_SIZE := 16G
 
 start_beta_node%:
-	docker run --rm -it -e PLAYBOOK_NAME="Beta OS Cluster $*" ${REPO} ansible-playbook -e BETA_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${BETA_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=beta -i hosts playbook_launch_beta_cluster_node.yml --vault-password-file=.password
+	docker run --rm -it -e PLAYBOOK_NAME="Beta OS Cluster $*" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=curation-app -e AWS_ENV_TAG=beta -e BETA_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${BETA_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=beta -i hosts playbook_launch_beta_cluster_node.yml --vault-password-file=.password
 
 PRODUCTION_CLUSTER_MACHINE_TYPE := r5a.xlarge
 SWAP_SIZE := 16G
 
 start_production_node%:
-	docker run --rm -it -e PLAYBOOK_NAME="Production OS Cluster $*" ${REPO} ansible-playbook -e PRODUCTION_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${PRODUCTION_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=production -i hosts playbook_launch_production_cluster_node.yml --vault-password-file=.password
-
+	docker run --rm -it -e PLAYBOOK_NAME="Production OS Cluster $*" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=curation-app -e AWS_ENV_TAG=production -e PRODUCTION_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${PRODUCTION_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=production -i hosts playbook_launch_production_cluster_node.yml --vault-password-file=.password
 
 restart_cluster:
 	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 01" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE01 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
