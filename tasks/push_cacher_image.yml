@@ -1,7 +1,5 @@
 - name: Stop Cacher
-  docker_container:
-    name: "{{ INFINISPAN_SERVER_NAME }}"
-    state: stopped
+  command: docker stop "{{ INFINISPAN_SERVER_NAME }}"
 
 - name: Commit container
   command: docker commit "{{ INFINISPAN_SERVER_NAME }}" "{{ CACHER_DATA_BUILD_IMAGE }}"
