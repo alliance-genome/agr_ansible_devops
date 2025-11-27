@@ -11,7 +11,7 @@
   
     - name: Copy SSH private key file
       copy:
-        content: "{{ AGRSSL2_content }}"
+        content: "{{ AGRSSL3_content }}"
         dest: "/root/.ssh/id_rsa"
         mode: 0600
 

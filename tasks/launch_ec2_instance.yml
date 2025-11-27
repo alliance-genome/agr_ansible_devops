@@ -1,6 +1,6 @@
 - name: Launch instance in {{ item.name }}
   ec2_instance:
-    key_name: AGR-ssl2
+    key_name: AGR-ssl3
     security_groups: ["default", "HTTP/HTTPS"]
     instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
     image_id: "{{ COMPUTE_AMI_IMAGE }}"
