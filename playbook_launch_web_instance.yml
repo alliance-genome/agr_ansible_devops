@@ -12,7 +12,7 @@
   tasks:
     - name: Launch instances
       ec2_instance:
-        key_name: AGR-ssl2
+        key_name: AGR-ssl3
         security_groups: ["default", "HTTP/HTTPS"]
         instance_type: "{{ WEBSERVER_INSTANCE_TYPE }}"
         image_id: "{{ WEBSERVER_AMI_IMAGE }}"

@@ -11,7 +11,7 @@
     
     - name: Copy SSH private key file
       copy:
-        content: "{{ AGRSSL2_content }}"
+        content: "{{ AGRSSL3_content }}"
         dest: "/root/.ssh/id_rsa"
         mode: 0600
 
@@ -28,7 +28,7 @@
   tasks:
     - name: Launch instances
       ec2_instance:
-        key_name: AGR-ssl2
+        key_name: AGR-ssl3
         security_groups: ["default"]
         instance_type: "{{ WEBSERVER_INSTANCE_TYPE }}"
         image_id: ami-05668c1bb69ebd078
