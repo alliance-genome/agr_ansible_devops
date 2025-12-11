@@ -4,6 +4,10 @@
 
 # AWS Variables
 COMPUTE_INSTANCE_TYPE: "{{ lookup('env','COMPUTE_INSTANCE_TYPE') or 'r5d.8xlarge' }}"
+
+# AWS Instance Tagging (used by playbooks that don't load shared_variables.yml)
+AWS_PRODUCT_TAG: "{{ lookup('env','AWS_PRODUCT_TAG') | default('Ansible - untagged: PLAYBOOK_NAME',True) }}"
+AWS_ENV_TAG: "{{ lookup('env','AWS_ENV_TAG') | default('Ansible - untagged: PLAYBOOK_NAME',True) }}"
 COMPUTE_AMI_IMAGE: ami-05668c1bb69ebd078
 WEBSERVER_INSTANCE_TYPE: "{{ lookup('env','WEBSERVER_INSTANCE_TYPE') or 'r5a.large' }}"
 WEBSERVER_AMI_IMAGE: "{{ lookup('env','WEBSERVER_AMI_IMAGE') or 'ami-05668c1bb69ebd078' }}"
