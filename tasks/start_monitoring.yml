@@ -10,9 +10,7 @@
     - "{{ BLACKBOX_CONFIG_PATH }}"
 
 - name: Pull Node Exporter Image
-  docker_image:
-    name: prom/node-exporter:v1.5.0
-    source: pull
+  shell: docker pull prom/node-exporter:v1.5.0 2>&1
 
 - name: Run Node Exporter Image
   docker_container:
@@ -27,9 +25,7 @@
     recreate: yes
 
 - name: Pull cAdvisor
-  docker_image:
-    name: gcr.io/cadvisor/cadvisor:v0.47.0
-    source: pull
+  shell: docker pull gcr.io/cadvisor/cadvisor:v0.47.0 2>&1
 
 - name: Run cAdvisor Image
   docker_container:
@@ -65,9 +61,7 @@
   when: env == "production"
 
 - name: Pull Alertmanager Image
-  docker_image:
-    name: prom/alertmanager:v0.24.0
-    source: pull
+  shell: docker pull prom/alertmanager:v0.24.0 2>&1
 
 - name: Run Alertmanager
   docker_container:
@@ -91,9 +85,7 @@
     dest: "{{ BLACKBOX_CONFIG_PATH }}/blackbox.yml"
 
 - name: Pull Blackbox Image
-  docker_image:
-    name: prom/blackbox-exporter:v0.23.0
-    source: pull
+  shell: docker pull prom/blackbox-exporter:v0.23.0 2>&1
 
 - name: Run Blackbox Exporter
   docker_container:
@@ -136,9 +128,7 @@
   when: env == "production"
 
 - name: Pull Prometheus Image
-  docker_image:
-    name: prom/prometheus:v2.43.0
-    source: pull
+  shell: docker pull prom/prometheus:v2.43.0 2>&1
 
 - name: Run Prometheus
   docker_container:
@@ -171,9 +161,7 @@
     directory_mode: yes
 
 - name: Pull Grafana Image
-  docker_image:
-    name: grafana/grafana:9.4.0
-    source: pull
+  shell: docker pull grafana/grafana:9.4.0 2>&1
 
 - name: Run Grafana Image
   docker_container:
@@ -195,9 +183,7 @@
     recreate: yes
 
 - name: Pull Portainer Image
-  docker_image:
-    name: portainer/portainer-ce:latest
-    source: pull
+  shell: docker pull portainer/portainer-ce:latest 2>&1
 
 - name: Create Portainer Volume
   docker_volume:

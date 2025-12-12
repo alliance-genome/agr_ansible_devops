@@ -1,12 +1,8 @@
 - name: Pull ES Env Image
-  docker_image:
-    name: "{{ ES_ENV_IMAGE }}"
-    source: pull
+  shell: docker pull {{ ES_ENV_IMAGE }} 2>&1
 
 - name: Pull Cerebro Image
-  docker_image:
-    name: "yannart/cerebro:latest"
-    source: pull
+  shell: docker pull yannart/cerebro:latest 2>&1
 
 - name: Run ES
   docker_container:
@@ -29,9 +25,7 @@
       - "9000:9000"
 
 - name: Pull Log Image
-  docker_image:
-    name: "{{ LOG_IMAGE_NAME }}"
-    source: pull
+  shell: docker pull {{ LOG_IMAGE_NAME }} 2>&1
 
 - name: Run Log Server
   docker_container:
@@ -46,9 +40,7 @@
     command: ./bin/logstash -e "input { gelf { type => docker } } output { elasticsearch { hosts => [\"{{ ES_SERVER_NAME }}\"] ilm_enabled => true ilm_policy => \"ilm-history-ilm-policy\" } }"
 
 - name: Pull Kibana Image
-  docker_image:
-    name: "{{ KIBANA_IMAGE }}"
-    source: pull
+  shell: docker pull {{ KIBANA_IMAGE }} 2>&1
 
 - name: Run Kibana
   docker_container:
