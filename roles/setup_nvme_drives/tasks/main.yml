@@ -1,13 +1,29 @@
 ---
 # tasks file for setup_nvme_drives
+# This runs BEFORE Docker is configured, so Docker should be clean/empty
 
-- name: Shutdown Docker
-  command: systemctl stop docker.service
+- name: Stop Docker service if running
+  systemd:
+    name: docker.service
+    state: stopped
+  ignore_errors: yes
 
-- name: Get directory stats
-  stat:
-    path: "/var/lib/docker"
-  register: directory_stat
+- name: Stop Docker socket if exists
+  systemd:
+    name: docker.socket
+    state: stopped
+  ignore_errors: yes
+
+- name: Wait a moment for Docker to stop
+  pause:
+    seconds: 3
+
+- name: Unmount any existing mounts in /var/lib/docker
+  shell: |
+    for mount in $(mount | grep '/var/lib/docker' | awk '{print $3}' | sort -r); do
+      umount -l "$mount" || true
+    done
+  ignore_errors: yes
 
 - name: Delete directory
   file:

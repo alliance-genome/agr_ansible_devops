@@ -1,7 +1,5 @@
 - name: Pull Intermine Tomcat Data Image
-  docker_image:
-    name: "{{ INTERMINE_TOMCAT_SERVER_IMAGE }}"
-    source: pull
+  shell: docker pull {{ INTERMINE_TOMCAT_SERVER_IMAGE }} 2>&1
 
 - name: Run Tomcat
   docker_container:

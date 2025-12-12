@@ -147,14 +147,10 @@
   tasks:
 
     - name: Pull OS Env Image
-      docker_image:
-        name: "{{ OS_ENV_IMAGE }}"
-        source: pull
-  
+      shell: docker pull {{ OS_ENV_IMAGE }} 2>&1
+
     - name: Pull Cerebro Image
-      docker_image:
-        name: "yannart/cerebro:latest"
-        source: pull
+      shell: docker pull yannart/cerebro:latest 2>&1
     
     - name: Run OS Cluster Node "{{ PRODUCTION_OS_CLUSTER_NODE_NAME }}"
       docker_container:

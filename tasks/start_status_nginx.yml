@@ -1,7 +1,5 @@
 - name: Pull Nginx Server Image
-  docker_image:
-    name: "{{ STATUS_NGINX_IMAGE_NAME }}"
-    source: pull
+  shell: docker pull {{ STATUS_NGINX_IMAGE_NAME }} 2>&1
 
 - name: Create NGINX HTML Directory
   file:

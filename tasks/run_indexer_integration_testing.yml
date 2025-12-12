@@ -1,7 +1,5 @@
 - name: Pull Java Testing Run Image
-  docker_image:
-    name: "{{ INDEXER_TEST_IMAGE }}"
-    source: pull
+  shell: docker pull {{ INDEXER_TEST_IMAGE }} 2>&1
 
 - name: Run Indexer Tests
   docker_container:

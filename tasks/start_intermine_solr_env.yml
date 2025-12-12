@@ -1,7 +1,5 @@
 - name: Pull Intermine Solr Env Image
-  docker_image:
-    name: "{{ INTERMINE_SOLR_ENV_NAME }}"
-    source: pull
+  shell: docker pull {{ INTERMINE_SOLR_ENV_NAME }} 2>&1
 
 - name: Run Solr
   docker_container:

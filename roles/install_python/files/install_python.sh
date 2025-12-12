@@ -7,4 +7,4 @@ rm pypy.tar.bz2
 wget -q https://agr-build-files.s3.amazonaws.com/get-pip.py
 pypy/bin/pypy get-pip.py
 rm get-pip.py
-pypy/bin/pypy -m pip install docker-py
+pypy/bin/pypy -m pip install docker

@@ -1,7 +1,5 @@
 - name: Pull Neo4j Data Image
-  docker_image:
-    name: "{{ NEO_DATA_IMAGE }}"
-    source: pull
+  shell: docker pull {{ NEO_DATA_IMAGE }} 2>&1
 
 - name: Run Neo4j
   docker_container:

@@ -1,7 +1,5 @@
 - name: Pull Intermine Postgres Env Image
-  docker_image:
-    name: "{{ INTERMINE_POSTGRES_ENV_NAME }}"
-    source: pull
+  shell: docker pull {{ INTERMINE_POSTGRES_ENV_NAME }} 2>&1
 
 - name: Ensure custom network exists
   docker_network:
