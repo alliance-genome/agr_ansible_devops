@@ -1,6 +1,7 @@
 ---
 # tasks file for setup_nvme_drives
 # This runs BEFORE Docker is configured, so Docker should be clean/empty
+# Creates a RAID-0 array from two NVMe drives for Docker storage
 
 - name: Stop Docker service if running
   systemd:
@@ -14,9 +15,9 @@
     state: stopped
   ignore_errors: yes
 
-- name: Wait a moment for Docker to stop
+- name: Wait for Docker to fully stop
   pause:
-    seconds: 3
+    seconds: 5
 
 - name: Unmount any existing mounts in /var/lib/docker
   shell: |
@@ -25,12 +26,66 @@
     done
   ignore_errors: yes
 
-- name: Delete directory
+- name: Unmount any existing mounts on md0
+  shell: |
+    umount -l /dev/md0p1 2>/dev/null || true
+    umount -l /dev/md0 2>/dev/null || true
+  ignore_errors: yes
+
+- name: Stop any existing RAID array on md0
+  shell: |
+    mdadm --stop /dev/md0 2>/dev/null || true
+  ignore_errors: yes
+
+- name: Unmount any partitions on NVMe drives
+  shell: |
+    for part in /dev/nvme1n1p* /dev/nvme2n1p*; do
+      [ -e "$part" ] && umount -l "$part" 2>/dev/null || true
+    done
+  ignore_errors: yes
+
+- name: Clear RAID superblocks from NVMe drives
+  shell: |
+    mdadm --zero-superblock /dev/nvme1n1 2>/dev/null || true
+    mdadm --zero-superblock /dev/nvme2n1 2>/dev/null || true
+  ignore_errors: yes
+
+- name: Wipe partition tables on NVMe drives
+  shell: |
+    wipefs -a /dev/nvme1n1 2>/dev/null || true
+    wipefs -a /dev/nvme2n1 2>/dev/null || true
+  ignore_errors: yes
+
+# Trigger udev to reprocess devices after wiping
+- name: Trigger udev to update device state
+  shell: |
+    udevadm trigger --subsystem-match=block
+    udevadm settle --timeout=30
+  ignore_errors: yes
+
+- name: Wait for drives to settle
+  pause:
+    seconds: 3
+
+# Verify device files exist before using them
+- name: Wait for NVMe device nvme1n1 to be available
+  ansible.builtin.wait_for:
+    path: /dev/nvme1n1
+    state: present
+    timeout: 30
+
+- name: Wait for NVMe device nvme2n1 to be available
+  ansible.builtin.wait_for:
+    path: /dev/nvme2n1
+    state: present
+    timeout: 30
+
+- name: Delete /var/lib/docker directory
   file:
     path: "/var/lib/docker"
     state: absent
 
-- name: Create directory
+- name: Create /var/lib/docker directory
   file:
     path: "/var/lib/docker"
     state: directory
@@ -38,21 +93,53 @@
     group: "root"
     mode: "711"
 
-- name: Create Raid
+- name: Create RAID-0 array
   command: mdadm --create --verbose --auto=yes /dev/md0 --level=0 --raid-devices=2 /dev/nvme1n1 /dev/nvme2n1
+  register: raid_result
+  retries: 3
+  delay: 5
+  until: raid_result.rc == 0
 
-- name: Create Partitions
+- name: Trigger udev after RAID creation
+  shell: |
+    udevadm trigger --subsystem-match=block
+    udevadm settle --timeout=30
+  ignore_errors: yes
+
+- name: Wait for RAID array to initialize
+  pause:
+    seconds: 2
+
+- name: Wait for RAID device md0 to be available
+  ansible.builtin.wait_for:
+    path: /dev/md0
+    state: present
+    timeout: 30
+
+- name: Create partition on RAID array
   shell: echo -e "p\nn\np\n1\n\n\nw" | fdisk /dev/md0
 
-- name: Create File System
+- name: Trigger udev after partition creation
+  shell: |
+    udevadm trigger --subsystem-match=block
+    udevadm settle --timeout=30
+  ignore_errors: yes
+
+- name: Wait for partition md0p1 to be available
+  ansible.builtin.wait_for:
+    path: /dev/md0p1
+    state: present
+    timeout: 30
+
+- name: Create ext4 filesystem
   command: mkfs.ext4 -F /dev/md0p1
 
-- name: Mount Raid AS docker FS
+- name: Mount RAID array as Docker filesystem
   mount:
     src: /dev/md0p1
     path: /var/lib/docker
     state: mounted
     fstype: ext4
 
-- name: Start Docker
+- name: Start Docker service
   command: systemctl start docker.service
