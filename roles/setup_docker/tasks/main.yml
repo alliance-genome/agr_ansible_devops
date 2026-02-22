@@ -23,6 +23,10 @@
 
 - name: Docker pull cli image
   shell: docker pull amazon/aws-cli:latest 2>&1
+  register: pull_result
+  retries: 3
+  delay: 10
+  until: pull_result.rc == 0
 
 - name: AWS Create ECR Token (Good only for 12 hours)
   raw: docker run -it --rm amazon/aws-cli ecr get-login-password
