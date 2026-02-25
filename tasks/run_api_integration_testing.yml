@@ -12,7 +12,6 @@
     command: java -jar agr_api/target/agr_api-thorntail.jar
     env:
       NEO4J_HOST: "{{ NEO_TESTING_SERVER_NAME }}"
-      CACHE_HOST: "{{ CACHE_TESTING_SERVER_NAME }}"
       ES_HOST: "{{ ES_TESTING_SERVER_NAME }}"
 
 - pause:
@@ -31,6 +30,5 @@
     env:
       API_HOST: "{{ API_SERVER_NAME }}"
       NEO4J_HOST: "{{ NEO_TESTING_SERVER_NAME }}"
-      CACHE_HOST: "{{ CACHE_TESTING_SERVER_NAME }}"
       ES_HOST: "{{ ES_TESTING_SERVER_NAME }}"
 

@@ -23,9 +23,7 @@ CACHE_TESTING_SERVER_NAME: "build.alliancegenome.org"
 # Config Options
 LOG_SERVER_ADDRESS: "udp://{{ LOG_SERVER_HOST }}:12201"
 INTERMINE_DATA_VOLUME_NAME: "/data"
-INFINISPAN_MEMORY: "31G"
 INDEXER_MEMORY: "128G"
-CACHER_MEMORY: "31G"
 NEO_VOLUME_NAME: "/data"
 SWAP_SIZE: "{{ lookup('env','SWAP_SIZE') | default('128G', True) }}"
 
@@ -49,7 +47,6 @@ JBROWSE_SERVER_NAME: "agr.{{ env }}.jbrowse.server"
 APOLLO_SERVER_NAME: "agr.{{ env }}.apollo.server"
 API_SERVER_NAME: "agr.{{ env }}.api.server"
 NEO_SERVER_NAME: "{{ env }}-neo4j.alliancegenome.org"
-INFINISPAN_SERVER_NAME: "agr.{{ env }}.infinispan.server"
 INTERMINE_CDN_SERVER_NAME: "agr.{{ env }}.intermine.cdn.server"
 PROMETHEUS_SERVER_NAME: "agr.{{ env }}.prometheus.server"
 BLACKBOX_SERVER_NAME: "agr.{{ env }}.blackbox.server"
@@ -76,7 +73,6 @@ QC_RUN_NAME: "agr.{{ env }}.qc"
 API_TEST_NAME: "agr.{{ env }}.api.test"
 LOADER_RUN_NAME: "agr.{{ env }}.loader"
 PREPROCESS_RUN_NAME: "agr.{{ env }}.preprocess"
-CACHER_RUN_NAME: "agr.{{ env }}.cacher"
 INDEXER_RUN_NAME: "agr.{{ env }}.indexer"
 
 VARIANT_INDEXER_RUN_NAME: "agr.{{ env }}.variant_indexer"
@@ -102,8 +98,6 @@ APOLLO_SERVER_IMAGE:         "{{ REGISTRY }}/agr_apollo_run:{{ DOCKER_PULL_TAG }
 
 # Server Base Images
 NEO_ENV_IMAGE:               "{{ REGISTRY }}/agr_neo4j_env:{{ DOCKER_PULL_TAG }}"
-#INFINISPAN_ENV_IMAGE:        "{{ REGISTRY }}/agr_infinispan_env:{{ DOCKER_PULL_TAG }}"
-INFINISPAN_ENV_IMAGE:        "infinispan/server:15.2.1.Final"
 
 # ETL run Images
 GOCD_IMAGE:                  "{{ REGISTRY }}/agr_gocd_env:latest"
@@ -136,10 +130,6 @@ CURATION_DATA_BUILD_IMAGE:    "{{ REGISTRY }}/{{ CURATION_DATA_IMAGE_NAME }}:{{ 
 
 CURATION_API_IMAGE_NAME: agr_curation
 CURATION_API_IMAGE:          "{{ REGISTRY }}/{{ CURATION_API_IMAGE_NAME }}:{{ CURATION_RELEASE_VERSION }}"
-
-INFINISPAN_DATA_IMAGE_NAME: agr_infinispan_data_image
-CACHER_DATA_IMAGE:       "{{ REGISTRY }}/{{ INFINISPAN_DATA_IMAGE_NAME }}:{{ DOCKER_PULL_TAG }}"
-CACHER_DATA_BUILD_IMAGE: "{{ REGISTRY }}/{{ INFINISPAN_DATA_IMAGE_NAME }}:{{ DOCKER_BUILD_TAG }}"
 
 # External Docker images
 STATUS_NGINX_IMAGE_NAME: "nginx:latest"

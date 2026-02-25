@@ -1,8 +1,0 @@
-- name: Stop Cacher
-  command: docker stop "{{ INFINISPAN_SERVER_NAME }}"
-
-- name: Commit container
-  command: docker commit "{{ INFINISPAN_SERVER_NAME }}" "{{ CACHER_DATA_BUILD_IMAGE }}"
-
-- name: Push Container To Docker Hub
-  command: docker push "{{ CACHER_DATA_BUILD_IMAGE }}"

@@ -14,5 +14,4 @@
     command: java -jar agr_api/target/agr_api-swarm.jar
     env:
       NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
-      CACHE_HOST: "{{ INFINISPAN_SERVER_NAME }}"
       ES_HOST: "{{ ES_SERVER_NAME }}"

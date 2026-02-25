@@ -15,7 +15,6 @@
     command: java -jar agr_api/target/agr_api.jar
     timeout: 180
     env:
-      CACHE_HOST: "{{ INFINISPAN_SERVER_NAME }}"
       NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
       ES_HOST: "{{ ES_SERVER_NAME }}"
     healthcheck:

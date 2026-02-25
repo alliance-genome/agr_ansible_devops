@@ -16,7 +16,6 @@
       AWS_SECRET_KEY: "{{ AWS_SECRET_KEY }}"
       AWS_ACCESS_KEY: "{{ AWS_ACCESS_KEY }}"
       NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
-      CACHE_HOST: "{{ INFINISPAN_SERVER_NAME }}"
       ES_HOST: "{{ ES_SERVER_NAME }}"
 
 - name: Restore Latest ES Index Snapshot
@@ -32,7 +31,6 @@
       AWS_SECRET_KEY: "{{ AWS_SECRET_KEY }}"
       AWS_ACCESS_KEY: "{{ AWS_ACCESS_KEY }}"
       NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
-      CACHE_HOST: "{{ INFINISPAN_SERVER_NAME }}"
       ES_HOST: "{{ ES_SERVER_NAME }}"
 
 - name: Restore Latest ES Index Snapshot
@@ -48,7 +46,6 @@
       AWS_SECRET_KEY: "{{ AWS_SECRET_KEY }}"
       AWS_ACCESS_KEY: "{{ AWS_ACCESS_KEY }}"
       NEO4J_HOST: "{{ NEO_SERVER_NAME }}"
-      CACHE_HOST: "{{ INFINISPAN_SERVER_NAME }}"
       ES_HOST: "{{ ES_SERVER_NAME }}"
 
 
