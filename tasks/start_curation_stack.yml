@@ -1,24 +1,10 @@
-- name: Pull Curation Data Image
-  shell: docker pull {{ CURATION_DATA_IMAGE }} 2>&1
-
 - name: Pull Curation OpenSearch Image
   shell: docker pull {{ OPENSEARCH_IMAGE_NAME }} 2>&1
 
 - name: Pull Curation API Image
   shell: docker pull {{ CURATION_API_IMAGE }} 2>&1
 
-- name: Run Curation Data Setup
-  docker_container:
-    name: "{{ CURATION_POSTGRES_SERVER_NAME }}"
-    image: "{{ CURATION_DATA_IMAGE }}"
-    log_driver: "gelf"
-    log_options:
-      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    network_mode: "{{ NET }}"
-    env:
-      PGDATA: /pgdata
-
-- name: Start ES container
+- name: Start Curation OpenSearch
   docker_container:
     name: "{{ CURATION_OPENSEARCH_SERVER_NAME }}"
     image: "{{ OPENSEARCH_IMAGE_NAME }}"
@@ -29,9 +15,10 @@
     env:
       discovery.type: "single-node"
       DISABLE_SECURITY_PLUGIN: "true"
+      OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
 
 - pause:
-    seconds: 120
+    seconds: 60
 
 - name: Start Curation API
   docker_container:
@@ -42,9 +29,9 @@
       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
     network_mode: "{{ NET }}"
     env:
-      AGR_CURATION_RELEASE: "{{ CURATION_RELEASE_VERSION }}"
-      NET: "{{ NET }}"
-      OKTA_AUTHENTICATION: "false"
-      QUARKUS_DATASOURCE_JDBC_URL: "jdbc:postgresql://{{ CURATION_POSTGRES_SERVER_NAME }}:5432/curation"
-      QUARKUS_ELASTICSEARCH_HOSTS: "{{ CURATION_OPENSEARCH_SERVER_NAME }}:9200"
+      QUARKUS_DATASOURCE_JDBC_URL: "jdbc:postgresql://stage-curation.alliancegenome.org:5432/curation"
+      QUARKUS_ELASTICSEARCH_HOSTS: "vpc-literature-search-3ioqj2ykpx2jbthmp5ocnbs7vi.us-east-1.es.amazonaws.com:443"
+      QUARKUS_ELASTICSEARCH_PROTOCOL: "https"
       QUARKUS_HIBERNATE_SEARCH_ORM_ELASTICSEARCH_HOSTS: "{{ CURATION_OPENSEARCH_SERVER_NAME }}:9200"
+      AGR_EXCEPTIONAL_ENDPOINT: "https://exceptions.alliancegenome.org/"
+      AGR_EXCEPTIONAL_SERVICE: "IndexerCuration"

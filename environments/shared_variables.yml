@@ -134,7 +134,7 @@ CURATION_API_IMAGE:          "{{ REGISTRY }}/{{ CURATION_API_IMAGE_NAME }}:{{ CU
 # External Docker images
 STATUS_NGINX_IMAGE_NAME: "nginx:latest"
 LOG_IMAGE_NAME: "docker.elastic.co/logstash/logstash:7.7.0"
-OPENSEARCH_IMAGE_NAME: "opensearchproject/opensearch:1.2.4"
+OPENSEARCH_IMAGE_NAME: "opensearchproject/opensearch:2.16.0"
 
 # Server Images
 INTERMINE_POSTGRES_ENV_NAME: "intermine/postgres"
