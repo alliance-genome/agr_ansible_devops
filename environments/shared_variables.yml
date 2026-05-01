@@ -113,7 +113,7 @@ LOADER_RUN_IMAGE:           "{{ REGISTRY }}/{{ LOADER_IMAGE_NAME }}:{{ DOCKER_PU
 LOADER_TEST_RUN_IMAGE:      "{{ REGISTRY }}/{{ LOADER_IMAGE_NAME }}:{{ env }}_loader"
 FILE_GENER_TEST_RUN_IMAGE:  "{{ REGISTRY }}/agr_file_generator_run:{{ env }}_filegen"
 
-FILE_GENER_BUCKET_NAME: "alliance-genome-downloads"
+FILE_GENER_BUCKET_NAME: "mod-datadumps"
 
 JAVA_SOFTWARE_IMAGE_NAME: agr_java_software
 JAVA_SOFTWARE_RUN_IMAGE: "{{ REGISTRY }}/{{ JAVA_SOFTWARE_IMAGE_NAME }}:{{ DOCKER_PULL_TAG }}"
