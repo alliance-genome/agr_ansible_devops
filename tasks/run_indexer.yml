@@ -41,13 +41,12 @@
     env:
       AWS_BUCKET_NAME: "{{ FILE_GENER_BUCKET_NAME }}"
       ES_HOST: "{{ ES_SERVER_NAME }}"
-      ES_INDEX_SUFFIX: "{{ NET }}"
+      ES_INDEX: "site_index_{{ NET }}_temp"
       CURATION_API_URL: "{{ CURATION_API_URL }}"
       CURATION_API_TOKEN: "{{ CURATION_API_TOKEN }}"
       ALLIANCE_RELEASE: "{{ ALLIANCE_RELEASE }}"
       GENERATED_FILES_FOLDER: "/tmp/agr_file_generator"
       AGR_EXCEPTIONAL_ENDPOINT: "https://exceptions.alliancegenome.org"
       AGR_EXCEPTIONAL_SERVICE: "FileGenerator"
-      DEFAULT_LOG_LEVEL: INFO
     command: java -Xmx16G -jar agr_file_generator/target/agr_file_generator-jar-with-dependencies.jar
 
