@@ -47,7 +47,7 @@
         user_data: "" # Otherwise get weird error on start up
         instance_tags:
           Name: "AGR Release 3.2.0"
-          Team: "DevOps"
+          Team: "devops"
           Project: "ansible"
       register: ec2
 
@@ -76,7 +76,7 @@
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         tags:
           Name: "Ansible Generated Volume - AGR Release 3.2.0"
-          Team: "DevOps"
+          Team: "devops"
           Project: "ansible"
       with_subelements:
         - "{{ ec2_volumes.results }}"
