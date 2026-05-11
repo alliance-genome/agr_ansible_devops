@@ -48,8 +48,6 @@
         user_data: "" # Otherwise get weird error on start up
         tags:
           Name: "AGR Release 8.1.0"
-          Team: "devops"
-          Project: "ansible"
           Product: "{{ AWS_PRODUCT_TAG }}"
           DeploymentEnvironment: "{{ AWS_ENV_TAG }}"
       register: ec2
@@ -79,8 +77,6 @@
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         tags:
           Name: "Ansible Generated Volume - AGR Release 8.1.0"
-          Team: "devops"
-          Project: "ansible"
           Product: "{{ AWS_PRODUCT_TAG }}"
           DeploymentEnvironment: "{{ AWS_ENV_TAG }}"
       with_subelements:

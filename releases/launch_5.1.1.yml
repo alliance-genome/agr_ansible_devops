@@ -48,8 +48,6 @@
         user_data: "" # Otherwise get weird error on start up
         instance_tags:
           Name: "AGR Release 5.1.1"
-          Team: "devops"
-          Project: "ansible"
       register: ec2
 
     - name: Add all instance public IPs to host group
@@ -77,8 +75,6 @@
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         tags:
           Name: "Ansible Generated Volume - AGR Release 5.1.1"
-          Team: "devops"
-          Project: "ansible"
       with_subelements:
         - "{{ ec2_volumes.results }}"
         - volumes
