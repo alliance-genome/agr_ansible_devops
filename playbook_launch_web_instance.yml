@@ -33,6 +33,8 @@
         user_data: "" # Otherwise get weird error on start up
         tags:
           Name: "Ansible Generated - {{ PLAYBOOK_NAME }}"
+          Team: "devops"
+          Project: "ansible"
           Product: "{{ AWS_PRODUCT_TAG }}"
           DeploymentEnvironment: "{{ AWS_ENV_TAG }}"
       register: ec2
@@ -62,6 +64,8 @@
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         tags:
           Name: "Ansible Generated Volume - {{ PLAYBOOK_NAME }}"
+          Team: "devops"
+          Project: "ansible"
           Product: "{{ AWS_PRODUCT_TAG }}"
           DeploymentEnvironment: "{{ AWS_ENV_TAG }}"
       with_subelements:
