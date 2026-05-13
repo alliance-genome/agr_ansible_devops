@@ -123,7 +123,6 @@
         - include_tasks: tasks/start_monitoring.yml
         - include_tasks: tasks/start_es_env.yml
         - include_tasks: tasks/start_neo_data.yml
-        - include_tasks: tasks/start_infinispan_data.yml
         - include_tasks: tasks/start_api_quarkus.yml
         - include_tasks: tasks/start_jbrowse.yml
       # - include_tasks: tasks/start_apollo.yml
