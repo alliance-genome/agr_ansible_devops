@@ -106,6 +106,10 @@ bash:
 8_3_0:
 	docker run ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=public-website -e AWS_ENV_TAG=production -e WEBSERVER_INSTANCE_TYPE=r5a.2xlarge -e env=production -e DOCKER_PULL_TAG=8.3.0 -i hosts launch_8.3.0.yml --vault-password-file=.password
 
+
+9_0_0:
+	docker run ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=public-website -e AWS_ENV_TAG=production -e WEBSERVER_INSTANCE_TYPE=r5a.2xlarge -e env=production -e DOCKER_PULL_TAG=9.0.0 -i hosts launch_9.0.0.yml --vault-password-file=.password
+
 run_human_variant_indexer:
 	docker run -it ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=public-website -e AWS_ENV_TAG=stage -e env=stage -e ALLIANCE_RELEASE=7.4.0 -e DOCKER_PULL_TAG=7.3.0 -i hosts playbook_run_human_variant_indexer.yml --vault-password-file=.password
 
