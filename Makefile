@@ -147,6 +147,12 @@ SWAP_SIZE := 8G
 start_stage_node%:
 	docker run --rm -it -e PLAYBOOK_NAME="Stage ES Cluster $*" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=public-website -e AWS_ENV_TAG=stage -e STAGE_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${STAGE_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=stage -i hosts playbook_launch_stage_cluster_node.yml --vault-password-file=.password
 
+PRODUCTION_CLUSTER_MACHINE_TYPE := t3a.large
+SWAP_SIZE := 8G
+
+start_production_node%:
+	docker run --rm -it -e PLAYBOOK_NAME="Production ES Cluster $*" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=public-website -e AWS_ENV_TAG=production -e PRODUCTION_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${PRODUCTION_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=production -i hosts playbook_launch_production_cluster_node.yml --vault-password-file=.password
+
 ALPHA_CLUSTER_MACHINE_TYPE := r5a.xlarge
 SWAP_SIZE := 16G
 
@@ -159,11 +165,11 @@ SWAP_SIZE := 16G
 start_beta_node%:
 	docker run --rm -it -e PLAYBOOK_NAME="Beta OS Cluster $*" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=curation-app -e AWS_ENV_TAG=beta -e BETA_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${BETA_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=beta -i hosts playbook_launch_beta_cluster_node.yml --vault-password-file=.password
 
-PRODUCTION_CLUSTER_MACHINE_TYPE := r5a.xlarge
+PRODUCTION_CURATION_CLUSTER_MACHINE_TYPE := r5a.xlarge
 SWAP_SIZE := 16G
 
-start_production_node%:
-	docker run --rm -it -e PLAYBOOK_NAME="Production OS Cluster $*" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=curation-app -e AWS_ENV_TAG=production -e PRODUCTION_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${PRODUCTION_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=production -i hosts playbook_launch_production_cluster_node.yml --vault-password-file=.password
+start_curation_production_node%:
+	docker run --rm -it -e PLAYBOOK_NAME="Production Curation OS Cluster $*" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=curation-app -e AWS_ENV_TAG=production -e PRODUCTION_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${PRODUCTION_CURATION_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=production -i hosts playbook_launch_production_curation_cluster_node.yml --vault-password-file=.password
 
 restart_cluster:
 	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 01" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE01 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password

@@ -23,7 +23,7 @@
   tasks:
     - name: Deploy API to EBS
       block:
-        - include_tasks: tasks/deploy_api.yml
+        - include_tasks: tasks/deploy_production_api.yml
         - set_fact:
             failed_flag: "passed"
       rescue:

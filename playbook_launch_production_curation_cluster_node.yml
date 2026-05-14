@@ -21,7 +21,7 @@
   gather_facts: False
 
   vars_files:
-    - "environments/{{ env }}/main.yml" # ENV must always be loaded first
+    - "environments/{{ env }}/curation.yml" # ENV must always be loaded first
     - "environments/shared_secrets.yml"
     - "environments/shared_aws_instance_variables.yml"
 
@@ -42,7 +42,7 @@
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         network:
           assign_public_ip: true
-          private_ip_address: "{{ PRODUCTION_ES_CLUSTER_NODE_IP }}"
+          private_ip_address: "{{ PRODUCTION_OS_CLUSTER_NODE_IP }}"
         volumes:
           - device_name: /dev/xvda
             ebs:
@@ -54,14 +54,12 @@
         user_data: "" # Otherwise get weird error on start up
         tags:
           Name: "Ansible Generated - {{ PLAYBOOK_NAME }}"
-          Team: "devops"
-          Project: "ansible"
           Product: "{{ AWS_PRODUCT_TAG }}"
           DeploymentEnvironment: "{{ AWS_ENV_TAG }}"
         instance_initiated_shutdown_behavior: terminate
       register: ec2
 
-    - name: Add all instance private IPs to host group
+    - name: Add all instance public IPs to host group
       add_host:
         hostname: '{{ item.private_ip_address }}'
         groupname: launched
@@ -86,8 +84,6 @@
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         tags:
           Name: "Ansible Generated Volume - {{ PLAYBOOK_NAME }}"
-          Team: "devops"
-          Project: "ansible"
           Product: "{{ AWS_PRODUCT_TAG }}"
           DeploymentEnvironment: "{{ AWS_ENV_TAG }}"
       with_subelements:
@@ -109,7 +105,7 @@
   gather_facts: False
 
   vars_files:
-    - "environments/{{ env }}/main.yml" # ENV must always be loaded first
+    - "environments/{{ env }}/curation.yml" # ENV must always be loaded first
     - "environments/shared_secrets.yml"
     - "environments/shared_variables.yml"
     - "environments/shared_aws_instance_variables.yml"
@@ -140,7 +136,7 @@
   gather_facts: False
 
   vars_files:
-    - "environments/{{ env }}/main.yml" # ENV must always be loaded first
+    - "environments/{{ env }}/curation.yml" # ENV must always be loaded first
     - "environments/shared_secrets.yml"
     - "environments/shared_variables.yml"
     - "environments/shared_aws_instance_variables.yml"
@@ -150,13 +146,16 @@
 
   tasks:
 
-    - name: Pull ES Env Image
-      shell: docker pull {{ ES_ENV_IMAGE }} 2>&1
-  
-    - name: Run ES Cluster Node "{{ PRODUCTION_ES_CLUSTER_NODE_NAME }}"
+    - name: Pull OS Env Image
+      shell: docker pull {{ OS_ENV_IMAGE }} 2>&1
+
+    - name: Pull Cerebro Image
+      shell: docker pull yannart/cerebro:latest 2>&1
+    
+    - name: Run OS Cluster Node "{{ PRODUCTION_OS_CLUSTER_NODE_NAME }}"
       docker_container:
-        name: "{{ ES_SERVER_NAME }}{{ PRODUCTION_ES_CLUSTER_NODE_NAME }}"
-        image: "{{ ES_ENV_IMAGE }}"
+        name: "{{ OS_SERVER_NAME }}{{ PRODUCTION_OS_CLUSTER_NODE_NAME }}"
+        image: "{{ OS_ENV_IMAGE }}"
         log_driver: "gelf"
         log_options:
           gelf-address: "{{ LOG_SERVER_ADDRESS }}"
@@ -165,15 +164,26 @@
           - "9200:9200"
           - "9300:9300"
         volumes:
-          - "es_{{ PRODUCTION_ES_CLUSTER_NODE_NAME }}_data_volume:/usr/share/elasticsearch/data"
+          - "os_{{ PRODUCTION_OS_CLUSTER_NODE_NAME }}_data_volume:/usr/share/elasticsearch/data"
         env:
-          node.name: "{{ ES_SERVER_NAME }}{{ PRODUCTION_ES_CLUSTER_NODE_NAME }}"
-          cluster.name: production-cluster
-          ES_JAVA_OPTS: "-Xms7g -Xmx7g"
-          xpack.security.enabled: "false"
-          ingest.geoip.downloader.enabled: "false"
-          discovery.seed_hosts: "{{ production_node_transport_list }}"
-          cluster.initial_master_nodes: "{{ PRODUCTION_ES_CLUSTER_SERVER_FULLLIST }}"
+          node.name: "{{ OS_SERVER_NAME }}{{ PRODUCTION_OS_CLUSTER_NODE_NAME }}"
+          cluster.name: production-curation-cluster
+          OPENSEARCH_JAVA_OPTS: "-Xms24g -Xmx24g"
+          #xpack.security.enabled: "false"
+          #ingest.geoip.downloader.enabled: "false"
+          #plugins.security.disabled: "true"
+          DISABLE_SECURITY_PLUGIN: "true"
+          discovery.seed_hosts: "{{ production_curation_node_transport_list }}"
+          cluster.initial_master_nodes: "{{ PRODUCTION_OS_CLUSTER_SERVER_FULLLIST }}"
+          network.host: "0.0.0.0"
           transport.host: "0.0.0.0"
-          transport.publish_host: "{{ PRODUCTION_ES_CLUSTER_NODE_IP }}"
+          transport.publish_host: "{{ PRODUCTION_OS_CLUSTER_NODE_IP }}"
           transport.publish_port: "9300"
+    
+    - name: Run Cerebro
+      docker_container:
+        name: "agr.{{ env }}.cerebro.server"
+        image: "yannart/cerebro:latest"
+        network_mode: "{{ NET }}"
+        ports:
+          - "9000:9000"
