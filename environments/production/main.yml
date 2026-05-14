@@ -10,6 +10,7 @@ LOADER_TEST_SET: "false"
 NGINX_TAG: "{{ NET }}"
 LOG_SERVER_HOST: "{{ lookup('env','LOG_SERVER_HOST') or 'logs.alliancegenome.org' }}" # Logging runs outside the docker network
 START_GOCD_AGENT: "{{ lookup('env','START_GOCD_AGENT') or false }}"
+ALLIANCE_RELEASE: "{{ lookup('env','ALLIANCE_RELEASE') }}"
 
 INTERMINE_PGUSER: "{{ INTERMINE_PROD_PGUSER }}"
 INTERMINE_PGPASSWORD: "{{ INTERMINE_PROD_PGPASSWORD }}"
