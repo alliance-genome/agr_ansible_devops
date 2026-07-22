@@ -48,5 +48,5 @@
       GENERATED_FILES_FOLDER: "/tmp/agr_file_generator"
       AGR_EXCEPTIONAL_ENDPOINT: "https://exceptions.alliancegenome.org"
       AGR_EXCEPTIONAL_SERVICE: "FileGenerator"
-    command: java -Xmx28G -jar agr_file_generator/target/agr_file_generator-jar-with-dependencies.jar
+    command: java -Xms28G -Xmx28G -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:InitiatingHeapOccupancyPercent=45 -XX:G1ReservePercent=10 -XX:+ParallelRefProcEnabled -jar agr_file_generator/target/agr_file_generator-jar-with-dependencies.jar
 
