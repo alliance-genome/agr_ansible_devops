@@ -1,186 +1,211 @@
-- name: Create Config Directories
-  file:
-    path: "{{ item }}"
-    state: directory
-  with_items:
-    - "{{ PROMETHEUS_CONFIG_PATH }}"
-    - "{{ GRAFANA_CONFIG_PATH }}/datasources"
-    - "{{ GRAFANA_CONFIG_PATH }}/dashboards"
-    - "{{ ALERTMANAGER_CONFIG_PATH}}"
-    - "{{ BLACKBOX_CONFIG_PATH }}"
+# =============================================================================
+# MONITORING STACK - DEPRECATED
+# =============================================================================
+# The old Prometheus/Grafana/AlertManager monitoring stack has been replaced
+# by AWS CloudWatch native monitoring (KANBAN-878).
+#
+# CloudWatch monitoring includes:
+# - Route 53 health checks for endpoint availability
+# - CloudWatch Agent for host metrics (CPU, memory, disk)
+# - cAdvisor + CloudWatch Prometheus scraper for container metrics
+# - CloudWatch Alarms → SNS → Slack for alerting
+#
+# The cAdvisor for CloudWatch is deployed separately via:
+# https://github.com/alliance-genome/agr_aws_monitoring/tree/main/cadvisor
+#
+# Only Portainer remains active for Docker container management UI.
+# =============================================================================
 
-- name: Pull Node Exporter Image
-  shell: docker pull prom/node-exporter:v1.5.0 2>&1
+# -----------------------------------------------------------------------------
+# DISABLED: Old monitoring stack (replaced by CloudWatch - KANBAN-878)
+# -----------------------------------------------------------------------------
 
-- name: Run Node Exporter Image
-  docker_container:
-    name: "{{ NODEEXPORTER_SERVER_NAME }}"
-    image: "prom/node-exporter:v1.5.0"
-    log_driver: "gelf"
-    log_options:
-      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    network_mode: "{{ NET }}"
-    ports:
-      - "9100:9100"
-    recreate: yes
+# - name: Create Config Directories
+#   file:
+#     path: "{{ item }}"
+#     state: directory
+#   with_items:
+#     - "{{ PROMETHEUS_CONFIG_PATH }}"
+#     - "{{ GRAFANA_CONFIG_PATH }}/datasources"
+#     - "{{ GRAFANA_CONFIG_PATH }}/dashboards"
+#     - "{{ ALERTMANAGER_CONFIG_PATH}}"
+#     - "{{ BLACKBOX_CONFIG_PATH }}"
 
-- name: Pull cAdvisor
-  shell: docker pull gcr.io/cadvisor/cadvisor:v0.47.0 2>&1
+# - name: Pull Node Exporter Image
+#   shell: docker pull prom/node-exporter:v1.5.0 2>&1
 
-- name: Run cAdvisor Image
-  docker_container:
-    name: "{{ CADVISOR_SERVER_NAME }}"
-    image: "gcr.io/cadvisor/cadvisor:v0.47.0"
-    log_driver: "gelf"
-    log_options:
-      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    volumes:
-      - "/:/rootfs:ro"
-      - "/var/run:/var/run:rw"
-      - "/sys:/sys:ro"
-      - "/var/lib/docker/:/var/lib/docker:ro"
-      - "/cgroup:/cgroup:ro"
-    privileged: yes
-    network_mode: "{{ NET }}"
-    ports:
-      - "8081:8080"
-    recreate: yes
-    memory: 0
-    memory_reservation: 0
+# - name: Run Node Exporter Image
+#   docker_container:
+#     name: "{{ NODEEXPORTER_SERVER_NAME }}"
+#     image: "prom/node-exporter:v1.5.0"
+#     log_driver: "gelf"
+#     log_options:
+#       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+#     network_mode: "{{ NET }}"
+#     ports:
+#       - "9100:9100"
+#     recreate: yes
 
-- name: Copy Alertmanager Config for Non-Production Server
-  template:
-    src: alertmanager.yml.j2
-    dest: "{{ ALERTMANAGER_CONFIG_PATH }}/alertmanager.yml"
-  when: env != "production"
+# - name: Pull cAdvisor
+#   shell: docker pull gcr.io/cadvisor/cadvisor:v0.47.0 2>&1
 
-- name: Copy Alertmanager Config for Production Server
-  template:
-    src: alertmanager_production.yml.j2
-    dest: "{{ ALERTMANAGER_CONFIG_PATH }}/alertmanager.yml"
-  when: env == "production"
+# - name: Run cAdvisor Image
+#   docker_container:
+#     name: "{{ CADVISOR_SERVER_NAME }}"
+#     image: "gcr.io/cadvisor/cadvisor:v0.47.0"
+#     log_driver: "gelf"
+#     log_options:
+#       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+#     volumes:
+#       - "/:/rootfs:ro"
+#       - "/var/run:/var/run:rw"
+#       - "/sys:/sys:ro"
+#       - "/var/lib/docker/:/var/lib/docker:ro"
+#       - "/cgroup:/cgroup:ro"
+#     privileged: yes
+#     network_mode: "{{ NET }}"
+#     ports:
+#       - "8081:8080"
+#     recreate: yes
+#     memory: 0
+#     memory_reservation: 0
 
-- name: Pull Alertmanager Image
-  shell: docker pull prom/alertmanager:v0.24.0 2>&1
+# - name: Copy Alertmanager Config for Non-Production Server
+#   template:
+#     src: alertmanager.yml.j2
+#     dest: "{{ ALERTMANAGER_CONFIG_PATH }}/alertmanager.yml"
+#   when: env != "production"
 
-- name: Run Alertmanager
-  docker_container:
-    name: "{{ ALERTMANAGER_SERVER_NAME }}"
-    image: "prom/alertmanager:v0.24.0"
-    log_driver: "gelf"
-    log_options:
-      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    volumes:
-      - "{{ ALERTMANAGER_CONFIG_PATH }}:/etc/alertmanager"
-    command:
-      - '--config.file=/etc/alertmanager/alertmanager.yml'
-    network_mode: "{{ NET }}"
-    ports:
-      - "9093:9093"
-    recreate: yes
+# - name: Copy Alertmanager Config for Production Server
+#   template:
+#     src: alertmanager_production.yml.j2
+#     dest: "{{ ALERTMANAGER_CONFIG_PATH }}/alertmanager.yml"
+#   when: env == "production"
 
-- name: Copy Blackbox Config
-  template:
-    src: blackbox.yml.j2
-    dest: "{{ BLACKBOX_CONFIG_PATH }}/blackbox.yml"
+# - name: Pull Alertmanager Image
+#   shell: docker pull prom/alertmanager:v0.24.0 2>&1
 
-- name: Pull Blackbox Image
-  shell: docker pull prom/blackbox-exporter:v0.23.0 2>&1
+# - name: Run Alertmanager
+#   docker_container:
+#     name: "{{ ALERTMANAGER_SERVER_NAME }}"
+#     image: "prom/alertmanager:v0.24.0"
+#     log_driver: "gelf"
+#     log_options:
+#       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+#     volumes:
+#       - "{{ ALERTMANAGER_CONFIG_PATH }}:/etc/alertmanager"
+#     command:
+#       - '--config.file=/etc/alertmanager/alertmanager.yml'
+#     network_mode: "{{ NET }}"
+#     ports:
+#       - "9093:9093"
+#     recreate: yes
 
-- name: Run Blackbox Exporter
-  docker_container:
-    name: "{{ BLACKBOX_SERVER_NAME }}"
-    image: "prom/blackbox-exporter:v0.23.0"
-    log_driver: "gelf"
-    log_options:
-      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    volumes:
-      - "{{ BLACKBOX_CONFIG_PATH }}:/etc/blackbox"
-    command:
-      - '--config.file=/etc/blackbox/blackbox.yml'
-    network_mode: "{{ NET }}"
-    ports:
-      - "9115:9115"
-    recreate: yes
+# - name: Copy Blackbox Config
+#   template:
+#     src: blackbox.yml.j2
+#     dest: "{{ BLACKBOX_CONFIG_PATH }}/blackbox.yml"
 
-- name: Copy Prometheus Config for Non-Production Server
-  template:
-    src: prometheus.yml.j2
-    dest: "{{ PROMETHEUS_CONFIG_PATH }}/prometheus.yml"
-  when: env != "production"
+# - name: Pull Blackbox Image
+#   shell: docker pull prom/blackbox-exporter:v0.23.0 2>&1
 
-- name: Copy Prometheus Config for Production Server
-  template:
-    src: prometheus_production.yml.j2
-    dest: "{{ PROMETHEUS_CONFIG_PATH }}/prometheus.yml"
-  when: env == "production"
+# - name: Run Blackbox Exporter
+#   docker_container:
+#     name: "{{ BLACKBOX_SERVER_NAME }}"
+#     image: "prom/blackbox-exporter:v0.23.0"
+#     log_driver: "gelf"
+#     log_options:
+#       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+#     volumes:
+#       - "{{ BLACKBOX_CONFIG_PATH }}:/etc/blackbox"
+#     command:
+#       - '--config.file=/etc/blackbox/blackbox.yml'
+#     network_mode: "{{ NET }}"
+#     ports:
+#       - "9115:9115"
+#     recreate: yes
 
-- name: Copy Prometheus Rules for Non-Production Server
-  template:
-    src: rules.yml.j2
-    dest: "{{ PROMETHEUS_CONFIG_PATH }}/rules.yml"
-  when: env != "production"
+# - name: Copy Prometheus Config for Non-Production Server
+#   template:
+#     src: prometheus.yml.j2
+#     dest: "{{ PROMETHEUS_CONFIG_PATH }}/prometheus.yml"
+#   when: env != "production"
 
-- name: Copy Prometheus for Production Server
-  template:
-    src: rules_production.yml.j2
-    dest: "{{ PROMETHEUS_CONFIG_PATH }}/rules.yml"
-  when: env == "production"
+# - name: Copy Prometheus Config for Production Server
+#   template:
+#     src: prometheus_production.yml.j2
+#     dest: "{{ PROMETHEUS_CONFIG_PATH }}/prometheus.yml"
+#   when: env == "production"
 
-- name: Pull Prometheus Image
-  shell: docker pull prom/prometheus:v2.43.0 2>&1
+# - name: Copy Prometheus Rules for Non-Production Server
+#   template:
+#     src: rules.yml.j2
+#     dest: "{{ PROMETHEUS_CONFIG_PATH }}/rules.yml"
+#   when: env != "production"
 
-- name: Run Prometheus
-  docker_container:
-    name: "{{ PROMETHEUS_SERVER_NAME }}"
-    image: "prom/prometheus:v2.43.0"
-    log_driver: "gelf"
-    log_options:
-      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    volumes:
-      - "{{ PROMETHEUS_CONFIG_PATH }}:/etc/prometheus"
-    network_mode: "{{ NET }}"
-    ports:
-      - "9090:9090"
-    recreate: yes
+# - name: Copy Prometheus for Production Server
+#   template:
+#     src: rules_production.yml.j2
+#     dest: "{{ PROMETHEUS_CONFIG_PATH }}/rules.yml"
+#   when: env == "production"
 
-- name: Copy Grafana Datasource Config
-  template:
-    src: datasource.yml.j2
-    dest: "{{ GRAFANA_CONFIG_PATH }}/datasources/datasource.yml"
+# - name: Pull Prometheus Image
+#   shell: docker pull prom/prometheus:v2.43.0 2>&1
 
-- name: Copy Grafana Dashboard Config
-  template:
-    src: dashboard.yml.j2
-    dest: "{{ GRAFANA_CONFIG_PATH }}/dashboards/dashboard.yml"
+# - name: Run Prometheus
+#   docker_container:
+#     name: "{{ PROMETHEUS_SERVER_NAME }}"
+#     image: "prom/prometheus:v2.43.0"
+#     log_driver: "gelf"
+#     log_options:
+#       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+#     volumes:
+#       - "{{ PROMETHEUS_CONFIG_PATH }}:/etc/prometheus"
+#     network_mode: "{{ NET }}"
+#     ports:
+#       - "9090:9090"
+#     recreate: yes
 
-- name: Copy Grafana Dashboards
-  copy:
-    src: dashboards/
-    dest: "{{ GRAFANA_CONFIG_PATH }}/dashboards/"
-    directory_mode: yes
+# - name: Copy Grafana Datasource Config
+#   template:
+#     src: datasource.yml.j2
+#     dest: "{{ GRAFANA_CONFIG_PATH }}/datasources/datasource.yml"
 
-- name: Pull Grafana Image
-  shell: docker pull grafana/grafana:9.4.0 2>&1
+# - name: Copy Grafana Dashboard Config
+#   template:
+#     src: dashboard.yml.j2
+#     dest: "{{ GRAFANA_CONFIG_PATH }}/dashboards/dashboard.yml"
 
-- name: Run Grafana Image
-  docker_container:
-    name: "{{ GRAFANA_SERVER_NAME }}"
-    image: "grafana/grafana:9.4.0"
-    log_driver: "gelf"
-    log_options:
-      gelf-address: "{{ LOG_SERVER_ADDRESS }}"
-    volumes:
-      - "{{ GRAFANA_CONFIG_PATH }}:/etc/grafana/provisioning/"
-    network_mode: "{{ NET }}"
-    ports:
-      - "3000:3000"
-    env:
-      GF_SECURITY_ADMIN_PASSWORD: "{{ GRAFANA_PASSWORD }}"
-      GF_AUTH_ANONYMOUS_ENABLED: "true"
-      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+# - name: Copy Grafana Dashboards
+#   copy:
+#     src: dashboards/
+#     dest: "{{ GRAFANA_CONFIG_PATH }}/dashboards/"
+#     directory_mode: yes
 
-    recreate: yes
+# - name: Pull Grafana Image
+#   shell: docker pull grafana/grafana:9.4.0 2>&1
+
+# - name: Run Grafana Image
+#   docker_container:
+#     name: "{{ GRAFANA_SERVER_NAME }}"
+#     image: "grafana/grafana:9.4.0"
+#     log_driver: "gelf"
+#     log_options:
+#       gelf-address: "{{ LOG_SERVER_ADDRESS }}"
+#     volumes:
+#       - "{{ GRAFANA_CONFIG_PATH }}:/etc/grafana/provisioning/"
+#     network_mode: "{{ NET }}"
+#     ports:
+#       - "3000:3000"
+#     env:
+#       GF_SECURITY_ADMIN_PASSWORD: "{{ GRAFANA_PASSWORD }}"
+#       GF_AUTH_ANONYMOUS_ENABLED: "true"
+#       GF_AUTH_DISABLE_LOGIN_FORM: "true"
+#     recreate: yes
+
+# -----------------------------------------------------------------------------
+# ACTIVE: Portainer (Docker container management UI)
+# -----------------------------------------------------------------------------
 
 - name: Pull Portainer Image
   shell: docker pull portainer/portainer-ce:latest 2>&1
