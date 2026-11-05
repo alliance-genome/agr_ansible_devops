@@ -14,8 +14,7 @@ RUN echo "    ServerAliveInterval 120" >> /etc/ssh/ssh_config
 #RUN echo 'pipelining = True' >> /etc/ansible/ansible.cfg
 #RUN echo 'host_key_checking = False' >> /etc/ansible/ansible.cfg
 
-RUN mkdir /root/.ssh
-RUN mkdir /root/.docker
+RUN mkdir /root/.ssh && mkdir /root/.docker
 
 ADD . .
 

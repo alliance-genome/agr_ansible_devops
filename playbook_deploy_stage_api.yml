@@ -12,9 +12,6 @@
     - "environments/shared_secrets.yml"
     - "environments/shared_aws_instance_variables.yml"
 
-  vars:
-    ansible_python_interpreter: /root/venv/bin/python
-
   environment:
     AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY }}"
     AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_KEY }}"
