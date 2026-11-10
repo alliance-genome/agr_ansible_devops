@@ -47,7 +47,7 @@
           - device_name: /dev/xvda
             ebs:
               volume_type: gp3
-              volume_size: 307
+              volume_size: 200
               iops: 3000
               delete_on_termination: yes
         wait: yes
@@ -152,9 +152,6 @@
 
     - name: Pull OS Env Image
       shell: docker pull {{ OS_ENV_IMAGE }} 2>&1
-
-    - name: Pull Cerebro Image
-      shell: docker pull yannart/cerebro:latest 2>&1
     
     - name: Run OS Cluster Node "{{ BETA_OS_CLUSTER_NODE_NAME }}"
       docker_container:
@@ -168,11 +165,11 @@
           - "9200:9200"
           - "9300:9300"
         volumes:
-          - "os_{{ BETA_OS_CLUSTER_NODE_NAME }}_data_volume:/usr/share/elasticsearch/data"
+          - "os_{{ BETA_OS_CLUSTER_NODE_NAME }}_data_volume:/usr/share/opensearch/data"
         env:
           node.name: "{{ OS_SERVER_NAME }}{{ BETA_OS_CLUSTER_NODE_NAME }}"
           cluster.name: beta-cluster
-          OPENSEARCH_JAVA_OPTS: "-Xms24g -Xmx24g"
+          OPENSEARCH_JAVA_OPTS: "-Xms8g -Xmx8g"
           #xpack.security.enabled: "false"
           #ingest.geoip.downloader.enabled: "false"
           #plugins.security.disabled: "true"
@@ -183,11 +180,3 @@
           transport.host: "0.0.0.0"
           transport.publish_host: "{{ BETA_OS_CLUSTER_NODE_IP }}"
           transport.publish_port: "9300"
-    
-    - name: Run Cerebro
-      docker_container:
-        name: "agr.{{ env }}.cerebro.server"
-        image: "yannart/cerebro:latest"
-        network_mode: "{{ NET }}"
-        ports:
-          - "9000:9000"

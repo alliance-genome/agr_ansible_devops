@@ -153,38 +153,52 @@ SWAP_SIZE := 8G
 start_production_node%:
 	docker run --rm -it -e PLAYBOOK_NAME="Production ES Cluster $*" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=public-website -e AWS_ENV_TAG=production -e PRODUCTION_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${PRODUCTION_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=production -i hosts playbook_launch_production_cluster_node.yml --vault-password-file=.password
 
-ALPHA_CLUSTER_MACHINE_TYPE := r5a.xlarge
+ALPHA_CLUSTER_MACHINE_TYPE := m7g.xlarge
+ALPHA_COMPUTE_AMI_IMAGE := ami-0d86c874f0fb5ae1a
 SWAP_SIZE := 16G
 
 start_alpha_node%:
-	docker run --rm -it -e PLAYBOOK_NAME="Alpha OS Cluster $*" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=curation-app -e AWS_ENV_TAG=alpha -e ALPHA_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${ALPHA_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=alpha -i hosts playbook_launch_alpha_cluster_node.yml --vault-password-file=.password
+	docker run --rm -it -e PLAYBOOK_NAME="Alpha OS Cluster $*" ${REPO} \
+	ansible-playbook \
+		-e AWS_PRODUCT_TAG=curation-app \
+		-e AWS_ENV_TAG=alpha -e ALPHA_CLUSTER_NODE=NODE$* \
+		-e SWAP_SIZE=${SWAP_SIZE} \
+		-e COMPUTE_INSTANCE_TYPE=${ALPHA_CLUSTER_MACHINE_TYPE} \
+		-e COMPUTE_AMI_IMAGE=${ALPHA_COMPUTE_AMI_IMAGE} \
+		-e SKIP_NVME_DRIVES=true \
+		-e env=alpha \
+	-i hosts playbook_launch_alpha_cluster_node.yml --vault-password-file=.password
 
-BETA_CLUSTER_MACHINE_TYPE := r5a.xlarge
+BETA_CLUSTER_MACHINE_TYPE := m7g.xlarge
+BETA_COMPUTE_AMI_IMAGE := ami-0d86c874f0fb5ae1a
 SWAP_SIZE := 16G
 
 start_beta_node%:
-	docker run --rm -it -e PLAYBOOK_NAME="Beta OS Cluster $*" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=curation-app -e AWS_ENV_TAG=beta -e BETA_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${BETA_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=beta -i hosts playbook_launch_beta_cluster_node.yml --vault-password-file=.password
+	docker run --rm -it -e PLAYBOOK_NAME="Beta OS Cluster $*" ${REPO} \
+	ansible-playbook \
+		-e AWS_PRODUCT_TAG=curation-app \
+		-e AWS_ENV_TAG=beta \
+		-e BETA_CLUSTER_NODE=NODE$* \
+		-e SWAP_SIZE=${SWAP_SIZE} \
+		-e COMPUTE_INSTANCE_TYPE=${BETA_CLUSTER_MACHINE_TYPE} \
+		-e COMPUTE_AMI_IMAGE=${BETA_COMPUTE_AMI_IMAGE} \
+		-e SKIP_NVME_DRIVES=true \
+		-e env=beta \
+	-i hosts playbook_launch_beta_cluster_node.yml --vault-password-file=.password
 
-PRODUCTION_CURATION_CLUSTER_MACHINE_TYPE := r5a.xlarge
+PRODUCTION_CURATION_CLUSTER_MACHINE_TYPE := m7g.xlarge
+PRODUCTION_CURATION_COMPUTE_AMI_IMAGE := ami-0d86c874f0fb5ae1a
 SWAP_SIZE := 16G
 
 start_curation_production_node%:
-	docker run --rm -it -e PLAYBOOK_NAME="Production Curation OS Cluster $*" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=curation-app -e AWS_ENV_TAG=production -e PRODUCTION_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${PRODUCTION_CURATION_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=production -i hosts playbook_launch_production_curation_cluster_node.yml --vault-password-file=.password
-
-restart_cluster:
-	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 01" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE01 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
-	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 02" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE02 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
-	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 03" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE03 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
-	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 04" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE04 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
-	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 05" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE05 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
-	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 06" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE06 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
-	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 07" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE07 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
-	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 08" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE08 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
-	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 09" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE09 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
-	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 10" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE10 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
-	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 11" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE11 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
-	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 12" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE12 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
-	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 13" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE13 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
-	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 14" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE14 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
-	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 15" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE15 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
-	docker run --rm -d -e PLAYBOOK_NAME="Build ES Cluster 16" agrlocal/agr_ansible_run_unlocked:latest ansible-playbook -e CLUSTER_NODE=NODE16 -e COMPUTE_INSTANCE_TYPE=${CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=build -i hosts playbook_restart_cluster_node.yml --vault-password-file=.password
+	docker run --rm -it -e PLAYBOOK_NAME="Production Curation OS Cluster $*" ${REPO} \
+	ansible-playbook \
+		-e AWS_PRODUCT_TAG=curation-app \
+		-e AWS_ENV_TAG=production \
+		-e PRODUCTION_CLUSTER_NODE=NODE$* \
+		-e SWAP_SIZE=${SWAP_SIZE} \
+		-e COMPUTE_INSTANCE_TYPE=${PRODUCTION_CURATION_CLUSTER_MACHINE_TYPE} \
+		-e COMPUTE_AMI_IMAGE=${PRODUCTION_CURATION_COMPUTE_AMI_IMAGE} \
+		-e SKIP_NVME_DRIVES=true \
+		-e env=production \
+	-i hosts playbook_launch_production_curation_cluster_node.yml --vault-password-file=.password
