@@ -3,7 +3,7 @@
 ######################### Variables section #################################
 
 # AWS Variables
-COMPUTE_INSTANCE_TYPE: "{{ lookup('env','COMPUTE_INSTANCE_TYPE') or 'r5d.8xlarge' }}"
+COMPUTE_INSTANCE_TYPE: "{{ lookup('env','COMPUTE_INSTANCE_TYPE') or 'i4g.8xlarge' }}"
 
 # AWS Instance Tagging (used by playbooks that don't load shared_variables.yml)
 AWS_PRODUCT_TAG: "{{ lookup('env','AWS_PRODUCT_TAG') | default('Ansible - untagged: PLAYBOOK_NAME',True) }}"
