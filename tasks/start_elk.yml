@@ -1,9 +1,6 @@
 - name: Pull ES Env Image
   shell: docker pull {{ ES_ENV_IMAGE }} 2>&1
 
-- name: Pull Cerebro Image
-  shell: docker pull yannart/cerebro:latest 2>&1
-
 - name: Run ES
   docker_container:
     name: "{{ ES_SERVER_NAME }}"
@@ -15,14 +12,6 @@
     env:
       discovery.type: single-node
       ES_JAVA_OPTS: "-Xms8g -Xmx8g"
-
-- name: Run Cerebro
-  docker_container:
-    name: "agr.{{ env }}.cerebro.server"
-    image: "yannart/cerebro:latest"
-    network_mode: "{{ NET }}"
-    ports:
-      - "9000:9000"
 
 - name: Pull Log Image
   shell: docker pull {{ LOG_IMAGE_NAME }} 2>&1
