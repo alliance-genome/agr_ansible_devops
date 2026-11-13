@@ -16,6 +16,6 @@
     - "environments/shared_aws_instance_variables.yml"
 
   tasks:
-    - name: Start Elk
+    - name: Start GoCD Agents
       block:
         - include_tasks: tasks/start_gocd_agent.yml

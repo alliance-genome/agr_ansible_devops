@@ -125,8 +125,18 @@ stage_curation_server:
 stage_web_server:
 	docker run -it -e PLAYBOOK_NAME="Stage Web Server" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=public-website -e AWS_ENV_TAG=stage -e env=stage -e SKIP_NVME_DRIVES=true -e START_GOCD_AGENT=true -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
 
-build_web_server:
-	docker run -it -e PLAYBOOK_NAME="Build Web Server" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=public-website -e AWS_ENV_TAG=build -e env=build -e SKIP_NVME_DRIVES=true -e START_GOCD_AGENT=true -i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
+gocd_server:
+	docker run -it -e PLAYBOOK_NAME="GoCD Server" ${REPO} \
+		ansible-playbook \
+			-e AWS_PRODUCT_TAG=gocd \
+			-e AWS_ENV_TAG=gocd \
+			-e env=build \
+			-e SWAP_SIZE=8G \
+			-e WEBSERVER_INSTANCE_TYPE=m6g.large \
+			-e WEBSERVER_AMI_IMAGE=ami-0d86c874f0fb5ae1a \
+			-e SKIP_NVME_DRIVES=true \
+			-e START_GOCD_AGENT=false \
+			-i hosts custom_playbook_launch_web_instance.yml --vault-password-file=.password
 
 openvpn_server:
 	docker run -it -e PLAYBOOK_NAME="OpenVPN Server" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=open-vpn  -e AWS_ENV_TAG=build -e env=build -e WEBSERVER_INSTANCE_TYPE=t3.small -e SKIP_NVME_DRIVES=true -i hosts custom_playbook_launch_instance_bare.yml --vault-password-file=.password
