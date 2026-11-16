@@ -36,7 +36,7 @@
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
         image_id: "{{ COMPUTE_AMI_IMAGE }}"
         region: us-east-1
-        vpc_subnet_id: subnet-0d4703177afb1797d
+        vpc_subnet_id: subnet-04262fc338f638054
         iam_instance_profile: S3DataAccess
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
