@@ -99,11 +99,22 @@ start_stage_node%:
 		-e env=stage \
 	-i hosts playbook_launch_stage_cluster_node.yml --vault-password-file=.password
 
-PRODUCTION_CLUSTER_MACHINE_TYPE := t3a.large
+PRODUCTION_CLUSTER_MACHINE_TYPE := t4g.large
+PRODUCTION_COMPUTE_AMI_IMAGE := ami-0d86c874f0fb5ae1a
 SWAP_SIZE := 8G
 
 start_production_node%:
-	docker run --rm -it -e PLAYBOOK_NAME="Production ES Cluster $*" ${REPO} ansible-playbook -e AWS_PRODUCT_TAG=public-website -e AWS_ENV_TAG=production -e PRODUCTION_CLUSTER_NODE=NODE$* -e SWAP_SIZE=${SWAP_SIZE} -e COMPUTE_INSTANCE_TYPE=${PRODUCTION_CLUSTER_MACHINE_TYPE} -e SKIP_NVME_DRIVES=true -e env=production -i hosts playbook_launch_production_cluster_node.yml --vault-password-file=.password
+	docker run --rm -it -e PLAYBOOK_NAME="Production ES Cluster $*" ${REPO} \
+	ansible-playbook \
+		-e AWS_PRODUCT_TAG=public-website \
+		-e AWS_ENV_TAG=production \
+		-e PRODUCTION_CLUSTER_NODE=NODE$* \
+		-e SWAP_SIZE=${SWAP_SIZE} \
+		-e COMPUTE_INSTANCE_TYPE=${PRODUCTION_CLUSTER_MACHINE_TYPE} \
+		-e COMPUTE_AMI_IMAGE=${PRODUCTION_COMPUTE_AMI_IMAGE} \
+		-e SKIP_NVME_DRIVES=true \
+		-e env=production \
+	-i hosts playbook_launch_production_cluster_node.yml --vault-password-file=.password
 
 ALPHA_CLUSTER_MACHINE_TYPE := m7g.xlarge
 ALPHA_COMPUTE_AMI_IMAGE := ami-0d86c874f0fb5ae1a
