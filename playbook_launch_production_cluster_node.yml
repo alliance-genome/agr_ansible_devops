@@ -36,12 +36,12 @@
         instance_type: "{{ COMPUTE_INSTANCE_TYPE }}"
         image_id: "{{ COMPUTE_AMI_IMAGE }}"
         region: us-east-1
-        vpc_subnet_id: subnet-df7c7487
+        vpc_subnet_id: subnet-04262fc338f638054
         iam_instance_profile: S3DataAccess
         aws_access_key: "{{ AWS_ACCESS_KEY }}"
         aws_secret_key: "{{ AWS_SECRET_KEY }}"
         network:
-          assign_public_ip: true
+          assign_public_ip: false
           private_ip_address: "{{ PRODUCTION_ES_CLUSTER_NODE_IP }}"
         volumes:
           - device_name: /dev/xvda
@@ -169,7 +169,7 @@
         env:
           node.name: "{{ ES_SERVER_NAME }}{{ PRODUCTION_ES_CLUSTER_NODE_NAME }}"
           cluster.name: production-cluster
-          ES_JAVA_OPTS: "-Xms7g -Xmx7g"
+          ES_JAVA_OPTS: "-Xms4g -Xmx4g"
           xpack.security.enabled: "false"
           ingest.geoip.downloader.enabled: "false"
           discovery.seed_hosts: "{{ production_node_transport_list }}"
